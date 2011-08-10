@@ -1,0 +1,19 @@
+% Картина течения в плоскости u = \xi + i\eta
+  \begin{pspicture}(6,5)
+    \psaxes[ticks=none,labels=none,linewidth=0.5pt]{->}(6,4)
+%    \psgrid[subgriddiv=1,griddots=10,gridlabels=7pt](0,0)(6,5)
+    % ABCD
+    \psline[linewidth=1.5pt](0,0)(5,0)(5,3)(0,3)(0,0)
+    \psbezier[linewidth=1.5pt]{->}(4,2)(2,2)(2,2)(2,0.5)
+    \uput[d](3,2){\small $\vec v$}
+    \uput[r](6,0){$\xi$}
+    \uput[u](0,4){$\eta$}
+    \uput[ur](0,0){\textbf{C}}
+    \uput[dl](0,0){0}
+    \uput[r](5,3){\textbf{A}: $\frac{\pi}{4} + \frac{\pi \tau}{4}$}
+    \uput[dr](0,3){\textbf{B}}
+    \uput[l](0,3){$\frac{\pi \tau}{4}$}
+    \uput[ul](5,0){\textbf{D}}
+    \uput[d](5,0){$\frac{\pi}{4}$}
+    \cput[linewidth=0.5pt](1,2){\Large $u$}
+  \end{pspicture}

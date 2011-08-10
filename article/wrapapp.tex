@@ -1,0 +1,93 @@
+  % размер бумаги и кегль шрифта, класс документа --- ``отчёт''
+\documentclass[a4paper,14pt]{extreport} 
+  % используем cp1251 ТОЛЬКО потому, что bibtex умеет сортировать только ASCII-строки, увы
+\usepackage[cp1251]{inputenc} 
+  % ещё можно T1, но пусть будет T2A
+\usepackage[T2A]{fontenc} 
+  % переносы и типографские правила для русского _затем_ английского языков
+\usepackage[english,russian]{babel} 
+  % ядро для научной статьи
+\usepackage{amssymb,amsfonts,amsmath,mathtext}
+  % цитирование и нумерованные списки 
+\usepackage{cite,enumerate}
+  % красная строка
+\usepackage{indentfirst} 
+  % диаграммы и черчение
+\usepackage{pstricks,pst-plot,pb-diagram} 
+  % показываем лейблы (выключить для беловика)
+%\usepackage{showkeys}
+  % оформление листингов программ
+\usepackage{listings}
+  % подписи к рисункам  
+\usepackage[labelsep=period]{caption}
+  % поддержка поиска и вставки в PDF
+%\usepackage{cmap}
+
+  % контроль переносов слов
+%\usepackage{hyphenat}
+
+ % включаем крутые гиперссылки и автоматические подписи к ссылкам (Рис. n, etc)
+%\usepackage{hyperref}
+
+ % изменяем оформление заголовков
+\usepackage{titlesec}
+% Формат записи: \titleformat{command}[shape]{format}{label}{sep}{before}[after]
+\titleformat{\chapter}[block]{\raggedright\huge\bfseries}{\chaptertitlename\ \thechapter.}{0.5em}{}
+\titleformat{\section} {\raggedright\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection} {\raggedright\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection} {\raggedright\normalsize\bfseries}{\thesubsubsection}{1em}{}
+% Формат записи: \titlespacing*{command}{left}{beforesep}{aftersep}[right]
+\titlespacing*{\chapter} {0pt}{0pt}{2em}
+\titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsection} {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+ % изменяем оформление содержания
+%\usepackage{titletoc}
+
+ % кириллические шрифты пакета PSCyr
+%% \usepackage{pscyr}
+%% \renewcommand{\rmdefault}{cmr}
+%% \renewcommand{\sfdefault}{ftx}
+%% \renewcommand{\ttdefault}{cmtt}
+
+  % поддержка .eps-графики
+\usepackage{graphicx} 
+\graphicspath{{images/}} %путь к рисункам
+
+  % меняем поля
+\usepackage{geometry}
+\geometry{left=3cm}
+\geometry{right=2cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+  % формулы нумеруются внутри каждой главы
+\numberwithin{equation}{chapter} 
+
+  % Заменяем библиографию с квадратных скобок на точку:
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.} 
+\makeatother
+
+  % Меняем везде перечисления на цифра.цифра
+\renewcommand{\theenumi}{\arabic{enumi}}
+\renewcommand{\labelenumi}{\arabic{enumi}}
+\renewcommand{\theenumii}{.\arabic{enumii}}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}
+\renewcommand{\theenumiii}{.\arabic{enumiii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}
+
+% Операции извлечения мнимой части и действительной части согласно русской типографской традиции (иначе будут набраны готическим шрифтом)
+\renewcommand{\Im}{\mathop{\text{Im}}}
+\renewcommand{\Re}{\mathop{\text{Re}}}
+
+% Операторы дивергенции и градиента
+\DeclareMathOperator{\Divergence}{div}
+\DeclareMathOperator{\Gradient}{grad}
+
+\begin{document}
+
+\include{appendix}
+
+\end{document}
+

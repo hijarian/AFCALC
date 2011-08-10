@@ -1,0 +1,36 @@
+% Схема отображения $\chi_0$ по принципу симметрии
+  \psset{unit=1.5cm}
+  \begin{pspicture}(6,4)
+    % Оси
+    \psaxes[ticks=none,labels=none,linewidth=0.5pt]{->}(2.5,1)(0,0.5)(5.5,4)
+    \uput[r](5.5,1){$\xi$}
+    \uput[u](2.5,4){$\eta$}
+    % Линии на рисунке
+    \psline[linestyle=dashed](1,1)(1,3)(4,3)(4,2)
+    \psline[linewidth=1.5pt](2.5,2)(4,2)
+    \psdots(2.5,2)(4,2)
+    \psline[](4,2)(4,1)
+    \newgray{ltgray}{.85}
+    \psframe[linewidth=0,fillstyle=solid,fillcolor=ltgray](2.5,1)(4,2)
+    % Мерные линейки
+    \uput[l](0.5,2){\small $\pi |\tau|$}
+    \psline[]{<->}(0.5,1)(0.5,3)
+    \uput[d](2.5,0){\small $\pi$}
+    \psline[]{<->}(1,0)(4,0)
+    % Подписи к точкам на чертеже
+    \uput[dl](4,2){\scriptsize \textbf{A}}
+    \uput[r](4,2){\scriptsize $+$}
+    \uput[ul](4,1){\scriptsize \textbf{B}}
+    \uput[ur](2.5,1){\scriptsize \textbf{C}}
+    \uput[dl](2.5,1){\scriptsize 0}
+    \uput[dr](2.5,2){\scriptsize \textbf{D}}
+    \uput[ur](2.5,2){\scriptsize $-$}
+    % Метки на осях координат
+    \uput[l](2.5,2){\small $\frac{\pi |\tau|}{2}$}
+    \uput[ul](2.5,3){\small $\pi |\tau|$}
+    \uput[d](1,1){\small $-\frac{\pi}{2}$}
+    \uput[d](4,1){\small $\frac{\pi}{2}$}
+    % Обозначение переменного
+    \cput[linewidth=0.5pt](4.5,4){$u$}
+  \end{pspicture}
+  \psset{unit=1cm}

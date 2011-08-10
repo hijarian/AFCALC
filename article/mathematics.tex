@@ -1,0 +1,338 @@
+\chapter{Формулирование картины взрыва согласно ТЖМ}\label{chapter:math}
+Следуя М. А. Лаврентьеву, рассмотрим задачу теории взрыва в импульсной постановке.
+В этом случае течение, возникающее под действием импульсного давления, является потенциальным.
+Если пренебречь сжимаемостью среды, её прочностными и пластическими свойствами, а также силами трения и гравитации, то мы придём к изучению движения идеальной несжимаемой невесомой жидкости.
+Грунт, на который действует заряд, моделируется, таким образом, средой, движущейся как идеальная несжимаемая жидкость при скоростях больше некоторой критической скорости $v_0$ и является абсолютно твёрдым телом при скоростях, меньших $v_0$.
+
+\section{Постановка краевой задачи, эквивалентной исходной}
+% fucking MANY times will I be writing this fractions
+\newcommand{\hpi}{\frac{\pi}{4}}
+\newcommand{\hpit}{\frac{\pi\tau}{4}}
+
+Представим согласно твёрдо-жидкостной модели двумерный взрыв заглублённого заряда на двумерном евклидовом пространстве в декартовых координатах как плоское потенциальное установившееся течение идеальной невесомой жидкости на плоскости комплексного переменного $z = x + iy$.
+Ось ординат направлена по горизонтальной поверхности, ось абсцисс --- линия симметрии и направлена вертикально вниз.
+В силу симметрии будем рассматривать только правую половину течения.
+Таким образом, рассматриваемая область течения ограничена криволинейным участком $AD$, прямолинейными участками $AB$ и $CD$ и линией тока $CB$ (см.~рис.~\ref{fig:flow-z}).
+
+\begin{figure}[h]
+  \begin{center}
+    \input{images/flow_z}
+  \end{center}
+  \caption{Исходная схема модели}
+  \label{fig:flow-z}
+\end{figure}
+
+Обозначим через $\pi\gamma / 2$ угол, образованный касательной к заряду и горизонтальной поверхностью в точке $D$ (рис.~\ref{fig:flow-z}).
+Довольно очевидно, что для того, чтобы картина взрыва соответствовала рис. \ref{fig:flow-z}, должно выполняться условие $\gamma < 1$.
+Введём область $G_u$ вспомогательного переменного $u = \xi + i\eta$ в виде прямоугольника $0 < \xi < \pi / 4$, $0 < \eta < \pi |\tau| / 4$ с соответствием точек, указанным на рис.~\ref{fig:flow-u}.
+
+Следует найти отображение $z(u)$ такое, что оно конформно отображает прямоугольник $ABCD$ из пространства $u$ на область $ABCD$ из пространства $z$. 
+
+\begin{figure}[h]
+  \begin{center}
+    \input{images/flow_u}
+  \end{center}
+  \caption{Область дополнительного переменного $u$}
+  \label{fig:flow-u}
+\end{figure}
+
+Параметр $\tau$ задан так, чтобы $\Im \tau > 0$ и $\Re \tau = 0$.
+
+\section{Вывод решения для краевой задачи}
+
+Нам достаточно получить $dz / du$, чтобы найти $\forall z \colon z \in CB$. Нужная граница будет найдена интегрированием по $u$ на соответствующей стороне прямоугольника.
+
+Представим $dz / du$ в виде производной сложной функции:
+\begin{equation}\label{def:dz/du}
+  \frac{dz}{du} = \frac{dz}{dw} \cdot \frac{dw}{du}
+\end{equation}
+
+Выведем последовательно оба множителя этого произведения.
+
+\subsection{Комплексный потенциал на плоскости вспомогательного переменного}
+
+Комплексный потенциал $w(u)$  над вспомогательным переменным $u$ вводится следующим образом:
+\begin{equation}\label{def:w(u)}
+  w(u) = \varphi(u) + i\psi(u)
+\end{equation}
+
+Рассмотрим $w(u)$ как точку в поле $w = \varphi + i\psi$. Нам известны из постановки задачи краевые условия для $w(u)$:
+\begin{subequations}\label{eq:w(u)-boundaries}
+  \begin{align}
+   &CD: \varphi = 0 \\
+   &AD: \varphi = \varphi_0 \\
+   &ABC: \psi = -\psi_0  
+  \end{align}
+\end{subequations}
+
+Производная комплексного потенциала $dw / du$ имеет в области $G_u$ нуль первого порядка в точке $B$ (нарушается конформность отображения) и полюс первого порядка в точке $D$ (вихрь интенсивности $4\varphi_0$).
+Как видно из рис. \ref{fig:flow-z}, $dw /du$ чисто мнима на $BCD$ и вещественна на $BAD$.
+Следовательно, её можно продолжить по принципу симметрии на всю плоскость.
+На основании теории эллиптических функций \cite[стр.~350]{matan:Whittaker}, найдём
+\begin{equation}\label{eq:dw/du}
+  \frac{dw}{du} = iN \frac
+       {\vartheta_1\left(u - \hpit \right) \vartheta_1\left(u + \hpit \right) \vartheta_2\left(u - \hpit \right)\vartheta_2\left(u + \hpit \right)}
+       {\vartheta_1\left(u - \hpi \right) \vartheta_1\left(u + \hpi \right) \vartheta_4\left(u - \hpi \right)\vartheta_4\left(u + \hpi \right)}
+\end{equation}
+где $N$ --- вещественная положительная постоянная, $\vartheta_k(u), k={1,2,3,4}$ --- тэта-функции для периодов $\pi$ и $\pi\tau$ \cite[стр.~334]{matan:Whittaker}.
+
+Определяя из \eqref{eq:dw/du} вычет функции $w(u)$ в точке $D$, выразим постоянную $N$ через величину $\varphi_0$:
+\begin{equation}\label{eq:N}
+  N = \frac{\varphi_0 M}{\pi}, \qquad M = 2 \left( \frac{\vartheta_2(0)\vartheta_3(0)\vartheta_4(0)}{\left| \vartheta_1 \left(\hpi + \hpit \right) \right|^2} \right)^2
+\end{equation}
+
+\subsection{Выражение комплексного потенциала через функцию Жуковского}
+Для того, чтобы выразить $dz / dw$ из \eqref{def:dz/du}, введём функцию Жуковского \cite[с.~30]{phys:Gurevich}:
+
+\begin{equation}\label{def:chi(u)}
+  \chi(u) = \ln \frac{dw}{v_0 dz} = \ln \frac{v}{v_0} - i \Theta \equiv r - i\Theta
+\end{equation}
+где $\Theta$ --- угол наклона вектора скорости к оси $Ox$, $v$ --- модуль скорости в точке $u$, $v_0$ --- скорость на свободной поверхности $CD$.
+
+Из рис.~\ref{fig:flow-z} получим граничные условия для $\chi(u)$ на прямолинейных участках области течения:
+\begin{subequations}\label{eq:chi(u)-boundaries}
+  \begin{align}
+    &AB: \Im\chi(u)\big|_{u=\xi + \hpit} = 0 \\
+    &CD: \Im\chi(u)\big|_{u=\xi} = - \pi \\ 
+    &CB: \Re\chi(u)\big|_{u=i\eta} = 0 
+  \end{align}
+\end{subequations}
+
+Для того, чтобы получить краевое условие на $AD$, сделаем следующее.
+
+Пусть на криволинейной дуге $AD$ задан $\angle \beta$, образованный касательной с осью абсцисс, при этом $\beta = \beta(s)$, где $s$ --- длина дуги, отсчитываемая от точки $A$ и отнесённая к полной длине $l$ дуги $AD$. Тогда безразмерная кривизна дуги $\varkappa(\beta) = \frac{d\beta}{ds}$, и, так как $\beta = \Theta - \frac{\pi}{2}$, то
+\begin{equation}\label{def:curvature}
+  \varkappa(\Theta) = \frac{d\Theta}{ds} = \frac{d\Theta}{du} \cdot \frac{du}{ds} = \frac{d\Theta}{du} \cdot \left| \frac{du}{dz} \right|
+\end{equation}
+
+Теперь, учитывая \eqref{eq:dw/du}, \eqref{eq:N} и \eqref{def:curvature} получим условие для $\chi(u)$ на $AD$:
+
+\begin{equation}\label{eq:chi(u)-AD}
+  \begin{split}
+    \frac{d\Theta}{d\eta} &= \delta M \varkappa(\Theta) \left| \frac{dz}{dw} \cdot \frac{dw}{du} \right| = \\
+    &= \delta M \varkappa(\Theta) \left| F\left(\hpi + i\eta \right) \right| e^{-r(\eta)}
+  \end{split}
+\end{equation}
+где $\delta = \frac{\varphi_0}{v_0 l \pi}$ --- безразмерный параметр.
+
+\subsection{Разложение функции Жуковского на прямолинейную часть и корректирующую функцию}
+Представим $\chi(u)$ в следующем виде:
+\begin{equation}
+  \chi(u) = \chi_0(u) - f(u)
+\end{equation}
+
+$\chi_0(u)$ представляет собой функцию Жуковского для упрощённой задачи, изображённой на рис.~\ref{fig:simplified}, а функция $f(u)$ является специальной функцией, которая модифицирует упрощённую картину, внося в неё изменения, необходимые для возврата к исходной картине явления.
+
+\begin{figure}[h]
+  \begin{center}
+    \input{images/flow_simple}
+  \end{center}
+\caption{Упрощённая схема задачи}
+\label{fig:simplified}
+\end{figure}
+
+Для $\chi_0$ должны выполняться следующие граничные условия:
+\begin{subequations}\label{eq:chi_0-boundaries}
+  \begin{align}
+    &CD: \Im\chi_0(u)\big|_{u=\xi} = - \pi \\
+    &AD: \Im\chi_0(u)\big|_{u=\hpi + i\eta} = - \pi \left( 1 - \frac{\gamma}{2} \right) \label{eq:chi_0-AD}\\ 
+    &AB: \Im\chi_0(u)\big|_{u=\xi + \hpit} =  - \pi \left( 1 - \frac{\gamma}{2} \right) \label{eq:chi_0-AB}\\
+    &BC: \Re\chi_0(u)\big|_{u=i\eta} = 0
+  \end{align}
+\end{subequations}
+
+Следовательно, $\chi_0(u)$ имеет в $D$ логарифмическую особенность с вычетом $-\gamma$. 
+
+Краевые условия для корректирующей функции $f(u)$ найдём позднее.
+
+\subsubsection{Функция Жуковского для упрощённой задачи}
+Так как
+\begin{equation}
+  \newcommand{\pRc}{\partial\Re\chi_0}
+  \newcommand{\pIc}{\partial\Im\chi_0}
+  \newcommand{\dRx}[1]{\frac{\pRc}{\partial #1}}
+  \newcommand{\dIx}[1]{\frac{\pIc}{\partial #1}}
+  \frac{d\chi_0}{du} = \dRx{\xi} + i \dIx{\xi} = \dIx{\eta} - i \dRx{\eta}
+\end{equation}
+то $\frac{d\chi_0}{du}$ чисто вещественна на $CD$ и $BA$ и чисто мнима на $BC$ и $AD$.
+Значит, её можно продолжить на прямоугольник $\xi \in \left[ -\frac{\pi}{2}; \frac{\pi}{2} \right], \eta \in \left[-3\hpit, \hpit \right]$ соответственно рис.~\ref{fig:u_expansion}.
+
+\begin{figure}[h]
+  \begin{center}
+    \input{images/u_expansion}
+  \end{center}
+\caption{Схема отображения $\chi_0$ по принципу симметрии}
+\label{fig:u_expansion}
+\end{figure}
+
+Функцию $\chi_0$ будем искать в виде комбинации тета-функций (см.~\cite[с.~334]{matan:Whittaker}).
+Так как полученный прямоугольник по размерам совпадает с периодичностью тета-функций, то такое определение $\chi_0$ автоматически определит её на всей плоскости.
+
+Представим $\chi_0$ в виде
+\begin{equation}\label{eq:theta-representation}
+  \frac{d\chi_0}{du} = \sum \limits_{k=1}^{4} A_k \frac{d}{du} \ln \vartheta_1(u - b_k)
+\end{equation}
+где $A_k$ --- это вычеты функции $\chi_0$ в её полюсах $b_k$, $k = 1,2,3,4$.
+
+Для точек $D$ и $D_2$ вычет равняется $-\gamma$.
+Для точек $D_3$ и $D_4$ вычет равняется $\gamma$.
+Их сумма равна нулю, что позволяет нам использовать \eqref{eq:theta-representation}:
+\begin{equation}
+  \begin{split}
+  \frac{d\chi_0}{du} = \gamma \frac{d}{du} & \bigg( \ln \vartheta_1 \left( u + \hpi \right) + \ln \vartheta_1 \left( u + \hpi - \frac{\pi\tau}{2} \right) - \\
+  & -\ln \vartheta_1 \left( u - \hpi \right) + \ln \vartheta_1 \left( u - \hpi - \frac{\pi\tau}{2} \right) \bigg)
+  \end{split}
+\end{equation}
+
+Так как
+\begin{align*}
+  & \vartheta_1 \left(u - \frac{\pi\tau}{2} \right) = N \vartheta_4(u) \\
+  & N = -ie^{iu + \frac{1}{4}i\pi\tau}
+\end{align*}
+(см. рис. \ref{fig:Thetafun-relation}) то
+\begin{equation}
+  \frac{d\chi_0}{du} = 
+  \gamma \frac{d}{du} \ln \frac
+                          {\vartheta_1 \left(u + \hpi \right) \vartheta_4\left(u + \hpi \right)}
+                          {\vartheta_1 \left(u - \hpi \right) \vartheta_4\left(u - \hpi \right)}
+\end{equation}
+
+Откуда
+\begin{equation}\label{eq:chi_0+C}
+  \chi_0(u) = C + \gamma \ln \frac
+      {\vartheta_1 \left(u + \hpi \right) \vartheta_4\left(u + \hpi \right)}
+      {\vartheta_1 \left(u - \hpi \right) \vartheta_4\left(u - \hpi \right)}
+\end{equation}
+
+Для определения константы интегрирования $C$ воспользуемся краевыми условиями \eqref{eq:chi_0-boundaries} для $\chi_0$. Откуда получим конечное выражение для $\chi_0$:
+\begin{equation}\label{eq:chi_0}
+  \chi_0(u) = -i\pi(\gamma - 1) + \gamma \ln \frac
+      {\vartheta_1 \left(u + \hpi \right) \vartheta_4\left(u + \hpi \right)}
+      {\vartheta_1 \left(u - \hpi \right) \vartheta_4\left(u - \hpi \right)}
+\end{equation}
+
+% Вырежь меня!
+\begin{figure}
+  \begin{center}
+    \input{images/thetafun_rel}
+  \end{center}
+\caption{Соотношение между тета-функциями}
+\label{fig:Thetafun-relation}
+\end{figure}
+%
+
+\subsubsection{Корректирующая функция $f(u)$}\label{section:f(u)-math}
+$f(u)$ --- аналитическая функция, заключающая в себе отличия упрощённой схемы взрыва от данной изначально.
+
+Граничные условия $f(u)$ найдём, сравнивая граничные условия \eqref{eq:chi(u)-boundaries} для $\chi(u)$ и \eqref{eq:chi_0-boundaries} для $\chi_0(u)$:
+\begin{subequations}\label{eq:f(u)-boundaries}
+  \begin{align}
+    &AB: \Im f(u)\big|_{u=\xi + \hpit} = 0 \\
+    &CD: \Im f(u)\big|_{u=\xi} = 0 \label{eq:f(u)-CD} \\ 
+    &BC: \Re f(u)\big|_{u=i\eta} = 0 \label{eq:f(u)-BC} \\ 
+    &AD: \frac{d}{d\eta}\Im f(u)\big|_{u=\hpi + i\eta} = \delta M \varkappa(\Theta) \left| F\left(\hpi + i\eta \right) \right| e^{-r(\eta)} \label{eq:f(u)-AD}
+  \end{align}
+\end{subequations}
+
+Для построения $f(u)$ воспользуемся тем, что некоторые функции можно разложить в ряд Лорана.
+
+Отобразим область $u$ на полукольцо $\rho \leqslant |\zeta| \leqslant 1$ с помощью следующей функции (см., напр., ~\cite[с.~107]{matan:Shabat}):
+\begin{equation}
+  \zeta = e^{\frac{4u - \pi}{|\tau|}}, \qquad \rho = e^{-\frac{\pi}{|\tau|}}
+\end{equation}
+
+Рассмотрим функцию
+\begin{equation}
+  p(\zeta) = f(u(\zeta)) + \ln\zeta\left(1 - \frac{\gamma}{2} \right)
+\end{equation}
+
+Эта функция удовлетворяет граничному условию
+\begin{equation}
+  \Im \zeta \Rightarrow \Im p(\zeta) = 0
+\end{equation}
+
+% fucking SUMS!
+\newcommand{\sumInfInf}{\sum \limits_{n= - \infty}^{+\infty}}
+\newcommand{\sumOneInf}{\sum \limits_{n= 1}^{+\infty}}
+Отсюда следует, что её можно продолжить на всё кольцо и на кольце можно представить в виде ряда Лорана
+\begin{equation}
+  p(\zeta) = \sumInfInf c_n \zeta^n
+\end{equation}
+
+А тогда
+\begin{equation}\label{eq:f(u)}
+  f(u) = -\frac{(4u - \pi)\left(1 - \frac{\gamma}{2}\right)}{|\tau|} \sumInfInf c_n e^{\frac{4u - \pi}{|\tau|}}
+\end{equation}
+
+Воспользуемся условием \eqref{eq:f(u)-BC} для того, чтобы найти некоторые из коэффициентов $c_n$:
+\begin{equation}\label{eq:f(u)-BC-inaction}
+  \Re f(i\eta) \bigg|_{\eta \in \left[ 0; \hpit \right] } = c_0 + \sumOneInf \left(c_ne^{-\frac{\pi n}{|\tau|}} + c_{-n}e^{\frac{\pi n}{|\tau|}} \right) \cos \frac{4 \eta n}{|\tau|} + \frac{\pi \left(1 - \frac{\gamma}{2} \right)}{|\tau|} = 0
+\end{equation}
+
+Из \eqref{eq:f(u)-BC-inaction} получим:
+\begin{equation}\label{eq:c0cN}
+  c_0 = - \frac{\pi}{|\tau|} \left(1 - \frac{\gamma}{2} \right) , 
+  \qquad c_{-n} = - c_n \rho^{2n}, \quad \rho = e^{-\frac{\pi}{|\tau|}}
+\end{equation}
+
+Теперь воспользуемся условием \eqref{eq:f(u)-AD}:
+\newcommand{\uAD}{\left( \hpi + i\eta \right)}
+\begin{align}\label{calc_cN-step1}
+  4 \sumOneInf C_n \frac{n}{|\tau|} \left( 1 - \rho^{2n} \right) \cos \frac{4n}{|\tau|} \eta - 4\frac{1- \frac{\gamma}{2}}{|\tau|} = \delta M \varkappa(\Theta) Q(\eta) e^{-\frac{\pi}{|\tau|}\left(1 - \frac{\gamma}{2} \right)} \\
+  Q(\eta) = 
+  \frac
+      {\left| \vartheta_2\left(\hpi + i\eta - \hpit \right)\vartheta_2\left(\hpi + i\eta + \hpit \right)\right|^2}
+      {\left| \vartheta_2(i\eta) \vartheta_3(i\eta) \right|^{1+\gamma} \left| \vartheta_1(i\eta) \vartheta_4(i\eta) \right|^{1-\gamma}}
+      e^{\sumOneInf c_n (1 - \rho^{2n}) \cos \frac{4n}{|\tau|}\eta}
+\end{align}
+
+Интегрируя \eqref{calc_cN-step1} по $\eta$ в пределах от 0 до $\hpit$ найдём условие, которому должны удовлетворять коэффициенты $c_n$:
+\begin{align}\label{calc_cN-step2}
+  -\pi\left(1 - \frac{\gamma}{2} \right) = \delta M e^{-\pi \frac{\pi}{|\tau|}\left(1 - \frac{\gamma}{2}\right)} I_0,\\
+  I_0 = \int \limits_0^{\frac{\pi|\tau|}{2}} \varkappa(\Theta) Q(\eta) d\eta.
+\end{align}
+
+Домножив \eqref{calc_cN-step2} на $\cos \frac{4n}{|\tau|} \eta$  и интегрируя в тех же пределах, выразим $c_n$:
+\begin{align}\label{eq:cN}
+  c_n = -\frac{2\left(1 - \frac{\gamma}{2} \right)}{n(1 + \rho^{2n})} \cdot \frac{I_n}{I_0}, \\
+  I_n = \int \limits_0^{\frac{\pi|\tau|}{2}} \varkappa(\Theta) Q(\eta) \cos \frac{4n}{|\tau|}\eta \; d\eta.
+\end{align}
+
+Так как уравнение \eqref{eq:cN} является выражением $c_n = A (c_1, c_2 \dots c_n)$, где~$A$ --- действительнозначная функция, то константы $c_n$ будем находить в процессе решения задачи методом простой итерации~\cite[с.~150]{numeric:Kalitkin}.
+За начальное приближение будем брать вектор $c_0, c_1 \dots c_n, n \in \mathbb{N}, n < \infty$.
+Следует отметить, что значения коэффициентов $c_n$ могут быть найдены любым другим численным методом, позволяющим решать системы нелинейных уравнений, например, методом коллокации \cite[стр. 353]{numeric:Demidovich:NumMethAn}.
+
+\subsection{Кривизна края заряда эллиптической формы}
+В данной работе рассматривается случай, при котором заряд, граница которого проходит по линии $AD$, имеет эллиптическую форму. Тогда кривизна $\varkappa(\Theta)$, участвующая в граничном условии для функции Жуковского \eqref{eq:chi(u)-AD}, а~оттуда --- в выражении коэффициентов $c_n$ \eqref{eq:cN}, имеет вид:
+\begin{equation}\label{def:curvature-elliptic}
+  \varkappa(\Theta) =  \frac{ \left( 1 - \varepsilon^2 \sin^2 \Theta \right)^{3/2} }{ p }, \qquad p = \frac{a^2}{b^2 \mathstrut}, \qquad \varepsilon = \frac{\sqrt{b^2 - a^2 \mathstrut}}{b}
+\end{equation}
+где $a$, $b$ --- полуоси эллипса.
+
+\section{Вычисление координат точек на границе воронки взрыва}
+Итак, зная \eqref{def:dz/du}, \eqref{eq:dw/du}, \eqref{def:chi(u)}, \eqref{eq:chi_0} и \eqref{eq:f(u)} сформулируем полное выражение для искомой функции:
+\begin{equation}\label{eq:dz/du}
+  \frac{dz}{du} = \frac{N}{v_0}  \frac 
+       {\vartheta_1\left(u - \hpit \right) \vartheta_1\left(u + \hpit \right) \vartheta_2\left(u - \hpit \right)\vartheta_2\left(u + \hpit \right)}
+       {\left[ \vartheta_1 \left(u - \hpi \right) \vartheta_4\left(u - \hpi \right) \right]^{1-\gamma}
+         \left[ \vartheta_1 \left(u + \hpi \right) \vartheta_4\left(u + \hpi \right) \right]^{1+\gamma} }
+       e^{i\pi(1-\gamma)} e^{f(u)}
+\end{equation}
+где $N$ определена выражением \eqref{eq:N}.
+
+Зная величины $N/v_0$, $\tau$, $\gamma$ и функцию $f(u)$ (фактически, коэффициенты $c_n$, входящие в её выражение), можно найти все геометрические и гидродинамические элементы течения.
+Для решения поставленной задачи достаточно найти только некоторые геометрические характеристики.
+
+Координаты точек на границе $CB$ на плоскости переменного $z$ будем определять последовательным интегрированием \eqref{eq:dz/du} численно.
+В качестве основной формулы для построения точек границы $CB$ используем выражение
+\begin{equation}\label{def:z(u_0)}
+  z(u_0) = \int \limits_0^{u_0} \frac{dz}{du} du
+\end{equation}
+
+Таким образом, для любой точки границы $CB$, координаты можно получить из формул \eqref{def:z(u_0)} и \eqref{eq:dz/du}, зная, что:
+\begin{equation}\label{eq:z(E)}
+  z(E) \bigg|_{E \in CB} = \int \limits_0^{\varepsilon} \frac{dz}{du}(i\eta) d\eta, \qquad E = i\varepsilon, \qquad \varepsilon \in \left[ 0 ; \hpit \right]
+\end{equation}
+
+Точки, координаты которых получены выражением \eqref{eq:z(E)}, являются точками, лежащими на границе воронки взрыва, что и требовалось найти в задаче.
+Следует заметить, что формула \eqref{def:z(u_0)} позволяет найти, вообще говоря, любую точку из области $z$, а не только лежащую на границе $CB$.

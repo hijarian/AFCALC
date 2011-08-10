@@ -1,0 +1,348 @@
+\lstset{
+  language=Haskell,
+  basicstyle=\sffamily\footnotesize,
+  columns=flexible,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  breaklines=true,
+  breakatwhitespace
+}
+\chapter{Численное решение задачи}\label{chapter:prog}
+
+Получив точное аналитическое решение поставленной задачи, мы выполнили первый этап работы. Теперь перенесём выведенные формулы в программный код Haskell для того, чтобы иметь возможность удостовериться в том, что модель работоспособна.
+
+В этой главе мы последовательно перенесём все отдельные формулы, выведенные в главе \ref{chapter:math}, затем введём модуль для черчения графиков функций и, наконец, сведём всё воедино в цельном приложении. Следует учесть, что расчёт на параллельность выполнения должен быть интегрирован в прогаммный код.
+
+\section{Представление параметров модели в программе}
+В модели используются следующие постоянные параметры, которые должны быть заданы извне:
+\begin{enumerate}
+\item $\phi_0$ --- Значение потенциала течения на поверхности заряда;
+\item $v_0$ --- Критическое значение скорости течения на свободной поверхности;
+\item $\tau$ --- Параметр, требуемый для полного задания тета-функций;
+\item $\alpha$ --- Угол в точках $A$ и $D$ области \ref{fig:flow-z} течения;
+\item $a$ --- Малый радиус кривизны эллипса криволинейного заряда;
+\item $b$ --- Большой радиус кривизны эллипса криволинейного заряда;
+\item $c_n, \quad n \in \left[0 ; \infty \right)$ --- Постоянные множители из разложения корректирующей функции \eqref{eq:f(u)} $f(u)$ в ряд Лорана.
+\end{enumerate}
+
+Кроме того, вычислительный характер решения поставленной задачи подразумевает использование ряда дополнительных параметров:
+\begin{enumerate}
+\item $n_{theta}$ --- Число слагаемых в рядах \eqref{def:theta-4} и \eqref{def:theta-3}, позволяющих вычислить значение тета-функций численно;
+\item $n_{integral}$ --- Частота разбиения отрезка интегрирования на сетку;
+\item $n_{cn}$ --- Количество постоянных множителей $c_n$ в разложении $f(u)$, а, следовательно, и количество слагаемых в нём;
+\item $\varepsilon$ --- Желаемая точность при определении коэффициентов $c_n$ численными методами.
+\end{enumerate}
+
+Для хранения этих параметров в программе был определён тип данных, предназначенный для хранения всего массива параметров. Предполагается, что в процессе выполнения программы будет создан один экземпляр этого типа, который будет передаваться во все вспомогательные функции, участвующие в вычислениях.
+
+\begin{verbatim}
+data ModelParams = ModelParams {
+    tau        :: Double,     -- \tau, passed to Functions.Theta(qpar)
+    phi_0      :: Double,     -- \phi_0
+    v_0        :: Double,     -- v_0
+    alpha      :: Double,     -- \alpha
+    a          :: Double,     -- long ellipse radius
+    b          :: Double,     -- short ellipse radius
+    n_theta    :: Integer,    -- number of addends in \Theta_4 and \Theta_3
+    n_integral :: Integer,    -- number of elements in numeric integration
+    n_cn       :: Integer,    -- number of addends in f(u), essentially number of c_n 
+    precision  :: Double,     -- precision of calculating fucking c_n's
+    c_n        :: [Double]    -- list of c_n, it should be computed separately
+    } deriving (Show)
+\end{verbatim}
+
+Тип \verb!ModelParams! наследует класс \verb!Show! для того, чтобы был простой способ визуализировать весь массив параметров. Использование типа \verb!ModelParams! позволяет передавать в функции, участвующие в вычислениях, только один аргумент, который хранит параметры модели, вместо одиннадцати.
+
+\section{Представление аналитического решения задачи в программе}\label{section:programming-math}
+
+\subsection{Программирование численного интегрирования}\label{section:integrals}
+Для численного интегрирования используется метод трапеций \cite[с.~86]{numeric:Kalitkin}. Вместо того, чтобы определять общую функцию интегрирования, которую вследствие особенностей интегралов от комплексного аргумента было бы крайне затруднительно сформулировать, были определены две различные функции, отличающиеся типами входных данных.
+
+Функция \verb!integrateX! используется для вычисления определённого интеграла в выражении \eqref{eq:cN}. Интегрирование производится по действительной части переменного $u$.
+\begin{verbatim}
+integrateX :: (RealFloat a, Enum a) => (Complex a -> Complex a) ->
+               a -> a -> Integer -> Complex a
+integrateX f a b n  =
+    ((sum $ map f xvalues) + t) * (h :+ 0)
+    where
+      values = [a + h * fromInteger(nn) | nn <- [0..n]]
+      xvalues = map (:+ 0) values 
+      t = (f (a :+ 0) + f (b :+ 0))/2
+      h = (b - a) / fromInteger(n)
+\end{verbatim}
+
+Функция \verb!integrateY! используется для интегрирования на конечном этапе вычислений \ref{section:getting-points}, в процессе получения координат точек на области $z$. Интегрирование производится по мнимой части переменного $u$.
+\begin{verbatim}
+integrateY :: (RealFloat a, Enum a) => (Complex a -> Complex a) ->
+               a -> a -> Integer -> Complex a
+integrateY f a b n  =
+    ((sum $ map f yvalues) + t) * (h :+ 0)
+    where
+      values = [a + h * fromInteger(nn) | nn <- [0..n]]
+      yvalues = map ((:+) 0) values 
+      t = (f (0 :+ a) + f (0 :+ b))/2
+      h = (b - a) / fromInteger(n)
+\end{verbatim}
+
+\subsection{Вычисление значений тета-функций}\label{section:theta}
+Согласно \cite[с.~336]{matan:Whittaker}, $\Theta_4$ представляется в виде:
+\begin{equation}\label{def:theta-4}
+  \Theta_4(u) = \Theta_4(u, q) = 1 + 2 \sum \limits_{n=1}^{+\infty} (-1)^n q^{n^2} \cos(2nu)
+\end{equation}
+
+Здесь $q$ вычисляется следующим образом:
+\begin{align}
+  q = e^{\pi i \tau} : \quad |q| < 1 \label{def:q}\\
+  \tau  \text{ --- const} : \quad \Im(\tau) > 0 \label{def:tau}
+\end{align}
+
+В этой функции, таким образом, используется два параметра: $n_{theta}$ и $\tau$. Дополнительный параметр $q$ \eqref{def:q} вычисляется следующей вспомогательной функцией:
+\begin{verbatim}
+qpar tau = exp $ pi * tau * (0 :+ 1)
+\end{verbatim}
+
+В качестве параметра \verb!tau! функции \verb!qpar! должен передаваться параметр модели $\tau$.
+
+На Haskell определение \eqref{def:theta-4} переводится так:
+\begin{verbatim}
+theta4 :: (RealFloat a) => Integer -> Complex a -> Complex a -> Complex a
+theta4 n q u = 1 + 2 * sum thetaarg
+  where thetaarg = [(signfun nn) * (qfun q nn) * (cosfun u nn) | nn <- [1..n]]
+        signfun :: (RealFloat a) => Integer -> Complex a
+        signfun nn
+          | odd nn = -1
+          | otherwise = 1
+        qfun :: (RealFloat a) => Complex a -> Integer -> Complex a
+        qfun q nn = q ** fromInteger(nn) ** 2
+        cosfun :: (RealFloat a) => Complex a -> Integer -> Complex a
+        cosfun u nn = cos $ fromInteger(2 * nn)  * u
+\end{verbatim}
+
+Аналогично, функция $\Theta_3$ задаётся следующим математическим выражением:
+\begin{equation}\label{def:theta-3}
+  \Theta_3(u) = \Theta_3(u, q) = 1 + 2 \sum \limits_{n=1}^{+\infty} q^{n^2} \cos(2nu)
+\end{equation}
+
+Его перевод на Haskell выглядит так:
+\begin{verbatim}
+theta3 :: (RealFloat a) => Integer -> Complex a -> Complex a -> Complex a
+theta3 n q u = 2 * sum thetaarg
+  where thetaarg = [(qfun q nn) * (cosfun u nn) | nn <- [1..n]]
+        qfun :: (RealFloat a) => Complex a -> Integer -> Complex a
+        qfun q nn = q ** (fromInteger nn) ** 2
+        cosfun :: (RealFloat a) => Complex a -> Integer -> Complex a
+        cosfun u nn = cos $ fromInteger(2 * nn) * u
+\end{verbatim}
+
+В обоих функциях первый аргумент задаёт количество вычисляемых слагаемых из бесконечной суммы, которой представляются тета-функции. Для краткости введём две более коротких функции, которыми будем пользоваться в дальнейшем \footnote{Здесь и далее аргумент <<param>> является переменной, хранящей значения всех параметров модели.}:
+\begin{verbatim}
+theta3' param = theta3 (n_theta param) (qpar (0 :+ tau param))
+theta4' param = theta4 (n_theta param) (qpar (0 :+ tau param))
+\end{verbatim}
+
+\subsection{Вычисление значений функции $dw / du$}
+Производная комплексного потенциала от вспомогательного переменного $dw / du$ является константной функцией, и переводится на Haskell следующим образом:
+\begin{verbatim}
+dwdu :: ModelParams -> Double
+dwdu param = ((negate 2) * phi_0') / (pi * tau')
+       where phi_0' = phi_0 param
+             tau' = tau param
+\end{verbatim}
+
+Её единственный входной аргумент --- массив параметров \verb!param!.
+
+\subsection{Вычисление значений функции Жуковского $\chi(u)$}
+Функция $\chi(u)$ \eqref{def:chi(u)} переводится в следующий код на Haskell:
+\begin{verbatim}
+chi :: ModelParams -> Complex Double -> Complex Double
+chi param u = (chi_0 param u) + (f_corr param u)
+\end{verbatim}
+
+Функция $\chi_0(u)$ \eqref{eq:chi_0} переводится в
+\begin{verbatim}
+chi_0 :: ModelParams -> Complex Double -> Complex Double
+chi_0 param u = c_chi_0 + const_coeff * log ( divident / divisor)
+  where const_coeff = ((pi / 2) * (1 + alpha')) :+ 0
+        divident = (theta3' param 0) * (theta4' param u)
+        divisor  = (theta3' param u) * (theta4' param 0)
+        alpha' = alpha param
+\end{verbatim}
+
+Параметр $\Theta(u) = \Im \chi(u)$ будем получать естественным образом, вычисляя функцию $\chi(u)$ и определяя мнимую часть полученного комплексного числа:
+\begin{verbatim}
+imagPart(chi param u)
+\end{verbatim}
+
+\subsection{Вычисление значений корректирующей функции $f(u)$}\label{section:f(u)-prog}
+Следующим образом выглядит функция Haskell, реализующая \eqref{eq:f(u)}:
+\begin{verbatim}
+f_corr :: ModelParams -> Complex Double -> Complex Double
+-- Clear functional implementation
+f_corr param u = foldl (+) (c0 :+ 0) (f_arg u clist)
+  where f_arg u clist = map (\ (n, cn) -> (cn :+ 0) * (exp' u (i' n) - exp' u (negate (i' n)))) clist
+        i' n     = (fromInteger n) :+ 0
+        clist    = zip [1..(pred $ n_cn param)] cn'
+        exp' u n = exp $ 2 * (0 :+ 1) * n
+        cn'      = tail $ c_n param
+        c0       = head $ c_n param
+
+\end{verbatim}
+
+Для корректной работы эта функция должна получить из массива данных \verb!param! список коэффициентов $c_n$.
+
+\subsection{Вычисление коэффициентов $c_n$ в разложении $f(u)$ в ряд}\label{section:prog-cn}
+Как было сказано в \ref{section:f(u)-math}, коэффициенты $c_n$, необходимые для определения $f(u)$, требуется вычислить отдельно, до того, как заниматься вычислением координат точек на границе воронки взрыва.
+
+Для вычисления $c_n$ определим следующую функцию, которая последовательно будет уточнять $c_n$, до тех пор, пока не будет достигнута требуемая точность.
+\begin{verbatim}
+calc_cn param 
+  | has_error param new_cn = param {c_n = new_cn}
+  | otherwise  = calc_cn (param {c_n = new_cn})
+    where 
+      has_error param new_cn = foldl (&&) True $ map (calc_error) (zip cn' new_cn)
+      calc_error (x1, x2)     = (((x2 - x1) ** 2 ) / abs (2 * x1 - x2) ) < precision'
+      new_cn                  = map (transform') [0..n']
+      transform' n            = s_fun param n * (integrate (transform n) 0 (pi/2) ni')
+      transform n x           = curvature param (x :+ eta)
+                                * exp ( - realPart(chi param (x :+ eta)))
+                                * cos (2 * x * fromInteger n) 
+      eta        = (pi * tau') / 2
+      tau'       = tau param
+      precision' = precision param
+      ni'        = n_integral param
+      cn'        = c_n param
+      n'         = n_cn param
+\end{verbatim}
+
+\verb!calc_cn! --- рекурсивная функция со следующим условием останова:
+\begin{equation}
+\frac{(x_{t} - x_{t-1})^2}{\left| 2 x_{t-1} - x_{t} - x_{t-2} \right|} < \varepsilon
+\end{equation}
+где $\varepsilon$ есть заранее заданная константа, определяющая желаемую точность вычислений.
+
+На каждой итерации уточнения вектора коэффициентов $c_n$ функция \verb!calc_cn! обновляет содержимое поля \verb!c_n! в блоке данных \verb!param!. При достижении условия остановки вектор \verb!c_n! можно использовать в численном решении поставленной в данной работе задачи.
+
+\subsection{Программирование отображения значений дополнительного переменного на область исходного переменного}
+Собственно, конечная цель раздела \ref{chapter:math}, функция $dz / du$, определённая выражением \eqref{eq:dz/du}, переводится на Haskell следующим образом:
+\begin{verbatim}
+dzdu :: ModelParams -> Complex Double -> Complex Double
+dzdu param u = ( ((dwdu param) / v') :+ 0 ) * exp ( chi param u )
+  where v' = v_0 param
+\end{verbatim}
+
+Все остальные функции уже были определены ранее.
+
+\section{Программирование вычисления координат точек на границе воронки взрыва}\label{section:getting-points}
+Как следует из \eqref{eq:z(E)}, точки на границе $CD$ в области исходного переменного $z$ можно найти интегрированием функции $dz/du$ \eqref{eq:dz/du} по линии $CD$ области вспомогательного переменного $u$. Это выполняется при помощи следующей функции Haskell:
+\begin{verbatim}
+zlist :: ModelParams -> [Complex Double]
+zlist param = map (z param) [a', a' + h .. b']
+  where 
+    z param e = integrateY (dzdu param) 0 e n'
+    h = (b' - a') / fromInteger n'
+    n' = n_integral param
+    a' = 0
+    b' = ( pi * (tau param) ) / 2
+\end{verbatim}
+\verb!zlist! отображает массив точек $\xi + i\hpit, \quad \xi \in \left[0; \hpi\right]$ в точки $x + iy$ последовательным интегрированием. Получив координаты этих точек, мы решим задачу.
+
+\section{Программный пакет для вывода графиков функций средствами Haskell}\label{section:plotting}
+Для вывода графиков будет использоваться пакет расширения для Haskell под общим названием \verb!Chart! (см. \cite{web:Haskell:Chart-wiki}, \cite{web:Haskell:Chart-hackage}). \verb!Chart! поддерживает вывод непосредственно в файл с растровым изображением а также черчение на канве окна GTK+.
+
+Процедура \verb!outputData!, выполняющая вывод графика по заданным точкам, определена следующим образом:
+\begin{verbatim}
+outputData datalist = do
+    renderableToWindow (toRenderable (chart datalist)) 640 480
+    renderableToPNGFile (toRenderable (chart datalist)) 640 480 "test.png"
+
+chart :: [(Double, Double)] -> Layout1 Double Double 
+chart datalist = layout
+  where
+    myPlot = plot_lines_values ^= [datalist]
+              $ plot_lines_style  .> line_color ^= opaque blue
+              $ plot_lines_title ^= "test"
+              $ defaultPlotLines
+    layout = layout1_title ^= "Graphics.Rendering.Chart"
+           $ layout1_plots ^= [Left (toPlot myPlot)]
+           $ defaultLayout1
+\end{verbatim}
+
+Функция \verb!chart! нужна для удобства настройки оформления графика. Через аргумент \verb!datalist! функция получает набор точек в виде списка пар \verb!(x, y)!.
+
+\section{Сборка цельного приложения с учётом многопоточности}
+Все функции, определённые в разделе \ref{section:programming-math}, завернём в модуль под названием BlastModel (см. приложение \ref{app:blastmodel}), за исключением функций вычисления значений тета-функций. Тета-функции вынесем в модуль под названием Theta (см. приложение \ref{app:theta}).
+
+В главном модуле находится программный код для черчения графиков, определённый в подразделе \ref{section:plotting}, и точка входа программы.
+
+Точка входа программы, функция \verb!main!, состоит в целом из четырёх шагов:
+\begin{enumerate}
+\item получение параметров модели от пользователя;
+\item уточнение коэффициентов $c_n$ (это необходимый шаг, который, увы, приходится совершать именно на этом этапе выполнения программы);
+\item вычисление координат точек на границе воронки взрыва;
+\item черчение кривой по полученным координатам.
+\end{enumerate}
+
+Все эти шаги должны быть выполнены последовательно, поэтому никакой параллельности на этом уровне абстракции не предполагается. Вот как выглядит точка входа для всей программы в целом:
+\begin{verbatim}
+main = do
+  putStrLn "Greetings!~ This is blast model, based on solid-liquid model of Lavrentyev and Kotlyar."  
+  putStrLn "First, we will define model parameters."
+  par <- getModelParameters
+  putStrLn "Second, we compute the parameters c_n needed for computations"
+--  let par_corrected = calc_cn par
+  putStrLn "We will now compute points on the edge of blast."
+  let pointlist = computePoints par
+  putStrLn "And at last, we print the data to the file for a Gnuplot"
+  outputData pointlist
+  putStrLn "All done, good bye."
+\end{verbatim}
+
+Для получения от пользователя параметров была выделена вспомогательная функция \verb!getModelParameters! следующего вида:
+\begin{verbatim}
+getModelParameter parname = do
+	putStrLn $ "Value of " ++ parname
+	getLine
+  
+getModelParameters = do
+  phi_0'       <- getModelParameter "phi_0"
+  v_0'         <- getModelParameter "v_0"
+  tau'         <- getModelParameter "|tau|"
+  alpha'       <- getModelParameter "alpha"
+  a'           <- getModelParameter "a"
+  b'           <- getModelParameter "b"
+  n_theta'     <- getModelParameter "n_theta"
+  n_integral'  <- getModelParameter "n_integral"
+  n_cn'        <- getModelParameter "n_cn"
+  precision'   <- getModelParameter "precision"
+  return ModelParams{
+       phi_0      = read phi_0',
+       v_0        = read v_0',
+       tau        = read tau',
+       alpha      = read alpha',
+       a          = read a',
+       b          = read b',
+       n_theta    = read n_theta',
+       n_integral = read n_integral',
+       n_cn       = read n_cn',
+       precision  = read precision',
+       c_n        = take n_cn' $ repeat 2
+       }
+\end{verbatim}
+
+Для уточнения значений $c_n$ используется определённая в BlastModel функция \verb!calc_cn!, которая подробно описана в разделе \ref{section:prog-cn}.
+
+Для вычисления координат точек на границе воронки определена дополнительная функция \verb!computePoints! следующего вида:
+\begin{verbatim}
+computePoints par = zip xlist ylist
+  where n' = fromInteger(n_integral par)
+        ylist = map (\x -> (x - 1) ** 2 - (n' / 2)) xlist
+        xlist = [0..n']
+\end{verbatim}
+
+Для вывода данных, которые были сгенерированы функцией \verb!computePoints!, используется функция \verb!outputData!, описанная в разделе \ref{section:plotting}.
+
+Запуск приложения следует осуществлять из командной строки. В качестве аргументов командной строки следует передавать параметры \verb!+RTS -N2! (где 2 --- это количество ядер). Все параметры модели программа запросит самостоятельно, после чего выполнит предусмотренные вычисления и выдаст график в отдельном окне и в файл PNG в рабочем каталоге.
+
+Полный текст программы находится в приложении. Содержимое исходного кода главного модуля программы расположен в приложении \ref{app:main}.
+

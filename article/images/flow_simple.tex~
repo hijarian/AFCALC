@@ -1,0 +1,22 @@
+% Упрощённая схема течения, для которой действительна \chi_0
+  \begin{pspicture}(8,7)
+    \psaxes[ticks=none,labels=none,linewidth=0.5pt]{->}(0,6)(0,6)(7,0)
+    % DABC
+    \psline[linewidth=1.5pt](3,2)(0,3)(0,6)(5,6)
+    % CD
+    \psbezier[linewidth=1.5pt](3,2)(3.5,2)(5,4)(5,6)
+    % Углы
+    \psarc[linewidth=0.5pt](0,3){0.25}{-26}{90}
+    \psarc[linewidth=0.5pt](3,2){0.25}{33}{160}
+    \uput{0.3cm}[ur](0,3){\scriptsize $\alpha \pi$}
+    \uput{0.3cm}[u](3,2){\scriptsize $\alpha \pi$}
+    % Остальные подписи
+    \uput[r](7,6){y}
+    \uput[d](0,0){x}
+    \uput[dr](0,6){\textbf{B}}
+    \uput[ul](0,6){0}
+    \uput[u](5,6){\textbf{C}}
+    \uput[l](0,3){\textbf{A}}
+    \uput[d](3,2){\textbf{D}}
+    \cput[linewidth=0.5pt](5,2){\Large $z$}
+  \end{pspicture}

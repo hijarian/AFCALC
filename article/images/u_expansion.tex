@@ -1,0 +1,51 @@
+% Схема отображения $\chi_0$ по принципу симметрии
+  \psset{unit=1.5cm}
+  \begin{pspicture}(8,6)
+    % Оси
+%    \psgrid[subgriddiv=1,griddots=10,gridlabels=7pt](0,0)(8,6)
+    \psaxes[ticks=none,labels=none,linewidth=0.5pt]{->}(4,4)(0.5,0.5)(8,6)
+    \uput[r](8,4){$\xi$}
+    \uput[u](4,6){$\eta$}
+    % Исходный прямоугольник
+    \newgray{ltgray}{.85}
+    \psframe[linewidth=0,fillstyle=solid,fillcolor=ltgray](4,4)(5.5,5)
+    \uput[dl](5.5,5){\scriptsize \textbf{A}}
+    \uput[dr](4,5){\scriptsize \textbf{B}}
+    \uput[ur](4,4){\scriptsize \textbf{C}}
+    \uput[dl](4,4){\scriptsize 0}
+    \uput[ul](5.5,4){\scriptsize \textbf{D}}
+    % Линии тока 
+    \psline[](1,5)(7,5)
+    \psline[](1,3)(7,3)
+    \psline[](1,1)(7,1)
+    \psline[](1,1)(1,5)
+    \psline[](7,1)(7,5)
+    % Стоки
+    \psline[linewidth=1.5pt](1,4)(7,4)
+    \psline[linewidth=1.5pt](1,2)(7,2)
+    % Источники 
+    \psline[linestyle=dashed](2.5,1)(2.5,5)
+    \psline[linestyle=dashed](5.5,1)(5.5,5)
+    % Точки разрыва
+    \psdots(2.5,2)(2.5,4)(5.5,2)(5.5,4)
+    \uput[ul](5.5,2){\scriptsize \textbf{D2}}
+    \uput[ul](2.5,4){\scriptsize \textbf{D3}}
+    \uput[ul](2.5,2){\scriptsize \textbf{D4}}
+    % Метки на осях координат
+    \uput[dl](4,5){\small $\frac{\pi \tau}{4}$}
+    \uput[dl](4,3){\small $-\frac{\pi \tau}{4}$}
+    \uput[dl](4,2){\small $-\frac{\pi \tau}{2}$}
+    \uput[dl](4,1){\small $-\frac{3 \pi \tau}{4}$}
+    \uput[dl](1,4){\small $-\frac{\pi}{2}$}
+    \uput[dl](2.5,4){\small $-\frac{\pi}{4}$}
+    \uput[dl](5.5,4){\small $\frac{\pi}{4}$}
+    \uput[dl](7,4){\small $\frac{\pi}{2}$}
+    % Мерные линейки
+    \uput[l](0,3){\small $\pi |\tau|$}
+    \psline[]{<->}(0,1)(0,5)
+    \uput[d](4,0){\small $\pi$}
+    \psline[]{<->}(1,0)(7,0)
+    % Обозначение переменного
+    \cput[linewidth=0.5pt](7,6){$u$}
+  \end{pspicture}
+  \psset{unit=1cm}

@@ -1,0 +1,276 @@
+  % размер бумаги и кегль шрифта, класс документа --- ``отчёт''
+\documentclass[a4paper,12pt]{article} 
+  % используем cp1251 ТОЛЬКО потому, что bibtex умеет сортировать только ASCII-строки, увы
+\usepackage[cp1251]{inputenc} 
+  % ещё можно T1, но пусть будет T2A
+\usepackage[T2A]{fontenc} 
+  % переносы и типографские правила для русского _затем_ английского языков
+\usepackage[english,russian]{babel} 
+  % ядро для научной статьи
+\usepackage{amssymb,amsfonts,amsmath,mathtext}
+  % цитирование и нумерованные списки 
+\usepackage{cite,enumerate}
+  % красная строка
+\usepackage{indentfirst} 
+  % диаграммы и черчение
+\usepackage{pstricks,pst-plot,pb-diagram} 
+ % включаем крутые гиперссылки и автоматические подписи к ссылкам (Рис. n, etc)
+\usepackage{hyperref}
+\def\figureautorefname{рис.}
+
+  % меняем поля
+\usepackage{geometry}
+\geometry{left=2.5cm}
+\geometry{right=1.5cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+\author{Сафронов М. А., Котляр Л. М.}
+\title{Применение твёрдо-жидкостной модели к решению задачи о нахождении края воронки взрыва заглублённого заряда эллиптической формы}
+\date{}
+
+\begin{document}
+\renewcommand{\Im}{\mathop{\text{Im}}}
+\renewcommand{\Re}{\mathop{\text{Re}}}
+\newcommand{\hpi}{\frac{\pi}{2}}
+\newcommand{\hpit}{\frac{\pi|\tau|}{2}}
+\newcommand{\sumInfInf}{\sum \limits_{n= - \infty}^{+\infty}}
+\newcommand{\sumOneInf}{\sum \limits_{n= 1}^{+\infty}}
+\newcommand{\uAD}{\left( \xi + i \hpit \right)}
+
+\maketitle
+
+\begin{center}
+ИНЭКА, адрес ИНЭКА, телефон кафедры, e-mail зав. кафедрой
+\end{center}
+
+\begin{abstract}
+Finding the form of the blast crater edge is of high importance in the construction works. This paper describes one method of finding coordinates of points on a crater edge left by explosion of buried elliptic charge. So-called ``solid-liquid model'' originally proposed by Lavrentjev is used here, with extensions brought by Chyaplygin and Kotlyar. With formulas derived here and numerical methods for integration we can calculate the form of crater edge with relatively high precision.
+\end{abstract}
+
+\begin{figure}[b]
+  \psset{unit=0.6cm}
+  \begin{minipage}[h]{0.3\linewidth}
+    \begin{center}
+      \input{images/flow_z} \\ а)
+    \end{center}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[h]{0.3\linewidth}
+    \begin{center}
+      \input{images/flow_u} \\ \vspace{3em} б)
+    \end{center}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[h]{0.3\linewidth}
+    \begin{center}
+      \input{images/flow_simple} \\ в)
+    \end{center}
+  \end{minipage}
+
+  \caption{a) Исходная схема модели, б) Область дополнительного переменного $u$, в) Упрощённая схема задачи}\label{figures}
+\end{figure}
+
+При использовании энергии взрыва в грунте одной из основных задач является задача определения формы выемки выброса в зависимости от условий взрыва. Важность этой задачи обусловлена широким применением удлинённых линейно-распределённых или шнуровых зарядов при строительстве каналов, дамб и т. п.
+
+В данной работе используется твёрдо-жидкостная модель (ТЖМ) взрыва на выброс, предложенная М. А. Лаврентьевым \cite{diploma:Lavrent}. Согласно этой модели, основанной на импульсно-гидродинамической постановке \cite{diploma:Vlasov}, граница выемки выброса определяется как линия тока, вдоль которой скорость постоянна и равна критической, характеризующей среду.
+
+За последние 20 лет, прошедших с момента опубликования монографии \cite{phys:Ilyinskij}, судя по всему, не было выпущено больше ни одной работы, в которой применялась бы ТЖМ как средство решения прикладных задач использования взрывов на выброс.
+
+\textit{Общая постановка задачи следующая. Требуется найти геометрическое место точек, расположенных на границе воронки взрыва заряда эллиптической формы, заглублённого в грунт.} 
+
+Взрыв заглублённого заряда в декартовых координатах рассматривается в качестве плоского потенциального установившегося течения идеальной невесомой жидкости на плоскости комплексного переменного $z = x + iy$. Течение ограничено областью $ABCD$ и движется от границы заряда $AD$ к поверхности грунта $BC$ (см.~\autoref{figures}а).
+
+Решение поставленной задачи сводится к введению вспомогательного переменного $u$ (см. \autoref{figures}б), решению краевой задачи на плоскости $u$, и обратному переходу к плоскости $z$ с помощью отображения $dz/du = dz/dw \cdot dw/du$.
+
+На основании теории эллиптических функций \cite[стр.~350]{matan:Whittaker}, найдём выражение для производной комплексного потенциала:
+\begin{equation}\label{eq:dw/du}
+  \frac{dw}{du} = iN \frac
+       {\vartheta_1\left(u - \hpit \right) \vartheta_1\left(u + \hpit \right) \vartheta_2\left(u - \hpit \right)\vartheta_2\left(u + \hpit \right)}
+       {\vartheta_1\left(u - \hpi \right) \vartheta_1\left(u + \hpi \right) \vartheta_4\left(u - \hpi \right)\vartheta_4\left(u + \hpi \right)}
+\end{equation}
+где $N$ --- вещественная положительная постоянная, которая может быть вычислена через вычет функции $w(u)$ в точке $D$, $\vartheta_k(u), k={1,2,3,4}$ --- тэта-функции для периодов $\pi$ и $\pi\tau$ \cite[стр.~334]{matan:Whittaker}.
+
+Рассмотрим функцию Жуковского \cite[с.~30]{phys:Gurevich} как сумму $\chi(u) = \chi_0(u) + f(u)$, где $\chi_0(u)$ является функцией Жуковского для упрощённой задачи, изображённой на \autoref{figures}в, а функция $f(u)$ является специальной функцией, которая модифицирует упрощённую картину, внося в неё изменения, необходимые для возврата к исходной картине явления.
+
+Из граничных условий для $\chi(u)$ получим, что $\chi_0(u)$ имеет вид:
+\begin{equation}\label{eq:chi_0}
+  \chi_0(u) = -i\pi(\gamma - 1) + \gamma \ln \frac
+      {\vartheta_1 \left(u + \hpi \right) \vartheta_4\left(u + \hpi \right)}
+      {\vartheta_1 \left(u - \hpi \right) \vartheta_4\left(u - \hpi \right)}
+\end{equation}
+
+Сравнивая граничные условия для $\chi(u)$ и $\chi_0(u)$, получим, что:
+\begin{equation}\label{eq:f(u)}
+  f(u) = -\frac{(4u - \pi)\left(1 - \frac{\gamma}{2}\right)}{|\tau|} \sumInfInf c_n e^{\frac{4u - \pi}{|\tau|}}
+\end{equation}
+
+Коэффициенты $c_n$ можно вычислить, например, методом простой итерации, используя следующее выражение:
+\begin{equation}\label{eq:cN}
+  c_n = -\frac{2\left(1 - \frac{\gamma}{2} \right)}{n(1 + \rho^{2n})} \cdot \frac{I_n}{I_0}, \quad
+  I_n = \int \limits_0^{\frac{\pi|\tau|}{2}} \varkappa(\Theta) Q(\eta) \cos \frac{4n}{|\tau|}\eta \; d\eta.
+\end{equation}
+
+Из \eqref{eq:dw/du}, \eqref{eq:chi_0}, \eqref{eq:f(u)} получим, что:
+\begin{equation}\label{eq:dz/du}
+  \frac{dz}{du} = \frac{N}{v_0}  \frac 
+       {\vartheta_1\left(u - \hpit \right) \vartheta_1\left(u + \hpit \right) \vartheta_2\left(u - \hpit \right)\vartheta_2\left(u + \hpit \right)}
+       {\left[ \vartheta_1 \left(u - \hpi \right) \vartheta_4\left(u - \hpi \right) \right]^{1-\gamma}
+         \left[ \vartheta_1 \left(u + \hpi \right) \vartheta_4\left(u + \hpi \right) \right]^{1+\gamma} }
+       e^{i\pi(1-\gamma)} e^{f(u)}.
+\end{equation}
+
+Зная \eqref{eq:dz/du}, координаты любой точки границы $CD$ определяются выражением:
+\begin{equation}\label{eq:z(E)}
+  z(E) \bigg|_{E \in CD} = \int \limits_0^{\varepsilon} \frac{dz}{du}(i\eta) d\eta, \qquad E = i\varepsilon, \qquad \varepsilon \in \left[ 0 ; \hpit \right]
+\end{equation}
+
+Выражение \eqref{eq:z(E)} определяет координаты точек на границе воронки взрыва, что и требовалось найти.
+
+%% Из \autoref{figures}а получим граничные условия для $\chi(u)$:
+%% \begin{subequations}\label{eq:chi(u)-boundaries}
+%%   \begin{align}
+%%     &AB: \Im\chi(u) = - \pi \\
+%%     &BC: \Im\chi(u) = - \pi \\ 
+%%     &CD: \Re\chi(u) = 0  \\
+%%     &AD: \frac{d\Theta}{du} = \frac{2\varphi_0}{\pi |\tau| v_0} \varkappa(\Theta) \cdot e^{- \Re \chi(u)} 
+%%   \end{align}
+%% \end{subequations}
+
+%% Для $\chi_0$ должны выполняться следующие граничные условия:
+%% \begin{subequations}\label{eq:chi_0-boundaries}
+%%   \begin{align}
+%%     &AB: \Im\chi_0(u) = - \pi \\
+%%     &BC: \Im\chi_0(u) = - \pi \label{eq:chi_0-BC}\\ 
+%%     &CD: \Re\chi_0(u) = 0 \label{eq:chi_0-CD}\\
+%%     &AD: \Im\chi_0(u) = \alpha \pi - \frac{3\pi}{2}
+%%   \end{align}
+%% \end{subequations}
+
+%% Для того, чтобы получить краевое условие на $AD$, сделаем следующее.
+
+%% Пусть на криволинейной дуге $AD$ задан $\angle \beta$, образованный касательной с осью абсцисс, при этом $\beta = \beta(s)$, где $s$ --- длина дуги, отсчитываемая от точки $A$ и отнесённая к полной длине $l$ дуги $AD$. Тогда безразмерная кривизна дуги $\varkappa(\beta) = \frac{d\beta}{ds}$, и, так как $\beta = \Theta - \frac{\pi}{2}$, то
+%% \begin{equation}\label{def:curvature}
+%%   \varkappa(\Theta) = \frac{d\Theta}{ds} = \frac{d\Theta}{du} \cdot \frac{du}{ds} = \frac{d\Theta}{du} \cdot \left| \frac{du}{dz} \right|
+%% \end{equation}
+
+%% Теперь, из \eqref{def:dz/du}, \eqref{def:chi(u)} и \eqref{def:curvature} получим условие для $\chi(u)$ на $AD$:
+
+%% \begin{equation}\label{eq:chi(u)-AD}
+%%   AD: \frac{d\Theta}{du} = \frac{2\varphi_0}{\pi |\tau| v_0} \varkappa(\Theta) \cdot e^{- \Re \chi(u)} 
+%% \end{equation}
+
+%% Представим $\chi(u)$ в следующем виде:
+
+%% Точки A и D --- полюса функции $\chi_0(u)$.
+
+%% Функцию $\chi_0$ будем искать в виде комбинации тета-функций (см.~\cite[с.~334]{matan:Whittaker}). Так как полученный прямоугольник по размерам совпадает с периодичностью тета-функций, то такое определение $\chi_0$ автоматически определит её на всей плоскости.
+
+%% Представим $\chi_0$ в виде
+%% \begin{equation}\label{eq:theta-representation}
+%%   \frac{d\chi_0}{du} = \sum \limits_{k=1}^{2} A_k \frac{d}{du} \ln \Theta_1(u - b_k)
+%% \end{equation}
+
+
+%% $f(u)$ --- аналитическая функция, заключающая в себе отличия упрощённой схемы взрыва от данной изначально.
+
+%% Граничные условия $f(u)$ найдём, сравнивая граничные условия \eqref{eq:chi(u)-boundaries} для $\chi(u)$ и \eqref{eq:chi_0-boundaries} для $\chi_0(u)$:
+%% \begin{subequations}
+%%   \begin{align}
+%%     &AB: \Im f(u) = 0 \\
+%%     &BC: \Im f(u) = 0 \label{eq:f(u)-BC} \\ 
+%%     &CD: \Re f(u) = 0 \label{eq:f(u)-CD} \\ 
+%%     &AD: \frac{d}{du}\Im f(u) = \frac{2\varphi_0}{\pi |\tau| v_0} \varkappa(\Theta) e^{-\Re \chi(u)} \label{eq:f(u)-AD}
+%%   \end{align}
+%% \end{subequations}
+
+%% Для построения $f(u)$ воспользуемся тем, что некоторые функции можно разложить в ряд Лорана.
+
+
+%% Действительная и мнимая части $f(u)$ выглядят, соответственно, так:
+%% \begin{align}
+%%   &\Re f(\xi + i \eta) = \sumInfInf c_n e^{-2n\eta} \cos 2 \xi n \\
+%%   &\Im f(\xi + i \eta) = \sumInfInf c_n e^{-2n\eta} \sin 2 \xi n
+%% \end{align}
+
+%% Воспользуемся условием \eqref{eq:f(u)-BC} для того, чтобы найти некоторые из коэффициентов $c_n$:
+%% \begin{equation}\label{eq:f(u)-BC-inaction}
+%%   \Im f(\xi) \bigg|_{\xi \in \left[ 0; \hpi \right] } = \sumInfInf c_n \sin 2 \xi n = \sumOneInf (c_n - c_{-n}) sin 2 \xi n = 0
+%% \end{equation}
+
+%% Из \eqref{eq:f(u)-BC-inaction} получим:
+%% \begin{equation}\label{eq:c0cN}
+%%   c_0 = 0, \qquad c_{-n} = - c_n
+%% \end{equation}
+
+  %% \begin{minipage}[h]{0.4\linewidth}
+  %%   \begin{center}
+  %%     \input{images/w_u}
+  %%     \vspace{3em}
+  %%     \caption{Область определения функции $w(u)$}
+  %%     \label{fig:w(u)}
+  %%   \end{center}
+  %% \end{minipage}
+
+%% В точках $A$ и $D$ задан угол $\alpha \pi$. 
+
+%% Введём вспомогательную переменную $u = \xi + i\eta$
+
+%% Следует найти отображение $z(u)$ такое, что оно конформно отображает прямоугольник $ABCD$ из пространства $u$ на область $ABCD$ из пространства $z$. Точки $A$, $B$, $C$ и $D$ должны соответствовать друг другу так, как показано на \autoref{figures}б.
+
+%% Параметр $\tau$ задан так, чтобы $\Im \tau > 0$ и $\Re \tau = 0$.
+
+%% Нам достаточно получить $\frac{dz}{du}$, чтобы найти $\forall z \colon z \in CD$. Нужная граница будет найдена интегрированием по $u$ на соответствующей стороне прямоугольника.
+
+%% Представим $\frac{dz}{du}$ в виде производной сложной функции:
+%% \begin{equation}\label{def:dz/du}
+%%   \frac{dz}{du} = \frac{dz}{dw} \cdot \frac{dw}{du}
+%% \end{equation}
+
+%% Выведем последовательно оба множителя этого произведения.
+
+%% Комплексный потенциал $w(u)$  над вспомогательным переменным $u$ вводится следующим образом:
+%% \begin{equation}\label{def:w(u)}
+%%   w(u) = \varphi(u) + i\psi(u)
+%% \end{equation}
+
+%% Рассмотрим $w(u)$ как точку в поле $w = \varphi + i\psi$. Нам известны из постановки задачи краевые условия для $w(u)$:
+%% Зная граничные условия для комплексного потенциала от вспомогательного переменного:
+%% \begin{subequations}\label{eq:w(u)-boundaries}
+%%   \begin{align}
+%%    &BC: \varphi = 0 \\
+%%    &AD: \varphi = \varphi_0 \\
+%%    &CD: \psi = 0 \\
+%%    &AB: \psi = -\psi_0  
+%%   \end{align}
+%% \end{subequations}
+%% Согласно \eqref{eq:w(u)-boundaries}, участки границы области течения на поле $z$ отображаются на поле $w$ так, как показано на \autoref{fig:w(u)}.
+%% получим, что
+%% \begin{equation}\label{eq:w(u)}
+%%   w(u) = \underbrace{ \frac{2\varphi_0}{\pi|\tau|}\eta }_{\Re(w) = \varphi} + i \underbrace{ \frac{-2\psi_0}{\pi}\xi }_{\Im(w) = \psi}
+%% \end{equation}
+
+%% Согласно условиям Коши--Римана, должно выполняться следующее
+%% \begin{equation}\label{eq:Cauchy-dw/du}
+%%   \frac{dw}{du} = \frac{d\varphi}{d\xi} + i \frac{d\psi}{d\xi} = \frac{d\psi}{d\eta} - i \frac{d\varphi}{d\eta}
+%% \end{equation}
+
+%%Из \eqref{eq:w(u)} и условия Коши-Римана имеем, что производная комплексного потенциала $dw/du$ имеет вид:
+
+%% То есть, положение линии тока, проходящей по свободной границе $CD$, а значит, и самой границы $CD$, зависит от потенциала скорости на границе заряда. Что вполне согласуется с реальной картиной взрыва.
+
+%% Для того, чтобы выразить $dz / dw$ из \eqref{def:dz/du}, введём функцию Жуковского \\ \cite[с.~30]{phys:Gurevich}:
+
+%% В данной работе рассматривается случай, при котором заряд, граница которого проходит по линии $AD$, имеет эллиптическую форму. Тогда кривизна $\varkappa(\Theta)$, участвующая в граничном условии для функции Жуковского \eqref{eq:chi(u)-AD}, а~оттуда --- в выражении коэффициентов $c_n$ \eqref{eq:cN}, имеет вид:
+%% \begin{equation}\label{def:curvature-elliptic}
+%%   \varkappa(\Theta) =  \frac{ \left( 1 - \varepsilon^2 \sin^2 \Theta \right)^{3/2} }{ p }, \qquad p = \frac{a^2}{b^2 \mathstrut}, \qquad \varepsilon = \frac{\sqrt{b^2 - a^2 \mathstrut}}{b}
+%% \end{equation}
+%% где $a$, $b$ --- полуоси эллипса.
+
+%%Итак, зная \eqref{def:dz/du}, \eqref{eq:dw/du}, \eqref{def:chi(u)}, \eqref{eq:chi_0} и \eqref{eq:f(u)} сформулируем полное выражение для искомой функции:
+
+
+\bibliographystyle{gost780s}
+\bibliography{bibliography}{}
+
+\end{document}

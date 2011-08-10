@@ -1,0 +1,67 @@
+  % размер бумаги и кегль шрифта, класс документа --- ``отчёт''
+\documentclass[a4paper,14pt]{extreport} 
+  % используем cp1251 ТОЛЬКО потому, что bibtex умеет сортировать только ASCII-строки, увы
+\usepackage[cp1251]{inputenc} 
+  % ещё можно T1, но пусть будет T2A
+\usepackage[T2A]{fontenc} 
+  % переносы и типографские правила для русского _затем_ английского языков
+\usepackage[english,russian]{babel} 
+  % ядро для научной статьи
+\usepackage{amssymb,amsfonts,amsmath,mathtext}
+  % цитирование и нумерованные списки 
+\usepackage{cite,enumerate}
+  % красная строка
+\usepackage{indentfirst} 
+  % диаграммы и черчение
+\usepackage{pstricks,pst-plot,pb-diagram} 
+  % показываем лейблы (выключить для беловика)
+%\usepackage{showkeys}
+  % оформление листингов программ
+\usepackage{listings}
+  % подписи к рисункам  
+\usepackage[labelsep=period]{caption}
+  % поддержка поиска и вставки в PDF
+
+
+\usepackage{geometry}
+\geometry{left=3cm}
+\geometry{right=2cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+
+\begin{document}
+
+\begin{figure}
+  \begin{center}
+    \input{images/flow_z}
+  \end{center}
+  \caption{Исходная схема модели}
+  \label{fig:flow-z}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \input{images/flow_u}
+  \end{center}
+  \caption{Область дополнительного переменного $u$}
+  \label{fig:flow-u}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \input{images/flow_simple}
+  \end{center}
+\caption{Упрощённая схема задачи}
+\label{fig:simplified}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \input{images/u_expansion}
+  \end{center}
+\caption{Схема отображения $\chi_0$ по принципу симметрии}
+\label{fig:u_expansion}
+\end{figure}
+
+\end{document}

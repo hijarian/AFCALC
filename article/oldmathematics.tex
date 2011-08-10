@@ -1,0 +1,362 @@
+\chapter{Формулирование картины взрыва согласно ТЖМ}\label{chapter:math}
+
+\section{Постановка краевой задачи, эквивалентной исходной}
+% fucking MANY times will I be writing this fractions
+\newcommand{\hpi}{\frac{\pi}{2}}
+\newcommand{\hpit}{\frac{\pi|\tau|}{2}}
+
+Представим согласно твёрдо-жидкостной модели двумерный взрыв заглублённого заряда на двумерном евклидовом пространстве в декартовых координатах как плоское потенциальное установившееся течение идеальной невесомой жидкости на плоскости комплексного переменного $z = x + iy$. Течение ограничего криволинейным участком $AD$, прямолинейными участками $AB$ и $BC$ и линией тока $CD$ (см.~\ref{fig:flow-z}). Отобразив область $ABCD$ через ось $Ox$ получим полную картину течения, которое будет интерпретироваться как взрыв.
+
+\begin{figure}[h]
+  \begin{center}
+    \input{images/flow_z}
+  \end{center}
+  \caption{Исходная схема модели}
+  \label{fig:flow-z}
+\end{figure}
+
+В точках $A$ и $D$ задан угол $\alpha \pi$. 
+
+Введём вспомогательную переменную $u = \xi + i\eta$
+
+Следует найти отображение $z(u)$ такое, что оно конформно отображает прямоугольник $ABCD$ из пространства $u$ на область $ABCD$ из пространства $z$. Точки $A$, $B$, $C$ и $D$ должны соответствовать друг другу так, как показано на \ref{fig:flow-u}.
+
+\begin{figure}[h]
+  \begin{center}
+    \input{images/flow_u}
+  \end{center}
+  \caption{Область дополнительного переменного $u$}
+  \label{fig:flow-u}
+\end{figure}
+
+Параметр $\tau$ задан так, чтобы $\Im \tau > 0$ и $\Re \tau = 0$.
+
+\section{Вывод решения для краевой задачи}
+
+Нам достаточно получить $\frac{dz}{du}$, чтобы найти $\forall z \colon z \in CD$. Нужная граница будет найдена интегрированием по $u$ на соответствующей стороне прямоугольника.
+
+Представим $\frac{dz}{du}$ в виде производной сложной функции:
+\begin{equation}\label{def:dz/du}
+  \frac{dz}{du} = \frac{dz}{dw} \cdot \frac{dw}{du}
+\end{equation}
+
+Выведем последовательно оба множителя этого произведения.
+
+\subsection{Комплексный потенциал на плоскости вспомогательного переменного}
+
+Комплексный потенциал $w(u)$  над вспомогательным переменным $u$ вводится следующим образом:
+\begin{equation}\label{def:w(u)}
+  w(u) = \varphi(u) + i\psi(u)
+\end{equation}
+
+Рассмотрим $w(u)$ как точку в поле $w = \varphi + i\psi$. Нам известны из постановки задачи краевые условия для $w(u)$:
+\begin{subequations}\label{eq:w(u)-boundaries}
+  \begin{align}
+   &BC: \varphi = 0 \\
+   &AD: \varphi = \varphi_0 \\
+   &CD: \psi = 0 \\
+   &AB: \psi = -\psi_0  
+  \end{align}
+\end{subequations}
+
+Согласно \eqref{eq:w(u)-boundaries}, участки границы области течения на поле $z$ отображаются на поле $w$ так, как показано на \ref{fig:w(u)}.
+
+\begin{figure}[h]
+  \begin{center}
+    \input{images/w_u}
+  \end{center}
+  \caption{Область определения функции $w(u)$}
+  \label{fig:w(u)}
+\end{figure}
+
+Сравнивая \ref{fig:flow-u} и \ref{fig:w(u)}, получим, что точки $A$, $B$, $C$ и $D$ должны отображаться из плоскости $u$ в плоскость $w$ следующим образом:
+\begin{align}
+  u = 0 + i0 &\rightarrow  0 + i0 = w \\
+  u = \hpi + i0 &\rightarrow  0 - i\psi_0 = w \\
+  u = 0 + i \hpit &\rightarrow  \varphi_0 + i0 = w \\
+  u = \hpi + i \hpit &\rightarrow  \varphi_0 - i \psi_0 = w
+\end{align}
+
+Отсюда получим, что
+\begin{equation}\label{eq:w(u)}
+  w(u) = \underbrace{ \frac{2\varphi_0}{\pi|\tau|}\eta }_{\Re(w) = \varphi} + i \underbrace{ \frac{-2\psi_0}{\pi}\xi }_{\Im(w) = \psi}
+\end{equation}
+
+Согласно условиям Коши--Римана, должно выполняться следующее
+\begin{equation}\label{eq:Cauchy-dw/du}
+  \frac{dw}{du} = \frac{d\varphi}{d\xi} + i \frac{d\psi}{d\xi} = \frac{d\psi}{d\eta} - i \frac{d\varphi}{d\eta}
+\end{equation}
+
+Из \eqref{eq:w(u)} и \eqref{eq:Cauchy-dw/du} имеем, что производная комплексного потенциала может быть представлена в двух различных видах: 
+\begin{align}\label{eq:dw/du}
+  &\frac{dw}{du} = i\frac{d\psi}{d\xi} = -i \frac{2\psi_0}{\pi} \\
+  &\frac{dw}{du} = -i\frac{d\varphi}{d\eta} = -i \frac{2\varphi_0}{\pi |\tau|}
+\end{align}
+
+Что приводит нас к замечательному результату:
+\begin{equation}
+  \psi_0 = \frac{\varphi_0}{|\tau|}
+\end{equation}
+
+То есть, положение линии тока, проходящей по свободной границе $CD$, а значит, и самой границы $CD$, зависит от потенциала скорости на границе заряда. Что вполне согласуется с реальной картиной взрыва.
+
+
+\subsection{Выражение комплексного потенциала через функцию Жуковского}
+Для того, чтобы выразить $dz / dw$ из \eqref{def:dz/du}, введём функцию Жуковского \\ \cite[с.~30]{phys:Gurevich}:
+
+\begin{equation}\label{def:chi(u)}
+  \chi(u) = \ln \frac{dw}{v_0 dz} = \ln \frac{v}{v_0} - i \Theta \equiv r - i\Theta
+\end{equation}
+где $\Theta$ --- угол наклона вектора скорости к оси $Ox$, $v$ --- модуль скорости в точке $u$, $v_0$ --- скорость на свободной поверхности $CD$.
+
+Из \ref{fig:flow-z} получим граничные условия для $\chi(u)$ на прямолинейных участках области течения:
+\begin{subequations}\label{eq:chi(u)-boundaries}
+  \begin{align}
+    &AB: \Im\chi(u) = - \pi \\
+    &BC: \Im\chi(u) = - \pi \\ 
+    &CD: \Re\chi(u) = 0 
+  \end{align}
+\end{subequations}
+
+Для того, чтобы получить краевое условие на $AD$, сделаем следующее.
+
+Пусть на криволинейной дуге $AD$ задан $\angle \beta$, образованный касательной с осью абсцисс, при этом $\beta = \beta(s)$, где $s$ --- длина дуги, отсчитываемая от точки $A$ и отнесённая к полной длине $l$ дуги $AD$. Тогда безразмерная кривизна дуги $\varkappa(\beta) = \frac{d\beta}{ds}$, и, так как $\beta = \Theta - \frac{\pi}{2}$, то
+\begin{equation}\label{def:curvature}
+  \varkappa(\Theta) = \frac{d\Theta}{ds} = \frac{d\Theta}{du} \cdot \frac{du}{ds} = \frac{d\Theta}{du} \cdot \left| \frac{du}{dz} \right|
+\end{equation}
+
+Теперь, из \eqref{def:dz/du}, \eqref{def:chi(u)} и \eqref{def:curvature} получим условие для $\chi(u)$ на $AD$:
+
+\begin{equation}
+  \begin{split}
+%    \varkappa(\Theta) = \frac{d\Theta}{du} \cdot \left| \frac{du}{dz} \right| \Rightarrow \\
+    \frac{d\Theta}{du} &= \varkappa(\Theta) \cdot \left| \frac{dz}{dw} \cdot \frac{dw}{du} \right| = \\
+    &= \varkappa(\Theta) \cdot \frac{1}{v_0} \left| \frac{dw}{du} \right| e^{- \Re \chi(u)}
+  \end{split}
+\end{equation}
+
+Зная \eqref{eq:dw/du} получим:
+
+\begin{equation}\label{eq:chi(u)-AD}
+  AD: \frac{d\Theta}{du} = \frac{2\varphi_0}{\pi |\tau| v_0} \varkappa(\Theta) \cdot e^{- \Re \chi(u)} 
+\end{equation}
+
+\subsection{Разложение функции Жуковского на прямолинейную часть и корректирующую функцию}
+Представим $\chi(u)$ в следующем виде:
+\begin{equation}
+  \chi(u) = \chi_0(u) + f(u)
+\end{equation}
+
+$\chi_0(u)$ представляет собой функцию Жуковского для упрощённой задачи, изображённой на \ref{fig:simplified}, а функция $f(u)$ является специальной функцией, которая модифицирует упрощённую картину, внося в неё изменения, необходимые для возврата к исходной картине явления.
+
+\begin{figure}[h]
+  \begin{center}
+    \input{images/flow_simple}
+  \end{center}
+\caption{Упрощённая схема задачи}
+\label{fig:simplified}
+\end{figure}
+
+Для $\chi_0$ должны выполняться следующие граничные условия:
+\begin{subequations}\label{eq:chi_0-boundaries}
+  \begin{align}
+    &AB: \Im\chi_0(u) = - \pi \\
+    &BC: \Im\chi_0(u) = - \pi \label{eq:chi_0-BC}\\ 
+    &CD: \Re\chi_0(u) = 0 \label{eq:chi_0-CD}\\
+    &AD: \Im\chi_0(u) = \alpha \pi - \frac{3\pi}{2}
+  \end{align}
+\end{subequations}
+
+Точки A и D --- полюса функции $\chi_0(u)$.
+
+Краевые условия для корректирующей функции $f(u)$ найдём позднее.
+
+\subsubsection{Функция Жуковского для упрощённой задачи}
+Так как
+\begin{equation}
+  \newcommand{\pRc}{\partial\Re\chi_0}
+  \newcommand{\pIc}{\partial\Im\chi_0}
+  \newcommand{\dRx}[1]{\frac{\pRc}{\partial #1}}
+  \newcommand{\dIx}[1]{\frac{\pIc}{\partial #1}}
+  \frac{d\chi_0}{du} = \dRx{\xi} + i \dIx{\xi} = \dIx{\eta} - i \dRx{\eta}
+\end{equation}
+то $\frac{d\chi_0}{du}$ чисто вещественна на $AD$ и $BC$ и чисто мнима на $AB$ и $CD$. Значит, её можно продолжить на прямоугольник $\xi \in \left[ -\frac{\pi}{2}, \frac{\pi}{2} \right], \eta \in \left[0, \pi|\tau| \right]$ соответственно \ref{fig:u_expansion}.
+
+\begin{figure}[h]
+  \begin{center}
+    \input{images/u_expansion}
+  \end{center}
+\caption{Схема отображения $\chi_0$ по принципу симметрии}
+\label{fig:u_expansion}
+\end{figure}
+
+Функцию $\chi_0$ будем искать в виде комбинации тета-функций (см.~\cite[с.~334]{matan:Whittaker}). Так как полученный прямоугольник по размерам совпадает с периодичностью тета-функций, то такое определение $\chi_0$ автоматически определит её на всей плоскости.
+
+Представим $\chi_0$ в виде
+
+\begin{equation}\label{eq:theta-representation}
+  \frac{d\chi_0}{du} = \sum \limits_{k=1}^{2} A_k \frac{d}{du} \ln \Theta_1(u - b_k)
+\end{equation}
+где $A_k$ --- это вычеты функции $\chi_0$ в её полюсах $b_k$.
+
+Для точки $A$ вычет равняется $\frac{\pi}{2} + \alpha \pi$.
+
+Для точки $D$ вычет равняется $- \frac{\pi}{2} - \alpha \pi$.
+
+Их сумма равна нулю, что позволяет нам использовать \eqref{eq:theta-representation}:
+\begin{equation}
+  \frac{d\chi_0}{du} = \left( \hpi + \alpha \pi \right) \frac{d}{du} \left( \ln \Theta_1 \left(\mbox{\scriptsize $ u - \hpi - \hpit $} \right) - \ln \Theta_1 \left( \mbox{\scriptsize $u - \hpit $}\right) \right)
+\end{equation}
+
+Так как
+\begin{align*}
+  \Theta_1 \left(\mbox{\scriptsize $u - \hpit $}\right) &= N \Theta_4(u) \\
+  \Theta_4 \left( \mbox{\scriptsize $u - \hpi $}\right) &= \Theta_3(u) \\
+  N = -ie^{iu + \frac{1}{4}i\pi\tau}
+\end{align*}
+
+(см. \ref{fig:Thetafun-relation}) то
+\begin{equation}
+  \frac{d\chi_0}{du} = \left( \hpi + \alpha \pi \right) \frac{d}{du} \ln \frac{\Theta_4(u)}{\Theta_3(u)}
+\end{equation}
+
+Откуда
+\begin{equation}\label{eq:chi_0+C}
+  \chi_0(u) = C + \frac{\pi(1 + \alpha)}{2} \ln \frac{\Theta_4(u)}{\Theta_3(u)}
+\end{equation}
+
+Для определения константы интегрирования $C$ воспользуемся краевыми условиями \eqref{eq:chi_0-boundaries} для $\chi_0$. Из \eqref{eq:chi_0-CD} и \eqref{eq:chi_0-BC} получим, что:
+\begin{equation}
+  \chi_0(0 + i0) = -i\pi
+\end{equation}
+
+Тогда получим, что 
+\begin{equation}
+  C = - i\pi - \frac{\pi(1 +\alpha)}{2} \ln \frac{\Theta_4(0)}{\Theta_3(0)}
+\end{equation}
+
+Отсюда получим конечное выражение для $\chi_0$:
+\begin{equation}\label{eq:chi_0}
+  \chi_0(u) = -i\pi + \frac{\pi(1 + \alpha)}{2} \ln \frac{\Theta_4(u) \Theta_3(0)}{\Theta_3(u) \Theta_4(0)}
+\end{equation}
+
+% Вырежь меня!
+\begin{figure}
+  \begin{center}
+    \input{images/thetafun_rel}
+  \end{center}
+\caption{Соотношение между тета-функциями}
+\label{fig:Thetafun-relation}
+\end{figure}
+%
+
+\subsubsection{Корректирующая функция $f(u)$}\label{section:f(u)-math}
+$f(u)$ --- аналитическая функция, заключающая в себе отличия упрощённой схемы взрыва от данной изначально.
+
+Граничные условия $f(u)$ найдём, сравнивая граничные условия \eqref{eq:chi(u)-boundaries} для $\chi(u)$ и \eqref{eq:chi_0-boundaries} для $\chi_0(u)$:
+\begin{subequations}\label{eq:f(u)-boundaries}
+  \begin{align}
+    &AB: \Im f(u) = 0 \\
+    &BC: \Im f(u) = 0 \label{eq:f(u)-BC} \\ 
+    &CD: \Re f(u) = 0 \label{eq:f(u)-CD} \\ 
+    &AD: \frac{d}{du}\Im f(u) = \frac{2\varphi_0}{\pi |\tau| v_0} \varkappa(\Theta) e^{-\Re \chi(u)} \label{eq:f(u)-AD}
+  \end{align}
+\end{subequations}
+
+Для построения $f(u)$ воспользуемся тем, что некоторые функции можно разложить в ряд Лорана.
+
+Отобразим область $u$ на полукольцо $\rho \leqslant |\zeta| \leqslant 1$ с помощью следующей функции (см., напр., ~\cite[с.~107]{matan:Shabat}):
+\begin{equation}
+  \zeta = e^{2ui}, \qquad \rho = e^{-\pi \tau}
+\end{equation}
+
+Рассмотрим функцию
+\begin{equation}
+  p(\zeta) = f(u(\zeta))
+\end{equation}
+
+Эта функция удовлетворяет граничному условию
+\begin{equation}
+  \Im \zeta \Rightarrow \Im p(\zeta) = 0
+\end{equation}
+
+% fucking SUMS!
+\newcommand{\sumInfInf}{\sum \limits_{n= - \infty}^{+\infty}}
+\newcommand{\sumOneInf}{\sum \limits_{n= 1}^{+\infty}}
+Отсюда следует, что её можно продолжить на всё кольцо и на кольце можно представить в виде ряда Лорана
+\begin{equation}
+  p(\zeta) = \sumInfInf c_n \zeta^n
+\end{equation}
+
+А тогда
+\begin{equation}\label{eq:f(u)}
+  f(u) = \sumInfInf c_n e^{2uin}
+\end{equation}
+
+Действительная и мнимая части $f(u)$ выглядят, соответственно, так:
+\begin{align}
+  &\Re f(\xi + i \eta) = \sumInfInf c_n e^{-2n\eta} \cos 2 \xi n \\
+  &\Im f(\xi + i \eta) = \sumInfInf c_n e^{-2n\eta} \sin 2 \xi n
+\end{align}
+
+Воспользуемся условием \eqref{eq:f(u)-BC} для того, чтобы найти некоторые из коэффициентов $c_n$:
+\begin{equation}\label{eq:f(u)-BC-inaction}
+  \Im f(\xi) \bigg|_{\xi \in \left[ 0; \hpi \right] } = \sumInfInf c_n \sin 2 \xi n = \sumOneInf (c_n - c_{-n}) \sin 2 \xi n = 0
+\end{equation}
+
+Из \eqref{eq:f(u)-BC-inaction} получим:
+\begin{equation}\label{eq:c0cN}
+  c_0 = 0, \qquad c_{-n} = - c_n
+\end{equation}
+
+Теперь воспользуемся условием \eqref{eq:f(u)-AD}. Выразим сначала левую часть:
+\begin{equation}\label{eq:dduImf}
+  \begin{split}
+    \frac{d}{d\xi} \Im f(\xi + i \hpit) &= \sumInfInf c_n e^{-n \pi |\tau|} 2n \cos 2 \xi n = \\
+    &= 2 \sumOneInf (n c_n  e^{-n \pi |\tau|} - (-n) c_{-n} e^{n \pi |\tau|}) \cos 2 \xi n = \\
+    &= 4 \sumOneInf n c_n \left( e^{-n \pi |\tau|} + e^{n \pi |\tau|} \right) \cos 2 \xi n
+  \end{split}
+\end{equation}
+
+Теперь подставим \eqref{eq:dduImf} в \eqref{eq:f(u)-AD}, учитывая что на $AD$ \\ $u = \xi + i\hpit$:
+\newcommand{\uAD}{\left( \xi + i \hpit \right)}
+\begin{equation}
+  4 \sumOneInf C_n n \left( e^{-n \pi |\tau|} + e^{n \pi |\tau|} \right) \cos 2 \xi n = \frac{2\varphi_0}{\pi |\tau| v_0} \varkappa(\Theta) e^{-\Re \chi \uAD }
+\end{equation}
+
+Домножив на $\cos 2 \xi n$ и проинтегрировав по области изменения $\xi \in \left[0; \hpi \right]$, выразим $c_n$:
+\begin{equation}\label{eq:cN}
+  c_n = S(n) \int \limits_{0}^{\hpi} \varkappa \left(\Theta \uAD \right) e^{- \Re \chi \uAD} \cos 2 \xi n d\xi
+\end{equation}
+где
+\begin{equation*}
+  S(n) = \frac{\varphi_0}{2 \pi |\tau| v_0 n \left( e^{-n \pi |\tau|} + e^{n \pi |\tau|} \right) = \frac{1}{4} \cdot \left| \frac{dw}{du} \right| }
+\end{equation*}
+
+Так как уравнение \eqref{eq:cN} является выражением $c_n = A (c_1, c_2 \dots c_n)$, где~$A$ --- действительнозначная функция, то константы $c_n$ будем находить в процессе решения задачи методом простой итерации~\cite[с.~150]{numeric:Kalitkin}. За начальное приближение будем брать вектор $c_0, c_1 \dots c_n, n \in \mathbb{N}, n < \infty$.
+
+\subsection{Кривизна края заряда эллиптической формы}
+В данной работе рассматривается случай, при котором заряд, граница которого проходит по линии $AD$, имеет эллиптическую форму. Тогда кривизна $\varkappa(\Theta)$, участвующая в граничном условии для функции Жуковского \eqref{eq:chi(u)-AD}, а~оттуда --- в выражении коэффициентов $c_n$ \eqref{eq:cN}, имеет вид:
+\begin{equation}\label{def:curvature-elliptic}
+  \varkappa(\Theta) =  \frac{ \left( 1 - \varepsilon^2 \sin^2 \Theta \right)^{3/2} }{ p }, \qquad p = \frac{a^2}{b^2 \mathstrut}, \qquad \varepsilon = \frac{\sqrt{b^2 - a^2 \mathstrut}}{b}
+\end{equation}
+где $a$, $b$ --- полуоси эллипса.
+
+\section{Вычисление координат точек на границе воронки взрыва}
+Итак, зная \eqref{def:dz/du}, \eqref{eq:dw/du}, \eqref{def:chi(u)}, \eqref{eq:chi_0} и \eqref{eq:f(u)} сформулируем полное выражение для искомой функции:
+\begin{equation}\label{eq:dz/du}
+  \frac{dz}{du} = -i \frac{2 \varphi_0}{\pi |\tau| v_0} e^{ i\pi + \frac{\pi (1 + \alpha)}{2} \ln \frac{\Theta_4(u)\Theta_3(0)}{\Theta_3(u)\Theta_4(0)} + \sumInfInf c_n e^{2uin}}
+\end{equation}
+где $c_n$ заданы выражениями \eqref{eq:c0cN} и \eqref{eq:cN}.
+
+Координаты точек на границе $CD$ на плоскости переменного $z$ будем определять последовательным интегрированием \eqref{eq:dz/du} численно. В качестве основной формулы для построения точек границы $CD$ используем выражение
+\begin{equation}\label{def:z(u_0)}
+  z(u_0) = \int \limits_0^{u_0} \frac{dz}{du} du
+\end{equation}
+
+Таким образом, для любой точки границы $CD$, координаты можно получить из формул \eqref{def:z(u_0)} и \eqref{eq:dz/du}
+\begin{equation}\label{eq:z(E)}
+  z(E) \bigg|_{E \in CD} = \int \limits_0^{\varepsilon} \frac{dz}{du}(i\eta) d\eta, \qquad E = i\varepsilon, \qquad \varepsilon \in \left[ 0 ; \hpit \right]
+\end{equation}
+
+Точки, координаты которых получены выражением \eqref{eq:z(E)}, являются точками, лежащими на границе воронки взрыва, что и требовалось найти в задаче.
