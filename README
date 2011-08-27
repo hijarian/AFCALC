@@ -1,0 +1,16 @@
+Scientific program from the field of mathematical physics! Initiates beware.
+Written in Haskell.
+A program accompanying my diploma work from the university. 
+
+Task raised was as follows.
+Suppose we have a explosion charge buried in the soil. We need to determine the form of crater left after the explosion. That's all, really, but this question isn't a simple one.
+
+The trick used in this model is that explosion is seen as a flow of ideal liquid. Details are in my theses in article/ subfolder, but it's in Russian, sorry about that. %) Article is in LaTeX format, should compile well in any environment.
+
+When run, app asks for custom parameters (or applies defaults if desired) and after calculations generates a chart with the schematic view of the right-side of explosion in 2D. Explosion modelled being symmetric and 2D. It will be nice to develop interactive front-end with dynamic regeneration of chart and/or generating multichart representing changing of parameters.
+
+For chart generation app uses Chart package.
+
+In far future this will be a generic library for modelling many different process as liquid flows. Current physic works used this model for examination of processes of explosion, filtration and Electrochemical engineering.
+
+2011-08-27: Program under heavy development and the results gotten are incorrect. I need to tweak the mathematics to be able to produce well-formed results first.
