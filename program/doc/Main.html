@@ -1,0 +1,460 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Main</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+><SCRIPT TYPE="text/javascript"
+>window.onload = function () {setSynopsis("mini_Main.html")};</SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+></TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Main</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:printGreeting"
+><A NAME="v%3AprintGreeting"
+></A
+></A
+><B
+>printGreeting</B
+> :: IO ()</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:getParameters"
+><A NAME="v%3AgetParameters"
+></A
+></A
+><B
+>getParameters</B
+> :: IO <A HREF="BlastModel.html#t%3AModelParams"
+>ModelParams</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:getModelParameter"
+><A NAME="v%3AgetModelParameter"
+></A
+></A
+><B
+>getModelParameter</B
+> :: String -&gt; IO Double</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:getModelParameters"
+><A NAME="v%3AgetModelParameters"
+></A
+></A
+><B
+>getModelParameters</B
+> :: IO <A HREF="BlastModel.html#t%3AModelParams"
+>ModelParams</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:printParameters"
+><A NAME="v%3AprintParameters"
+></A
+></A
+><B
+>printParameters</B
+> :: <A HREF="BlastModel.html#t%3AModelParams"
+>ModelParams</A
+> -&gt; IO ()</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:renewCoeffs"
+><A NAME="v%3ArenewCoeffs"
+></A
+></A
+><B
+>renewCoeffs</B
+> :: <A HREF="BlastModel.html#t%3AModelParams"
+>ModelParams</A
+> -&gt; IO <A HREF="BlastModel.html#t%3AModelParams"
+>ModelParams</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:PointList"
+><A NAME="t%3APointList"
+></A
+></A
+><B
+>PointList</B
+> = [(Double, Double)]</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:BAPointList"
+><A NAME="t%3ABAPointList"
+></A
+></A
+><B
+>BAPointList</B
+> = <A HREF="Main.html#t%3APointList"
+>PointList</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:CDPointList"
+><A NAME="t%3ACDPointList"
+></A
+></A
+><B
+>CDPointList</B
+> = <A HREF="Main.html#t%3APointList"
+>PointList</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:CBPointList"
+><A NAME="t%3ACBPointList"
+></A
+></A
+><B
+>CBPointList</B
+> = <A HREF="Main.html#t%3APointList"
+>PointList</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:DAPointList"
+><A NAME="t%3ADAPointList"
+></A
+></A
+><B
+>DAPointList</B
+> = <A HREF="Main.html#t%3APointList"
+>PointList</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:ZPlanePoints"
+><A NAME="t%3AZPlanePoints"
+></A
+></A
+><B
+>ZPlanePoints</B
+> = (<A HREF="Main.html#t%3ACBPointList"
+>CBPointList</A
+>, <A HREF="Main.html#t%3ACDPointList"
+>CDPointList</A
+>, <A HREF="Main.html#t%3ADAPointList"
+>DAPointList</A
+>, <A HREF="Main.html#t%3ABAPointList"
+>BAPointList</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:calcPoints"
+><A NAME="v%3AcalcPoints"
+></A
+></A
+><B
+>calcPoints</B
+> :: <A HREF="BlastModel.html#t%3AModelParams"
+>ModelParams</A
+> -&gt; IO <A HREF="Main.html#t%3AZPlanePoints"
+>ZPlanePoints</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:plotGraph"
+><A NAME="v%3AplotGraph"
+></A
+></A
+><B
+>plotGraph</B
+> :: String -&gt; <A HREF="Main.html#t%3APointList"
+>PointList</A
+> -&gt; IO ()</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:plotFullGraph"
+><A NAME="v%3AplotFullGraph"
+></A
+></A
+><B
+>plotFullGraph</B
+> :: String -&gt; <A HREF="Main.html#t%3AZPlanePoints"
+>ZPlanePoints</A
+> -&gt; IO ()</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:chart"
+><A NAME="v%3Achart"
+></A
+></A
+><B
+>chart</B
+> :: String -&gt; <A HREF="Main.html#t%3APointList"
+>PointList</A
+> -&gt; Layout1 Double Double</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:manychart"
+><A NAME="v%3Amanychart"
+></A
+></A
+><B
+>manychart</B
+> :: String -&gt; <A HREF="Main.html#t%3AZPlanePoints"
+>ZPlanePoints</A
+> -&gt; Layout1 Double Double</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:printGoodbye"
+><A NAME="v%3AprintGoodbye"
+></A
+></A
+><B
+>printGoodbye</B
+> :: IO ()</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:silentlyPlotGraph"
+><A NAME="v%3AsilentlyPlotGraph"
+></A
+></A
+><B
+>silentlyPlotGraph</B
+> :: <A HREF="BlastModel.html#t%3AModelParams"
+>ModelParams</A
+> -&gt; IO ()</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:testPhi0"
+><A NAME="v%3AtestPhi0"
+></A
+></A
+><B
+>testPhi0</B
+> :: <A HREF="BlastModel.html#t%3AModelParams"
+>ModelParams</A
+> -&gt; IO ()</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:testV0"
+><A NAME="v%3AtestV0"
+></A
+></A
+><B
+>testV0</B
+> :: <A HREF="BlastModel.html#t%3AModelParams"
+>ModelParams</A
+> -&gt; IO ()</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:testTau"
+><A NAME="v%3AtestTau"
+></A
+></A
+><B
+>testTau</B
+> :: <A HREF="BlastModel.html#t%3AModelParams"
+>ModelParams</A
+> -&gt; IO ()</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:testAlpha"
+><A NAME="v%3AtestAlpha"
+></A
+></A
+><B
+>testAlpha</B
+> :: <A HREF="BlastModel.html#t%3AModelParams"
+>ModelParams</A
+> -&gt; IO ()</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.6.0</TD
+></TR
+></TABLE
+></BODY
+></HTML
+>
