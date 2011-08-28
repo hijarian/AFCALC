@@ -1,23 +1,16 @@
 module Main where
 
--- Скорее всего, здесь не понадобится этот модуль, потому что работа с комплексными числами будет инкапсулирована в модуле BlastModel
---import Data.Complex
-
 -- Импортируем собственно саму модель
-import BlastModelSimple
+import BlastModel.Simple
 
--- Модули, необходимые для поддержки черчения графиков функций
-import Graphics.Rendering.Chart 
-import Graphics.Rendering.Chart.Gtk
-import Data.Colour
-import Data.Colour.Names
-import Data.Accessor
+-- Module for representing the results of calculations as charts
+import BlastModel.AsChart
 
 -- Модуль для оценки времени выполнения той или иной функции. Самописный, на основе более низкоуровневых модулей
 import Time 
 
 -- Точка входа программы. Программа делает последовательно ряд шагов и завершается.
-full_main = do
+main = do
 -- 1. Печатаем приглашение и описание того, кто мы такие вообще.
   printGreeting
 -- 2. Загружаем параметры тем или иным способом
@@ -34,14 +27,6 @@ full_main = do
 -- 7. Пишем, что всё прошло успешно, так что завершаемся
   printGoodbye
 -- Точка входа программы END
-
--- Program entry point with tests
--- should make this runnable from program argument
-main = do
-  testPhi0 null_parameters
-  testV0 null_parameters
-  testTau null_parameters
-  testAlpha null_parameters
   
 ----------------------------------------
 -- 1. Печатаем приглашение и описание того, кто мы такие вообще. BEGIN
@@ -128,12 +113,7 @@ printParameters param = do
 
 ----------------------------------------
 -- 5. Вычисляем список точек на границе воронки взрыва. BEGIN
-type PointList = [(Double, Double)]
-type BAPointList = PointList
-type CDPointList = PointList
-type CBPointList = PointList
-type DAPointList = PointList
-type ZPlanePoints = (CBPointList, CDPointList, DAPointList, BAPointList)
+
 calcPoints :: ModelParams -> IO (ZPlanePoints)
 calcPoints param = do
   print "We will now compute points on the edge of blast."
@@ -159,90 +139,6 @@ outputData datalist = do
 -- 5. Вычисляем список точек на границе воронки взрыва. END
 ----------------------------------------
 
-----------------------------------------
--- 6. Передаём список точек функции черчения графика, которая чертит график. BEGIN
-
-extract_param_names param = 
-  let phi0   = show $ phi_0 param
-      v0     = show $ v_0 param
-      alpha0 = show $ alpha param
-      a0     = show $ a param
-      b0     = show $ b param
-      abstau = show $ tau param
-      precision0 = show $ precision param
-  in "Phi0 = " ++ phi0 ++ ", V0 = " ++ v0 ++ ", Alpha0 = " ++ alpha0 ++ ", A = " ++ a0 ++ ", B = " ++ b0 ++ ", tau = " ++ abstau ++ ", precision = " ++ precision0
-
-plotGraph :: String -> PointList -> IO()
-plotGraph linetitle datalist = do
-    renderableToWindow  (toRenderable (chart linetitle datalist)) 640 480
-    renderableToPNGFile (toRenderable (chart linetitle datalist)) 640 480 (linetitle ++ ".png")
-    return ()
-
-plotFullGraph :: String -> ZPlanePoints -> IO()
-plotFullGraph linetitle datalists = do
-    renderableToWindow  (toRenderable (manychart linetitle datalists)) 640 480
-    renderableToPNGFile (toRenderable (manychart linetitle datalists)) 640 480 (linetitle ++ ".png")
-    return ()
-
-chart :: String -> PointList -> Layout1 Double Double 
-chart linetitle datalist = layout
-  where
-    myPlot = plot_lines_values ^= [datalist]
-              $ plot_lines_style .> line_color ^= opaque blue
-              $ plot_lines_title ^= linetitle
-              $ defaultPlotLines
-    layout = layout1_title ^= "Form of blast edge"
-           $ layout1_plots ^= [Left (toPlot myPlot)]
-           $ defaultLayout1
-
-manychart :: String -> ZPlanePoints -> Layout1 Double Double 
-manychart linetitle (pointsCB, pointsCD, pointsBA, pointsDA) = layout
-  where
-    plotBA = plot_lines_values ^= [pointsBA]
-              $ plot_lines_style .> line_color ^= opaque green 
-              $ plot_lines_title ^= "BA" 
-              $ defaultPlotLines
-    plotDA = plot_lines_values ^= [pointsDA]
-              $ plot_lines_style .> line_color ^= opaque red
-              $ plot_lines_title ^= "DA" 
-              $ defaultPlotLines
-    plotCB = plot_lines_values ^= [pointsCB]
-              $ plot_lines_style .> line_color ^= opaque blue
-              $ plot_lines_title ^= "CB: " ++ linetitle
-              $ defaultPlotLines
-    plotCD = plot_lines_values ^= [pointsCD]
-              $ plot_lines_style .> line_color ^= opaque cyan 
-              $ plot_lines_title ^= "CD"
-              $ defaultPlotLines
-    layout = layout1_title ^= "Form of blast edge"
-           $ layout1_plots ^= [
-             Left (toPlot plotBA), 
-             Left (toPlot plotDA), 
-             Left (toPlot plotCD), 
-             Left (toPlot plotCB)
-             ]
-           $ defaultLayout1
-
--- Пример оформления чертежа
--- -- chart = layout
--- --   where
--- --     am :: Double -> Double
--- --     am x = (sin (x*3.14159/45) + 1) / 2 * (sin (x*3.14159/5))
--- --     sinusoid1 = plot_lines_values ^= [[ (x,(am x)) | x <- [0,(0.5)..400]]]
--- --               $ plot_lines_style  .> line_color ^= opaque blue
--- --               $ plot_lines_title ^= "am"
--- --               $ defaultPlotLines
--- --     sinusoid2 = plot_points_style ^= filledCircles 2 (opaque red)
--- --               $ plot_points_values ^= [ (x,(am x)) | x <- [0,7..400]]
--- --               $ plot_points_title ^= "am points"
--- --               $ defaultPlotPoints
--- --     layout = layout1_title ^= "Amplitude Modulation"
--- --            $ layout1_plots ^= [Left (toPlot sinusoid1),
--- --                                Left (toPlot sinusoid2)]
--- --            $ defaultLayout1
-
--- 6. Передаём список точек функции черчения графика, которая чертит график. END
-----------------------------------------
 
 ----------------------------------------
 -- 7. Пишем, что всё прошло успешно, так что завершаемся. BEGIN
@@ -253,36 +149,4 @@ printGoodbye = do
 -- 7. Пишем, что всё прошло успешно, так что завершаемся. END
 ----------------------------------------
 
-
--- Автоматизированные тесты для некоторого покрытия поля параметров модели
-silentlyPlotGraph :: ModelParams -> IO()
-silentlyPlotGraph param = do
-  pointlist <- calcPoints param
-  let linetitle = extract_param_names param
-  renderableToPNGFile (toRenderable (manychart linetitle pointlist)) 640 480 (linetitle ++ ".png")
-  return ()
-
-testPhi0 :: ModelParams -> IO()
-testPhi0 param = do 
-  let plotWithPhi0 p = silentlyPlotGraph param{phi_0 = (p * 0.1)}
-  mapM plotWithPhi0 [0..20]
-  return ()
-
-testV0 :: ModelParams -> IO()
-testV0 param = do 
-  let plotWithV0 p = silentlyPlotGraph param{v_0 = (p * 15)}
-  mapM plotWithV0 [0..10]
-  return ()
-
-testTau :: ModelParams -> IO()
-testTau param = do 
-  let plotWithTau p = silentlyPlotGraph param{tau = (p * 0.1)}
-  mapM plotWithTau [1..10]
-  return ()
-
-testAlpha :: ModelParams -> IO()
-testAlpha param = do 
-  let plotWithAlpha p = silentlyPlotGraph param{alpha = (p * 0.1)}
-  mapM plotWithAlpha [0..10]
-  return ()
 

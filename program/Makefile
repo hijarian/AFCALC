@@ -1,9 +1,17 @@
+SRCDIR=./src
+TEMPDIR=obj
+OUTDIR=bin/
+COMPILER=ghc --make -i${SRCDIR} -outputdir ${TEMPDIR} -o ${OUTDIR}
+
 all : 
-	ghc --make -outputdir obj -o bin/afcalc -i./src src/Main.hs
+	${COMPILER}afcalc src/Main.hs
 
 simple :
-	ghc --make -outputdir obj -o bin/afcalc-simple -i./src src/Simple.hs
+	${COMPILER}afcalc-simple src/Simple.hs
 
 testtheta :
-	ghc --make -outputdir obj -o bin/test-theta -i./src src/TestTheta.hs
+	${COMPILER}test-theta src/TestTheta.hs
+
+tests : 
+	${COMPILER}afcalc-tests src/TestSimple.hs
 

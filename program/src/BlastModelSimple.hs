@@ -37,47 +37,49 @@ data ModelParams = ModelParams {
 ----------------------------------------
 -- 0. Различные хелперы для упрощения работы BEGIN
 
+toComplex :: (RealFloat a) => a -> Complex a
 toComplex = (:+ 0)
 
--- Переобозначения тета-функций в более удобоваримый вид
-theta1' param = theta1 (n_theta param) (qpar (0 :+ tau param))
-theta2' param = theta2 (n_theta param) (qpar (0 :+ tau param))
-theta3' param = theta3 (n_theta param) (qpar (0 :+ tau param))
-theta4' param = theta4 (n_theta param) (qpar (0 :+ tau param))
+toImaginary :: (RealFloat a) => a -> Complex a 
+toImaginary = ((:+) 0)
 
+-- Переобозначения тета-функций в более удобоваримый вид
+theta1' param = theta1 (n_theta param) (qpar (tau param))
+theta2' param = theta2 (n_theta param) (qpar (tau param))
+theta3' param = theta3 (n_theta param) (qpar (tau param))
+theta4' param = theta4 (n_theta param) (qpar (tau param))
+
+--pi4 :: (RealFloat a) => a
 pi4       = pi / 4
 
-pi4t :: ModelParams -> Double
-pi4t p    = ( pi * (tau p) ) / 4
+--pi4t ::  ModelParams -> Complex Double
+pi4t p    = toImaginary . (* pi4) $ (tau p)
 
-t1m4t   p u = theta1' p (u - (0 :+ pi4t p))
-
-t1p4t   p u = theta1' p (u + (0 :+ pi4t p))
-
-t1m4    p u = theta1' p (u - pi4)
-
-t1p4    p u = theta1' p (u + pi4)
-
+t1m4t   p u = theta1' p (u - ( pi4t p ))
+t1p4t   p u = theta1' p (u + ( pi4t p ))
+t1m4    p u = theta1' p (u - (toComplex pi4))
+t1p4    p u = theta1' p (u + (toComplex pi4))
 t1z     p   = theta1' p (0 :+ 0)
 
-t14p4t  p   = theta1' p (pi4 + toComplex ( pi4t p))
+--t14p4t :: (RealFloat a) => ModelParams -> Complex a
+t14p4t  p   = theta1' p ((toComplex pi4) + ( pi4t p ))
 
-t2m4t   p u = theta2' p (u - (0 :+ pi4t p))
-
-t2p4t   p u = theta2' p (u + (0 :+ pi4t p))
-
-t2m4    p u = theta2' p (u - pi4)
-t2p4    p u = theta2' p (u + pi4)
+t2m4t   p u = theta2' p (u - ( pi4t p ))
+t2p4t   p u = theta2' p (u + ( pi4t p ))
+t2m4    p u = theta2' p (u - (toComplex pi4))
+t2p4    p u = theta2' p (u + (toComplex pi4))
 t2z     p   = theta2' p (0 :+ 0)
-t3m4t   p u = theta3' p (u - toComplex ( pi4t p ))
-t3p4t   p u = theta3' p (u + toComplex ( pi4t p ))
-t3m4    p u = theta3' p (u - pi4)
-t3p4    p u = theta3' p (u + pi4)
+
+t3m4t   p u = theta3' p (u - ( pi4t p ))
+t3p4t   p u = theta3' p (u + ( pi4t p ))
+t3m4    p u = theta3' p (u - (toComplex pi4))
+t3p4    p u = theta3' p (u + (toComplex pi4))
 t3z     p   = theta3' p (0 :+ 0)
-t4m4t   p u = theta4' p (u - toComplex ( pi4t p ))
-t4p4t   p u = theta4' p (u + toComplex ( pi4t p ))
-t4m4    p u = theta4' p (u - pi4)
-t4p4    p u = theta4' p (u + pi4)
+
+t4m4t   p u = theta4' p (u - ( pi4t p ))
+t4p4t   p u = theta4' p (u + ( pi4t p ))
+t4m4    p u = theta4' p (u - (toComplex pi4))
+t4p4    p u = theta4' p (u + (toComplex pi4))
 t4z     p   = theta4' p (0 :+ 0)
 
 -- Параметры "по умолчанию", для упрощения отладки
@@ -201,10 +203,11 @@ zDA param e = integrateDA (dzdu param) lowl e n'
 ----------------------------------------
 -- 2. Координаты точки на границе воронки взрыва получаем интегрированием dz/du BEGIN
 
-mfunc param = (* 2) . (^ 2) . (/ divisor) $ divident 
+mfunc :: ModelParams -> Complex Double
+mfunc param = (* 2) . (** 2) . (/ divisor) $ divident 
   where
-    divisor = t2z param * t3z param * t4z param
-    divident = (^ 2) . (abs) $ t14p4t param
+    divisor = (t2z param) * (t3z param) * (t4z param)
+    divident = (** 2) . abs $ t14p4t param
     
 -- dz/du
 dzdu :: ModelParams -> Complex Double -> Complex Double
@@ -212,7 +215,7 @@ dzdu :: ModelParams -> Complex Double -> Complex Double
 --   where v_0' = (v_0 param :+ 0)
 dzdu p u = nval' * eval'  * divident' / divisor''
   where
-    nval'  = toComplex (phi_0 p) * mfunc p / toComplex pi / toComplex (v_0 p)
+    nval'  = (toComplex (phi_0 p)) * (mfunc p) / toComplex pi / toComplex (v_0 p)
     eval'  = exp ( 0 :+ ((1 - alpha p) * pi)) 
     divident' = t1m4t p u * t1p4t p u * t2m4t p u * t2p4t p u
     divisor'' = (t1m4 p u * t4m4 p u) ** ((1 - alpha p) :+ 0)  * (t1p4 p u * t4p4 p u) ** ((1 + alpha p) :+ 0)
