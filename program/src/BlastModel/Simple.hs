@@ -9,8 +9,8 @@
 module BlastModel.Simple where
 
 -- Мы используем параллельность!
-import Control.Parallel.Strategies
-import Control.Parallel
+-- import Control.Parallel.Strategies
+-- import Control.Parallel
 
 -- Наша модель построена на комплекснозначных функциях комплексного аргумента
 import Data.Complex

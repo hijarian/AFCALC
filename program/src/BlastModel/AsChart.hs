@@ -1,7 +1,5 @@
 module BlastModel.AsChart where
 
-import BlastModel.Simple
-
 -- Модули, необходимые для поддержки черчения графиков функций
 import Graphics.Rendering.Chart 
 import Graphics.Rendering.Chart.Gtk
@@ -19,15 +17,6 @@ type ZPlanePoints = (CBPointList, CDPointList, DAPointList, BAPointList)
 ----------------------------------------
 -- 6. Передаём список точек функции черчения графика, которая чертит график. BEGIN
 
-extract_param_names param = 
-  let phi0   = show $ phi_0 param
-      v0     = show $ v_0 param
-      alpha0 = show $ alpha param
-      a0     = show $ a param
-      b0     = show $ b param
-      abstau = show $ tau param
-      precision0 = show $ precision param
-  in "Phi0 = " ++ phi0 ++ ", V0 = " ++ v0 ++ ", Alpha0 = " ++ alpha0 ++ ", A = " ++ a0 ++ ", B = " ++ b0 ++ ", tau = " ++ abstau ++ ", precision = " ++ precision0
 
 plotGraph :: String -> PointList -> IO()
 plotGraph linetitle datalist = do
@@ -64,19 +53,19 @@ manychart linetitle (pointsCB, pointsCD, pointsBA, pointsDA) = layout
   where
     plotBA = plot_lines_values ^= [pointsBA]
               $ plot_lines_style .> line_color ^= opaque green 
-              $ plot_lines_title ^= "BA" 
+              $ plot_lines_title ^= "B->A" 
               $ defaultPlotLines
     plotDA = plot_lines_values ^= [pointsDA]
               $ plot_lines_style .> line_color ^= opaque red
-              $ plot_lines_title ^= "DA" 
+              $ plot_lines_title ^= "A->D" 
               $ defaultPlotLines
     plotCB = plot_lines_values ^= [pointsCB]
               $ plot_lines_style .> line_color ^= opaque blue
-              $ plot_lines_title ^= "CB: " ++ linetitle
+              $ plot_lines_title ^= "C->B: " ++ linetitle
               $ defaultPlotLines
     plotCD = plot_lines_values ^= [pointsCD]
               $ plot_lines_style .> line_color ^= opaque cyan 
-              $ plot_lines_title ^= "CD"
+              $ plot_lines_title ^= "D->C"
               $ defaultPlotLines
     layout = layout1_title ^= "Form of blast edge"
            $ layout1_plots ^= [
