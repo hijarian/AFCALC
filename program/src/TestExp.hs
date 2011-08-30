@@ -1,7 +1,7 @@
 module Main where
 
 -- Импортируем собственно саму модель
-import BlastModel.Simple
+import BlastModel.Exp
 import AFCalc
 import AFCalc.AsChart
 
@@ -40,8 +40,6 @@ outputData datalist = do
 -- Program entry point with tests
 -- should make this runnable from program argument
 main = do
---  testPhi0 null_parameters -- Phi_0 is only a scaling coefficient
---  testV0 null_parameters -- V_0 is only a scaling coefficient
   testTau null_parameters
   testAlpha null_parameters
 

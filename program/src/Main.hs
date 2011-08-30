@@ -1,14 +1,21 @@
 module Main where
+-- Main module for the whole project
+-- Uses Blast model
 
--- Импортируем собственно саму модель
-import BlastModel.Full
+-- We will use Blast model for now. Can import other if needed
+import BlastModel.Simple
 
-import BlastModel.AsChart
+-- Main libraries
+import AFCalc
+-- We will output the results not only as lists of points, but as charts too
+import AFCalc.AsChart
 
+-- We use printf for pretty-printing the coordinates of points
 import Text.Printf
 
--- Модуль для оценки времени выполнения той или иной функции. Самописный, на основе более низкоуровневых модулей
-import Time 
+-- Simple custom module for profiling
+-- TODO: Replace with more smart widespread module
+import Time
 
 -- Точка входа программы. Программа делает последовательно ряд шагов и завершается.
 main = do
@@ -32,12 +39,12 @@ main = do
 -- 7. Пишем, что всё прошло успешно, так что завершаемся
   printGoodbye
 -- Точка входа программы END
-  
+
 ----------------------------------------
 -- 1. Печатаем приглашение и описание того, кто мы такие вообще. BEGIN
 printGreeting :: IO ()
-printGreeting = do  
-  putStrLn "Greetings!~ This is blast model, based on solid-liquid model of Lavrentyev and Kotlyar."  
+printGreeting = do
+  putStrLn "Greetings!~ This is blast model, based on solid-liquid model of Lavrentyev and Kotlyar."
 -- 1. Печатаем приглашение и описание того, кто мы такие вообще. END
 ----------------------------------------
 
@@ -51,7 +58,7 @@ getParameters = do
   print "Parameters n_integral, n_cn, n_theta stay constant"
   what <- getLine
   if what == "1"
-    then do print "Ok, will load parameters from you" 
+    then do print "Ok, will load parameters from you"
             getModelParameters
     else do print "Ok, will load default parameters"
             return null_parameters
@@ -61,7 +68,7 @@ getModelParameter parname = do
 	putStr $ "Value of " ++ parname
 	param <- getLine
         return $ read param
-  
+
 getModelParameters :: IO (ModelParams)
 getModelParameters = do
   print      "Value of phi_0:"
@@ -99,7 +106,7 @@ getModelParameters = do
        -- Начальные значения коэффициентов приравниваем к значению-заполнителю
        c_n        = replicate ((fromInteger . n_cn) null_parameters) (read fill_cn)
        }
-    
+
 -- 2. Загружаем параметры тем или иным способом. END
 ----------------------------------------
 
@@ -111,7 +118,7 @@ printParameters param = do
   print "Current model parameters: "
   print param
 
-extract_param_names param = 
+extract_param_names param =
   let phi0   = show $ phi_0 param
       v0     = show $ v_0 param
       alpha0 = show $ alpha param
@@ -140,10 +147,10 @@ renewCoeffs param = do
 calcPoints :: ModelParams -> IO (ZPlanePoints)
 calcPoints param = do
   print "We will now compute points on the edge of blast."
-  let ad_pointlist =  (init.tail) $ zlistAD param 
-      ba_pointlist =  (init.tail) $ zlistBA param 
-      cb_pointlist =  (init.tail) $ zlistCB param 
-      dc_pointlist =  (init.tail) $ zlistDC param 
+  let ad_pointlist =  (init.tail) $ zlistAD param
+      ba_pointlist =  (init.tail) $ zlistBA param
+      cb_pointlist =  (init.tail) $ zlistCB param
+      dc_pointlist =  (init.tail) $ zlistDC param
   --5.5. TODO: Выводим данные оценки времени выполнения
   print "Points at A->D: "
   time $ outputData ad_pointlist
@@ -154,8 +161,8 @@ calcPoints param = do
   print "Points at C->B: "
   time $ outputData cb_pointlist
   return (cb_pointlist, dc_pointlist, ad_pointlist, ba_pointlist)
-  
-outputData datalist = do 
+
+outputData datalist = do
   mapM (\(x, y) ->  printf "%10.4f; %10.4f\n" x y) datalist
   return ()
 
