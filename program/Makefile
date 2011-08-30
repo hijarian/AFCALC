@@ -15,3 +15,5 @@ testtheta :
 tests : 
 	${COMPILER}afcalc-tests src/TestSimple.hs
 
+exponent:
+	${COMPILER}afcalc-exp src/TestExponent.hs
