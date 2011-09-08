@@ -3,7 +3,7 @@ module Main where
 -- Uses Blast model
 
 -- We will use Blast model for now. Can import other if needed
-import BlastModel.Simple
+import BlastModel.Full
 
 -- Main libraries
 import AFCalc
@@ -132,12 +132,12 @@ extract_param_names param =
 
 ----------------------------------------
 -- 4. Обновляем в параметрах список коэффициентов cN ``c_n param``. BEGIN
-renewCoeffs :: ModelParams -> IO (ModelParams)
-renewCoeffs param = do
-  putStrLn "Second, we compute the parameters c_n needed for computations"
--- 4.5. Выводим данные оценки времени выполнения
-  new_param <- time $ renew_cn_all param
-  return new_param
+-- renewCoeffs :: ModelParams -> IO (ModelParams)
+-- renewCoeffs param = do
+--   putStrLn "Second, we compute the parameters c_n needed for computations"
+-- -- 4.5. Выводим данные оценки времени выполнения
+--   new_param <- time $ renew_cn_all param
+--   return new_param
 
 -- 4. Обновляем в параметрах список коэффициентов cN ``c_n param``. END
 ----------------------------------------

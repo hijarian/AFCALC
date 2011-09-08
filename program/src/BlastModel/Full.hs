@@ -22,6 +22,8 @@ import Data.Complex
 -- Custom module for handling theta-functions
 import Theta
 
+import AFCalc.Integrators
+
 -- Параметры модели будем передавать объектом следующего типа:
 data ModelParams = ModelParams {
     tau        :: Double,     -- параметр, доопределяет тета-функции
@@ -44,7 +46,7 @@ data ModelParams = ModelParams {
 toComplex :: (RealFloat a) => a -> Complex a
 toComplex = (:+ 0)
 
-toImaginary :: (RealFloat a) => a -> Complex a 
+toImaginary :: (RealFloat a) => a -> Complex a
 toImaginary = ((:+) 0)
 
 -- We will use theta-functions with parameters from object
@@ -125,11 +127,11 @@ renew_params param (phi_0', v_0', tau', alpha', a', b') =
 -- 2. Координаты точки на границе воронки взрыва получаем интегрированием dz/du BEGIN
 
 mfunc :: ModelParams -> Complex Double
-mfunc param = (* 2) . (** 2) . (/ divisor) $ divident 
+mfunc param = (* 2) . (** 2) . (/ divisor) $ divident
   where
     divisor = (t2z param) * (t3z param) * (t4z param)
     divident = (** 2) . abs $ t14p4t param
-    
+
 -- dz/du
 dzdu :: ModelParams -> Complex Double -> Complex Double
 -- WARNING: This temporary representation effectively disables all definitions of dwdu and chi
@@ -137,11 +139,11 @@ dzdu :: ModelParams -> Complex Double -> Complex Double
 dzdu p u = nval' * eval'  * divident' / divisor''
   where
     nval'  = (toComplex (phi_0 p)) * (mfunc p) / toComplex pi / toComplex (v_0 p)
-    eval'  = exp ( 0 :+ ((1 - alpha p) * pi)) 
+    eval'  = exp ( 0 :+ ((1 - alpha p) * pi))
     divident' = t1m4t p u * t1p4t p u * t2m4t p u * t2p4t p u
     divisor'' = (t1m4 p u * t4m4 p u) ** ((1 - alpha p) :+ 0)  * (t1p4 p u * t4p4 p u) ** ((1 + alpha p) :+ 0)
 
--- TODO: I want to be able to write like this: 
+-- TODO: I want to be able to write like this:
 --dzdu param u = ((dwdu param u) / v_0') * exp ( negate $ chi param u )
 --  where v_0' = (v_0 param :+ 0)
 
@@ -279,7 +281,7 @@ calc_cn param n = (negate divident / divisor) * (ifun param n / ifun param 0)
     gamma    = alpha param
 
 ifun :: ModelParams -> Integer -> Double
-ifun param n = integrateReal f n' zero (pi * tau' / 4) 
+ifun param n = integrateReal f n' zero (pi * tau' / 4)
   where
     zero     = precision param -- Это хак. В нуле функция qfun' обращается в бесконечность (деление на ноль).
     f e      = curvature param (t e) * qfun' param e * cosfun e
