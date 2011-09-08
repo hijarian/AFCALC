@@ -1,4 +1,11 @@
 {-
+Model of explosion of buried curved charge.
+Makes possible the calculations of blast edges given set parameters.
+Explosion is modelled as potential flow of ideal liquid.
+Saphronov Mark a. k. a. hijarian
+2011.09
+Public Domain
+--
     Модель взрыва заглублённого в грунт заряда криволинейной формы.
     Позволяет вычислить границу воронки взрыва на основании ряда параметров.
     Взрыв представляется как потенциальное течение струи идеальной жидкости, а воронка взрыва --- как линия тока на течении, вдоль которой скорость течения равна некоторому "критическому" значению.
@@ -7,10 +14,6 @@
     Public Domain
 -}
 module BlastModel.Full where
-
--- TODO: I want to be able to do this:
---import BlastMode.Model_2011_05
--- and get all functions relevant to my model loaded into this framework
 
 -- We do not use parallelism yet
 --import Control.Parallel.Strategies
@@ -33,9 +36,7 @@ data ModelParams = ModelParams {
     a          :: Double,     -- заряд предполагается эллиптическим, поэтому это больший радиус заряда
     b          :: Double,     -- заряд предполагается эллиптическим, поэтому это меньший радиус заряда
     n_theta    :: Integer,    -- количество слагаемых в ряду, представляющем тета-функцию (т. е., это, по сути, точность вычислений тета-функций)
-    n_integral :: Integer,    -- частота разбиения отрезка интегрирования
     n_cn       :: Integer,    -- количество коэффициентов cN в разбиении f(u) в ряд, т. е., заодно и точность вычисления f(u)
-    precision  :: Double,     -- точность вычисления cN методом простых итераций. Да и вообще "точность" там, где она может быть нужна
     c_n        :: [Double]    -- список коэффициентов cN в разбиении f(u) в ряд. При задании параметров равны начальному приближению, потом уточняются.
 -- Не существует c_n !! 0, параметр c0 задаётся в формуле, и здесь не хранится и не обновляется.
     } deriving (Show)

@@ -1,4 +1,11 @@
 {-
+Model of explosion of buried curved charge.
+Makes possible the calculations of blast edges given set parameters.
+Explosion is modelled as potential flow of ideal liquid.
+Saphronov Mark a. k. a. hijarian
+2011.09
+Public Domain
+--
     Модель взрыва заглублённого в грунт заряда криволинейной формы.
     Позволяет вычислить границу воронки взрыва на основании ряда параметров.
     Взрыв представляется как потенциальное течение струи идеальной жидкости, а воронка взрыва --- как линия тока на течении, вдоль которой скорость течения равна некоторому "критическому" значению.
@@ -6,6 +13,7 @@
     август 2011
     Public Domain
 -}
+
 module BlastModel.Simple where
 
 -- Мы используем параллельность!
@@ -27,7 +35,6 @@ data ModelParams = ModelParams {
     a          :: Double,     -- заряд предполагается эллиптическим, поэтому это больший радиус заряда
     b          :: Double,     -- заряд предполагается эллиптическим, поэтому это меньший радиус заряда
     n_theta    :: Integer,    -- количество слагаемых в ряду, представляющем тета-функцию (т. е., это, по сути, точность вычислений тета-функций)
-    n_integral :: Integer,    -- частота разбиения отрезка интегрирования
     n_cn       :: Integer,    -- количество коэффициентов cN в разбиении f(u) в ряд, т. е., заодно и точность вычисления f(u)
     precision  :: Double,     -- точность вычисления cN методом простых итераций. Да и вообще "точность" там, где она может быть нужна
     c_n        :: [Double]    -- список коэффициентов cN в разбиении f(u) в ряд. При задании параметров равны начальному приближению, потом уточняются.
@@ -43,7 +50,6 @@ null_parameters = ModelParams {
     a          = 2,
     b          = 5,
     n_theta    = 25, -- you'll never need more, 'cause there's an q ** n_theta ** 2 in definition of both theta-functions with q < 1
-    n_integral = 50,
     n_cn       = 30,
     precision  = 0.001,
     c_n        = take 30 $ repeat 0

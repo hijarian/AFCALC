@@ -20,7 +20,7 @@ import AFCalc
 
 -- Output PointList to GTK window
 plotLine :: String -> PointList -> IO()
-plotGraph linetitle datalist = do
+plotLine linetitle datalist = do
     renderableToWindow  (toRenderable (chart linetitle datalist)) 640 480
     return ()
 
@@ -28,6 +28,18 @@ plotGraph linetitle datalist = do
 pngLine :: String -> String -> PointList -> IO()
 pngLine filename linetitle datalist = do
     renderableToPNGFile (toRenderable (chart linetitle datalist)) 640 480 filename
+    return ()
+
+-- Output ZPlanePoints to GTK window
+plotArea :: String -> ZPlanePoints -> IO()
+plotArea linetitle datalist = do
+    renderableToWindow  (toRenderable (manychart linetitle datalist)) 640 480
+    return ()
+
+-- Output ZPlanePoints to file with name <filename>
+pngArea :: String -> String -> ZPlanePoints -> IO()
+pngArea filename linetitle datalist = do
+    renderableToPNGFile (toRenderable (manychart linetitle datalist)) 640 480 filename
     return ()
 
 -- Configuration of chart with single line
@@ -48,6 +60,7 @@ manychart linetitle (pointsAB, pointsBC, pointsCD, pointsDA) = layout'
     layout' = myLayout "Area of Z variable" [plotAB', plotBC', plotCD', plotDA']
 
 -- Generating plot object with given parameters
+myPlot :: AlphaColour Double -> String -> PointList -> PlotLines Double Double
 myPlot color title datalist = plot_lines_values ^= [datalist]
                             $ plot_lines_style .> line_color ^= color
                             $ plot_lines_title ^= title
@@ -55,8 +68,9 @@ myPlot color title datalist = plot_lines_values ^= [datalist]
 
 -- Generating layout object with given parameters
 -- <plotlist> is a list of object created by myPlot
+myLayout :: String -> [PlotLines Double Double] -> Layout1 Double Double
 myLayout title plotlist = layout1_title ^= title
-                        $ layout1_plots ^= [Left (toPlot myPlot)]
+                        $ layout1_plots ^= plotlist'
                         $ defaultLayout1
                             where  plotlist' = map (\p -> Left (toPlot p)) plotlist
 

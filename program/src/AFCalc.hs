@@ -22,12 +22,13 @@ type ZPlanePoints = (ABPointList, BCPointList, CDPointList, DAPointList)
 -- It is a calculation parameters, holding every component needed to calculate points
 -- It should be filled before calling any other method
 data CalcParams = CalcParams {
-    dwdu       :: (Complex Double -> Complex Double),
-    chi_0      :: (Complex Double -> Complex Double),
-    f_corr     :: (Complex Double -> Complex Double),
-    points     :: (Complex Double, Complex Double, Complex Double, Complex Double), -- Points at A, B, C and D, respectively
-    tau        :: Double,
-    n_integral :: Integer
+  dzdu       :: (Complex Double -> Complex Double),
+  dwdu       :: (Complex Double -> Complex Double),
+  chi_0      :: (Complex Double -> Complex Double),
+  f_corr     :: (Complex Double -> Complex Double),
+  points     :: (Complex Double, Complex Double, Complex Double, Complex Double), -- Points at A, B, C and D, respectively
+  tau        :: Double,
+  n_integral :: Integer
 }
 
 --------------------------------------------------------------------------------
@@ -51,17 +52,20 @@ d' params = p
 -- interface of AFCalc
 
 -- Calculate only one point of target area
+-- As base point of integration we use point A
 calcPoint :: CalcParams -> Complex Double -> Complex Double
-calcPoint params u = integrateComplex (dzdu params) n' (a' params) u
+calcPoint params u = integrate (dzdu params) n' (a' params) u
     where n' = n_integral params
 
 -- Calculate the line in target area corresponding to the line between
 --  given points at source area
 calcSide :: CalcParams -> Complex Double -> Complex Double -> PointList
-calcSide params u1 u2 = map constructPoint $ quantizeCenter u1 u2 n'
+calcSide params u1 u2 = map constructPoint pointlist
     where
       constructPoint = asPoint . (calcPoint params)
       n' = n_integral params
+      pointlist = map ((+ u1) . (* h) . fromInteger) [0..n']
+      h = (u2 - u1) / (fromInteger n')
 
 -- Calculate the points along the sides of the target area
 calcArea :: CalcParams -> ZPlanePoints
@@ -76,5 +80,5 @@ calcArea params = (
 asPoint :: (RealFloat a) => Complex a -> (a, a)
 asPoint u = (realPart u, imagPart u)
 
-dzdu :: CalcParams -> Complex Double -> Complex Double
-dzdu params u = ((dwdu params) u) * (((chi_0 params) u) + ((f_corr params) u))
+-- dzdu :: CalcParams -> Complex Double -> Complex Double
+-- dzdu params u = ((dwdu params) u) * (((chi_0 params) u) + ((f_corr params) u))

@@ -4,6 +4,22 @@ module AFCalc.Integrators where
 -- We will work with complex numbers
 import Data.Complex
 
+-- Type of discretization. When integrating, it's important at which location in
+--   discretization segment you calculate the value of function
+data QuantizeType = LeftEdge | CenterPoint | RightEdge
+
+-- Short form of quantize with concrete definition of QuantizeType
+quantize = quantize' CenterPoint
+
+-- Uniform quantization of [<a>..<b>] with number of steps equals <n>
+quantize' :: (Fractional a) => QuantizeType -> a -> a -> Integer -> [a]
+quantize' LeftEdge a b n = (map ((+ a) . (* h) . fromInteger) [0..(n-1)])
+  where h = getQuantizer a b n
+quantize' RightEdge a b n = (map ((+ a) . (* h) . fromInteger) [1..n])
+  where h = getQuantizer a b n
+quantize' CenterPoint a b n = (map ((+ (a + (h/2))) . (* h) . fromInteger) [0..(n-1)])
+  where h = getQuantizer a b n
+
 -- Get step between <a> and <b> given number <n> of steps
 getQuantizer :: (Fractional a) => a -> a -> Integer -> a
 getQuantizer a b n = (b - a) / (fromInteger n)
