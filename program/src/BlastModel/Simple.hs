@@ -115,7 +115,7 @@ dzdu :: ModelParams -> Complex Double -> Complex Double
 --   where v_0' = (v_0 param :+ 0)
 dzdu p u = nval' * eval'  * divident' / divisor''
   where
-    nval'  = (toComplex (phi_0 p)) * (mfunc p) / toComplex pi / toComplex (v_0 p)
+    nval'  = (-1)*(toComplex (phi_0 p)) * (mfunc p) / toComplex pi / toComplex (v_0 p)
     eval'  = exp ( 0 :+ ((1 - alpha p) * pi))
     divident' = t1m4t p u * t1p4t p u * t2m4t p u * t2p4t p u
     divisor'' = (t1m4 p u * t4m4 p u) ** ((1 - alpha p) :+ 0)  * (t1p4 p u * t4p4 p u) ** ((1 + alpha p) :+ 0)

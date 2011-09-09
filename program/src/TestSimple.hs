@@ -42,7 +42,7 @@ extract_param_names param =
       v0     = show $ v_0 param
       alpha0 = show $ alpha param
       abstau = show $ BlastModel.Simple.tau param
-  in "Phi0 = " ++ phi0 ++ ", V0 = " ++ v0 ++ ", Alpha0 = " ++ alpha0 ++ ", tau = " ++ abstau
+  in printf "Phi0 = %4.2f, v0 = %4.2f, Alpha = %2.1f, tau = %2.1f" phi0 v0 alpha0 abstau
 
 --------------------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ tau' = 0.6
 -- Default model parameters
 model_params = null_parameters{
     BlastModel.Simple.tau = tau',
-    alpha = 0.3
+    alpha = 0.7
   }
 
 -- Default calc parameters
@@ -65,13 +65,35 @@ calc_params = CalcParams{
 
 -- Program entry point with tests
 main = do
-  let param = calc_params{AFCalc.dzdu = (BlastModel.Simple.dzdu model_params)}
-  datalist <- calcPoints param
-  let linetitle = extract_param_names model_params
-  plotArea linetitle datalist
-  pngArea ("../img/" ++ linetitle ++ ".png") linetitle datalist
+  mapM (testTau.(* 0.1)) [1..10]
+  mapM (testAlpha.(* 0.1)) [13..20]
   return ()
 
+testAlpha a = do
+  let mpar = model_params{alpha = a}
+  let cpar = calc_params{AFCalc.dzdu = (BlastModel.Simple.dzdu mpar)}
+  datalist <- calcPoints cpar
+  let linetitle = extract_param_names mpar
+--  plotArea linetitle datalist
+  pngArea ("img/" ++ linetitle ++ ".png") linetitle datalist
+  return ()
 
+testTau t = do
+  let mpar = model_params{BlastModel.Simple.tau = t}
+  let cpar = calc_params{AFCalc.tau = t, AFCalc.dzdu = (BlastModel.Simple.dzdu mpar)}
+  datalist <- calcPoints cpar
+  let linetitle = extract_param_names mpar
+--  plotArea linetitle datalist
+  pngArea ("img/" ++ linetitle ++ ".png") linetitle datalist
+  return ()
 
+-- for use with ghci
+testAlphaTau a t = do
+  let mpar = model_params{BlastModel.Simple.tau = t, alpha = a}
+  let cpar = calc_params{AFCalc.tau = t, AFCalc.dzdu = (BlastModel.Simple.dzdu mpar)}
+  datalist <- calcPoints cpar
+  let linetitle = extract_param_names mpar
+  plotArea linetitle datalist
+  pngArea ("img/" ++ linetitle ++ ".png") linetitle datalist
+  return ()
 

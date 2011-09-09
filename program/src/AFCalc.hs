@@ -54,7 +54,7 @@ d' params = p
 -- Calculate only one point of target area
 -- As base point of integration we use point A
 calcPoint :: CalcParams -> Complex Double -> Complex Double
-calcPoint params u = integrate (dzdu params) n' (a' params) u
+calcPoint params u = integrate (dzdu params) n' (d' params) u
     where n' = n_integral params
 
 -- Calculate the line in target area corresponding to the line between
