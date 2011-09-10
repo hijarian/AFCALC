@@ -61,16 +61,17 @@ tau' = 0.4
 -- Default model parameters
 model_params = null_parameters{
     BlastModel.Simple.tau = tau',
-    alpha = 0.7
+    alpha = 1.3
   }
 
 -- Default calc parameters
 calc_params = CalcParams{
   -- Points are A, B, C and D
   points = (((pi/4) :+ (pi*tau'/4)), (0 :+ (pi*tau'/4)), (0 :+ 0), ((pi/4) :+ 0)),
-  AFCalc.tau = tau',
-  n_integral = 20,
-  origin = ((pi/4) :+ (pi*tau'/4)),
+  AFCalc.tau = tau', -- value of tau, do not use here values > 1
+  n_integral = 20, -- number of integrations
+  origin = ((pi/4) :+ (pi*tau'/4)), -- base point for integration
+  folder = "img/", -- folder to hold generated images
 -- Fillers for initialization
   AFCalc.dzdu = id,
   AFCalc.dwdu = id,
@@ -84,13 +85,15 @@ main = do
   mapM (testAlpha.(* 0.1)) [13..20]
   return ()
 
+data OutputType = ToPng | ToWindow
+
 testAlpha a = do
   let mpar = model_params{alpha = a}
   let cpar = calc_params{AFCalc.dzdu = (BlastModel.Simple.dzdu mpar)}
   datalist <- calcPoints cpar
   let linetitle = extract_param_names mpar
 --  plotArea linetitle datalist
-  pngArea ("img/" ++ linetitle ++ ".png") linetitle datalist
+  pngArea ((folder cpar) ++ linetitle ++ ".png") linetitle datalist
   return ()
 
 testTau t = do
@@ -99,7 +102,7 @@ testTau t = do
   datalist <- calcPoints cpar
   let linetitle = extract_param_names mpar
 --  plotArea linetitle datalist
-  pngArea ("img/" ++ linetitle ++ ".png") linetitle datalist
+  pngArea ((folder cpar) ++ linetitle ++ ".png") linetitle datalist
   return ()
 
 -- for use with ghci
@@ -109,6 +112,6 @@ testAlphaTau a t = do
   datalist <- calcPoints cpar
   let linetitle = extract_param_names mpar
   plotArea linetitle datalist
-  pngArea ("img/" ++ linetitle ++ ".png") linetitle datalist
+  pngArea ((folder cpar) ++ linetitle ++ ".png") linetitle datalist
   return ()
 

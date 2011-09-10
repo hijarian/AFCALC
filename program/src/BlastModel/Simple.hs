@@ -111,8 +111,6 @@ mfunc param = (* 2) . (** 2) . (/ divisor) $ divident
 
 -- dz/du
 dzdu :: ModelParams -> Complex Double -> Complex Double
--- dzdu param u = ((dwdu param u) / v_0') * exp ( negate $ chi param u )
---   where v_0' = (v_0 param :+ 0)
 dzdu p u = nval' * eval'  * divident' / divisor''
   where
     nval'  = (-1)*(toComplex (phi_0 p)) * (mfunc p) / toComplex pi / toComplex (v_0 p)
