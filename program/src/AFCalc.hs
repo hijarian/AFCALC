@@ -28,7 +28,8 @@ data CalcParams = CalcParams {
   f_corr     :: (Complex Double -> Complex Double),
   points     :: (Complex Double, Complex Double, Complex Double, Complex Double), -- Points at A, B, C and D, respectively
   tau        :: Double,
-  n_integral :: Integer
+  n_integral :: Integer,
+  origin     :: Complex Double
 }
 
 --------------------------------------------------------------------------------
@@ -54,7 +55,7 @@ d' params = p
 -- Calculate only one point of target area
 -- As base point of integration we use point A
 calcPoint :: CalcParams -> Complex Double -> Complex Double
-calcPoint params u = integrate (dzdu params) n' (d' params) u
+calcPoint params u = integrate (dzdu params) n' (origin params) u
     where n' = n_integral params
 
 -- Calculate the line in target area corresponding to the line between

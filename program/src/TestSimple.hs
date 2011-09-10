@@ -20,8 +20,17 @@ import Data.Complex
 calcPoints :: CalcParams -> IO (ZPlanePoints)
 calcPoints param = do
   print "We will now compute points on the edge of blast."
+-- We will not calculate to (d' param), we stop at 99%
+  let dx = realPart (d' param)
+  let dy = imagPart (d' param)
+  let d1' = ((dx + 0.01) :+ dy)
+  let d2' = (dx :+ (dy + 0.01))
   -- Getting every side of area
-  let (ab, bc, cd, da) = calcArea param
+  let (ab, bc, cd, da) = (
+	calcSide param (a' param) (b' param),
+	calcSide param (b' param) (c' param),
+	calcSide param{origin=( (pi/4 - 0) :+ (pi*tau'/4 + 0)) } (c' param) d1',
+	calcSide param{origin=( (pi/4 + 0) :+ (pi*tau'/4 + 0)) } d2' (a' param))
   -- Logging
   print "Points at AB: "
   time $ outputData ab
@@ -38,16 +47,16 @@ outputData datalist = do
   return ()
 
 extract_param_names param =
-  let phi0   = show $ phi_0 param
-      v0     = show $ v_0 param
-      alpha0 = show $ alpha param
-      abstau = show $ BlastModel.Simple.tau param
+  let phi0   = phi_0 param
+      v0     = v_0 param
+      alpha0 = alpha param
+      abstau = BlastModel.Simple.tau param
   in printf "Phi0 = %4.2f, v0 = %4.2f, Alpha = %2.1f, tau = %2.1f" phi0 v0 alpha0 abstau
 
 --------------------------------------------------------------------------------
 
 -- Default tau
-tau' = 0.6
+tau' = 0.4
 
 -- Default model parameters
 model_params = null_parameters{
@@ -58,9 +67,15 @@ model_params = null_parameters{
 -- Default calc parameters
 calc_params = CalcParams{
   -- Points are A, B, C and D
-  points = (((pi/4)*(0.99) :+ (pi*tau'/4)), (0 :+ (pi*tau'/4)), (0 :+ 0), ((pi/4)*(0.99) :+ 0)),
+  points = (((pi/4) :+ (pi*tau'/4)), (0 :+ (pi*tau'/4)), (0 :+ 0), ((pi/4) :+ 0)),
   AFCalc.tau = tau',
-  n_integral = 20
+  n_integral = 20,
+  origin = ((pi/4) :+ (pi*tau'/4)),
+-- Fillers for initialization
+  AFCalc.dzdu = id,
+  AFCalc.dwdu = id,
+  AFCalc.chi_0 = id,
+  AFCalc.f_corr = id
   }
 
 -- Program entry point with tests
