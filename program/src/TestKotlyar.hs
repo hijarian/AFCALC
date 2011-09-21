@@ -1,4 +1,8 @@
 module Main where
+-- Main module for the 'Tests' plotter
+-- Will mass-print charts for different values of parameters
+-- Uses Blast model of Kotlyar
+
 
 -- Importing the model
 import BlastModel.Model_1975_Kotlyar
@@ -21,7 +25,7 @@ tau' = 0.4
 
 -- Default model parameters
 model_params = null_parameters{
-    BlastModel.Simple.tau = tau',
+    BlastModel.Model_1975_Kotlyar.tau = tau',
     alpha = 1.3
   }
 
@@ -34,7 +38,6 @@ calc_params = CalcParams{
   origin = ((pi/4) :+ (pi*tau'/4)), -- base point for integration
   folder = "img/", -- folder to hold generated images
 -- Fillers for initialization
-  AFCalc.dzdu = id,
   AFCalc.dwdu = id,
   AFCalc.chi_0 = id,
   AFCalc.f_corr = id
@@ -46,24 +49,42 @@ main = do
   mapM (testAlpha.(* 0.1)) [13..20]
   return ()
 
+loadFullModel tau = calc_params{
+  folder = "img/full/",
+  AFCalc.dwdu   = (BlastModel.Model_1975_Kotlyar.dwdu   model_params), 
+  AFCalc.chi_0  = (BlastModel.Model_1975_Kotlyar.chi_0  model_params),
+  AFCalc.f_corr = (BlastModel.Model_1975_Kotlyar.f_corr model_params)
+  }
+
+loadSimpleModel tau = calc_params{
+  folder = "img/simple/",
+  AFCalc.dwdu   = (BlastModel.Model_1975_Kotlyar.dwdu   model_params), 
+  AFCalc.chi_0  = (BlastModel.Model_1975_Kotlyar.chi_0  model_params),
+  AFCalc.f_corr = (\u -> (0 :+ 0))
+  }
+
 testAlpha a = do
-  let mpar = model_params{alpha = a}
-  let cpar = calc_params{AFCalc.dzdu = (dzdu' mpar)}
-  processParams ToPNG mpar cpar
+  let mpar  = model_params{alpha = a}
+  let cpars = loadSimpleModel tau'
+  processParams ToPNG mpar cpars
+  let cparf = loadFullModel tau'
+  processParams ToPNG mpar cparf
   return ()
 
 testTau t = do
-  let mpar = model_params{BlastModel.Simple.tau = t}
-  let cpar = calc_params{AFCalc.tau = t, AFCalc.dzdu = (dzdu' mpar)}
-  processParams ToPNG mpar cpar
+  let mpar  = model_params{BlastModel.Model_1975_Kotlyar.tau = t}
+  let cpars = loadSimpleModel tau'
+  processParams ToPNG mpar cpars
+  let cparf = loadFullModel t
+  processParams ToPNG mpar cparf
   return ()
 
 -- Probing model with given tau and alpha parameters
 -- ATTENTION: we need to synchronize the tau values in AFCALC and our model!
 testAlphaTauWith :: RenderType -> Double -> Double -> IO()
 testAlphaTauWith r a t = do
-  let mpar = model_params{BlastModel.Simple.tau = t, alpha = a}
-  let cpar = calc_params{AFCalc.tau = t, AFCalc.dzdu = (dzdu' mpar)}
+  let mpar = model_params{BlastModel.Model_1975_Kotlyar.tau = t, alpha = a}
+  let cpar = loadSimpleModel t
   processParams r mpar cpar
   return ()
 
@@ -110,7 +131,7 @@ extract_param_names param =
   let phi0   = phi_0 param
       v0     = v_0 param
       alpha0 = alpha param
-      abstau = BlastModel.Simple.tau param
+      abstau = BlastModel.Model_1975_Kotlyar.tau param
   in printf "Phi0 = %4.2f, v0 = %4.2f, Alpha = %2.1f, tau = %2.1f" phi0 v0 alpha0 abstau
 
 -- Type of rendering target
@@ -125,7 +146,7 @@ processParams rtype mpar cpar = do
   return ()
 
 --function to plot single chart using given ModelParams and CalcParams
-showChart :: RenderType -> CalcParams -> String -> PointList -> IO()
+--showChart :: RenderType -> CalcParams -> String -> ZPlanePoints -> IO()
 -- Showing chart to GTK window
 showChart ToWindow _ linetitle datalist = do
   plotArea linetitle datalist

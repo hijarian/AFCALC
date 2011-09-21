@@ -82,7 +82,7 @@ calc_params = CalcParams{
 -- Program entry point with tests
 main = do
   mapM (testTau.(* 0.1)) [1..10]
-  mapM (testAlpha.(* 0.1)) [13..20]
+  mapM (testAlpha.(* 0.1)) [1..25]
   return ()
 
 data OutputType = ToPng | ToWindow

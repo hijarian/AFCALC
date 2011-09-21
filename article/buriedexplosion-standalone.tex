@@ -1,0 +1,234 @@
+  % размер бумаги и кегль шрифта, класс документа --- ``отчёт''
+\documentclass[a4paper,12pt]{article}
+  % используем cp1251 ТОЛЬКО потому, что bibtex умеет сортировать только ASCII-строки, увы
+\usepackage[cp1251]{inputenc}
+  % ещё можно T1, но пусть будет T2A
+\usepackage[T2A]{fontenc}
+  % переносы и типографские правила для русского _затем_ английского языков
+\usepackage[english,russian]{babel}
+  % ядро для научной статьи
+\usepackage{amssymb,amsfonts,amsmath,mathtext}
+  % цитирование и нумерованные списки
+\usepackage{cite,enumerate}
+  % красная строка
+\usepackage{indentfirst}
+  % диаграммы и черчение
+\usepackage{pstricks,pst-plot,pb-diagram}
+% включаем крутые гиперссылки и автоматические подписи к ссылкам (Рис. n, etc)
+%\usepackage{hyperref}
+%\def\figureautorefname{рис.}
+
+  % меняем поля
+\usepackage{geometry}
+\geometry{left=2.5cm}
+\geometry{right=1.5cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+\author{Котляр Л. М., Сафронов М. А.}
+\title{О взрыве под поверхностью грунта криволинейного линейно-распределённого заряда}
+\date{}
+
+\renewcommand{\Im}{\mathop{\text{Im}}}
+\renewcommand{\Re}{\mathop{\text{Re}}}
+\newcommand{\hpi}{\frac{\pi}{4}}
+\newcommand{\hpit}{\frac{\pi|\tau|}{4}}
+\newcommand{\sumInfInf}{\sum \limits_{n= - \infty}^{+\infty}}
+\newcommand{\sumOneInf}{\sum \limits_{n= 1}^{+\infty}}
+\newcommand{\uAD}{\left( \xi + i \hpit \right)}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+ИНЭКА, г. Набережные Челны, 1/18, 8 (8552) 39-66-74, kotlyar@ineka.ru
+\end{center}
+
+\begin{abstract}
+Finding the form of the blast crater edge is of high importance in the construction works. This paper describes one method of finding coordinates of points on a crater edge left by explosion of buried elliptic charge. So-called ``solid-liquid model'' originally proposed by Lavrentjev is used here, with extensions brought by Chyaplygin and Kotlyar. With formulas derived here and numerical methods for integration we can calculate the form of crater edge with relatively high precision.
+\end{abstract}
+
+\begin{figure}[b]
+  \psset{unit=0.6cm}
+  \begin{minipage}[h]{0.3\linewidth}
+    \begin{center}
+    % Исходная схема модели течения в плоскости Z
+    % {``Начинаем рисовать''}(``Координаты точки отсчёта'')(``размеры'')
+    %\begin{pspicture}(0,0)(4,2)
+    % Размеры блока указывать обязательно
+      \begin{pspicture}(8,7)
+        % Оси
+        \psaxes[ticks=none,labels=none,linewidth=0.5pt]{->}(0,6)(0,6)(7,0)
+    %    \psgrid[subgriddiv=1,griddots=10,gridlabels=7pt](0,0)(7,6)
+        % Течение
+        \psbezier[linewidth=1pt]{->}(0.5,3.5)(1.5,2)(4,3)(4,5)
+        \uput[d](3,3){\small $\vec v$}
+        % DC
+        \psline[linewidth=1.5pt](0,6)(5,6)
+        \uput[ur](0,6){\textbf{D}}
+        \uput[u](5,6){\textbf{C}}
+        % AD
+        %\psarc[linewidth=1.5pt](0,4.75){0.75}{270}{90}
+        \psbezier[linewidth=1.5pt](0,4)(0.5,4.5)(0.5,5.5)(0,6)
+        \uput[l](0,4.5){\textbf{A}}
+        % Углы
+        \psline[linewidth=0.5pt](0,6)(0.5,5.3)
+        \psarc[linewidth=0.5pt](0,6){0.4}{-50}{0}
+        \rput(0.7,5.7){\scriptsize $\pi \gamma / 2$}
+        % BA
+        \psline[linewidth=1.5pt](0,3)(0,4)
+        \uput[l](0,3){\textbf{B}}
+        % CB
+        \psbezier[linewidth=1.5pt](0,3)(0,0)(5,0)(5,6)
+        % Подписи
+        \uput[r](7,6){y}
+        \uput[d](0,0){x}
+        \uput[ul](0,6){0}
+        \cput[linewidth=0.5pt](3,4.5){\Large $z$}
+      \end{pspicture}
+    \\ а)
+    \end{center}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[h]{0.3\linewidth}
+    \begin{center}
+    % Картина течения в плоскости u = \xi + i\eta
+      \begin{pspicture}(6,5)
+        \psaxes[ticks=none,labels=none,linewidth=0.5pt]{->}(6,4)
+    %    \psgrid[subgriddiv=1,griddots=10,gridlabels=7pt](0,0)(6,5)
+        % ABCD
+        \psline[linewidth=1.5pt](0,0)(5,0)(5,3)(0,3)(0,0)
+        \psbezier[linewidth=1.5pt]{->}(4,2)(2,2)(2,2)(2,0.5)
+        \uput[d](3,2){\small $\vec v$}
+        \uput[r](6,0){$\xi$}
+        \uput[u](0,4){$\eta$}
+        \uput[ur](0,0){\textbf{C}}
+        \uput[dl](0,0){0}
+        \uput[r](5,3){\textbf{A}: $\frac{\pi}{4} + \frac{\pi \tau}{4}$}
+        \uput[dr](0,3){\textbf{B}}
+        \uput[l](0,3){$\frac{\pi \tau}{4}$}
+        \uput[ul](5,0){\textbf{D}}
+        \uput[d](5,0){$\frac{\pi}{4}$}
+        \cput[linewidth=0.5pt](1,2){\Large $u$}
+      \end{pspicture}
+    \\ \vspace{3em} б)
+    \end{center}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[h]{0.3\linewidth}
+    \begin{center}
+  % Упрощённая схема течения, для которой действительна \chi_0
+    \begin{pspicture}(8,7)
+      % Оси
+      \psaxes[ticks=none,labels=none,linewidth=0.5pt]{->}(0,6)(0,6)(7,0)
+  %   \psgrid[subgriddiv=1,griddots=10,gridlabels=7pt](0,0)(8,7)
+      % BADC
+      \psline[linewidth=1.5pt](4,3)(2,3)(0,6)(5.5,6)
+      \uput[ur](0,6){\textbf{D}}
+      \uput[d](2,3){\textbf{A}}
+      \uput[dr](4,3){\textbf{B}}
+      \uput[u](5.5,6){\textbf{C}}
+      % BC
+      \psbezier[linewidth=1.5pt](4,3)(5,4)(5.5,5)(5.5,6)
+      % Течение
+      \psbezier{->}(2,4)(3,4.5)(3.5,5)(3.5,5.5)
+      \uput[d](3,4.5){\small $\vec v$}
+      % Углы
+      \psarc[linewidth=0.5pt](0,6){0.4}{-50}{0}
+      \rput(0.7,5.7){\scriptsize $\pi \gamma / 2$}
+      % Остальные подписи
+      \uput[r](7,6){y}
+      \uput[d](0,0){x}
+      \uput[ul](0,6){0}
+      \cput[linewidth=0.5pt](5,2){\Large $z$}
+    \end{pspicture}
+    \\ в)
+    \end{center}
+  \end{minipage}
+
+  \caption{a) Исходная схема модели, б) Область дополнительного переменного $u$, в) Упрощённая схема задачи}\label{figures}
+\end{figure}
+
+Рассматривается двумерная задача о взрыве заглублённого линейно-распределённого заряда криволинейной формы в виде дуги эллипса (рис.~\ref{figures}а).
+Используя импульсную постановку, предложенную М.~А.~Лаврентьевым \cite{diploma:Kuznetsov1}, задачу можно свести к исследованию плоского потенциального течения идеальной невесомой жидкости в плоскости $z = x + iy$, ограниченного криволинейным участком $AD$, прямолинейными границами $AB$ и $DC$ и линией тока $BC$, на которой модуль скорости постоянен и равен $v_0$ (рис.~\ref{figures}а) и которая является границей воронки выброса (в силу симметрии рассматривается правая половина течения).
+Потенциал скорости течения $\varphi$ принимает постоянное значение на границе заряда $AD$, а на поверхности грунта $DC$ равен нулю.
+
+Для решения задачи вводится вспомогательное переменное $u = \xi + i\eta$ (см.~рис.~\ref{figures}б), изменяющееся в области $D_u$ --- прямоугольнике со сторонами $\pi / 4$ и $\pi\tau / 4$ ($\tau = i|\tau|$).
+На основании граничных условий для комплексного потенциала $w(u)$, используя свойства эллиптических функций \cite[стр.~350]{matan:Whittaker} и метод особых точек \cite{phys:Gurevich}, найдём:
+\begin{equation}\label{eq:dw/du}
+  \frac{dw}{du} = iN F(u) = iN \frac
+      {\vartheta_1\left(u - \hpit \right) \vartheta_1\left(u + \hpit \right) \vartheta_2\left(u - \hpit \right)\vartheta_2\left(u + \hpit \right)}
+      {\vartheta_1\left(u - \hpi \right) \vartheta_1\left(u + \hpi \right) \vartheta_4\left(u - \hpi \right)\vartheta_4\left(u + \hpi \right)}
+\end{equation}
+где $N$ --- вещественная положительная постоянная, которая может быть вычислена через вычет функции $w(u)$ в точке $D$, $\vartheta_k(u), k={1,2,3,4}$ --- тэта-функции для периодов $\pi$ и $\pi\tau$ \cite[стр.~334]{matan:Whittaker}.
+
+Рассмотрим функцию Жуковского \cite[с.~30]{phys:Gurevich} $\chi(u) = \ln \frac{v}{v_0} - i\Theta$, где $v$ --- модуль скорости, $\Theta$ --- угол наклона вектора скорости к оси абсцисс, представив её в виде $\chi(u) = \chi_0(u) - f(u)$, где $\chi_0(u)$ --- функция Жуковского для фиктивного течения по схеме на рис.~\ref{figures}в, функция $f(u) = \mu + i\varepsilon$ --- аналитическая в $D_u$ и непрерывная в $\overline{D_u}$ функция.
+
+Функция $\chi_0(u)$ легко строится \cite{phys:Kotlyar2}:
+\begin{equation}\label{eq:chi_0}
+  \chi_0(u) = -i\pi(\gamma - 1) + \gamma \ln \frac
+      {\vartheta_1 \left(u + \hpi \right) \vartheta_4\left(u + \hpi \right)}
+      {\vartheta_1 \left(u - \hpi \right) \vartheta_4\left(u - \hpi \right)}
+\end{equation}
+а из граничного условия на криволинейном участке $AD$, получим интегро-дифференциальное условие, связывающее вещественную и мнимую часть $\chi(u)$:
+
+Сравнивая граничные условия для $\chi(u)$ и $\chi_0(u)$, получим, что:
+\begin{equation}\label{eq:AD-boundary}
+  \frac{d\Theta}{d\eta} = \delta \varkappa(\Theta) \frac{M}{\pi} |F(u)| e^{-r(\eta)}
+\end{equation}
+где $\delta = \frac{\varphi_0}{v_0}$ --- безразмерный параметр, $\varkappa(\Theta)$ --- кривизна дуги, $M$, $F$ --- соответственно, известные постоянная и функция.
+С учётом \eqref{eq:chi_0} и \eqref{eq:AD-boundary} получим граничное условие для определения неизвестной функции $f(u)$:
+\begin{equation}\label{eq:AD-f-boundary}
+  \varepsilon'_{\eta} = \delta \varkappa(\Theta) \frac{M}{\pi} \nu(\eta) e^{\mu(\eta)} \quad \left(u = \frac{\pi}{4} + i\eta \right)
+\end{equation}
+
+Отображая область $D_u$ на полукольцо и, учитывая граничные условия для $f(u)$, представим её в виде
+\begin{equation}\label{eq:f(u)}
+  f(u) = -\frac{(4u - \pi)\left(1 - \frac{\gamma}{2}\right)}{|\tau|} \sumInfInf c_n e^{\frac{4u - \pi}{|\tau|}}
+\end{equation}
+где неизвестные коэффициенты $c_n$ находятся методом Фурье.
+
+Все геометрические и гидродинамические характеристики течения и граница воронки выброса находятся из соотношения
+\begin{equation}\label{eq:dz/du}
+  \frac{dz}{du} = \frac{1}{v_0} e^{-\chi(u)} \frac{dw}{du}
+\end{equation}
+
+\begin{thebibliography}{1}
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\language\csname l@#1\endcsname\fi}
+\ifx\undefined\url\def\url#1{{\small #1}}\else\fi
+\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi
+\ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\else\fi
+\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi
+
+\bibitem{phys:Gurevich}
+\selectlanguageifdefined{russian}
+\BibEmph{Гуревич,~М.~И.} Теория струй идеальной жидкости~/ М.~И.~Гуревич. "---
+\newblock Наука, 1979.
+
+\bibitem{phys:Kotlyar2}
+\selectlanguageifdefined{russian}
+\BibEmph{Котляр,~Л.~М.} Об одном случае струйного течения идеальной жидкости~/
+  Л.~М.~Котляр~// \BibEmph{Математика}. "---
+\newblock 1976. "---
+\newblock {\cyr\textnumero}~2.
+
+\bibitem{diploma:Kuznetsov1}
+\selectlanguageifdefined{russian}
+\BibEmph{Кузнецов,~В.~М.} О форме воронки выброса при взрыве на поверхности
+  грунта~/ В.~М.~Кузнецов~// \BibEmph{ПМТФ}. "---
+\newblock 1962. "---
+\newblock {\cyr\textnumero}~3. "---
+\newblock {\cyr\CYRS.}~152--156.
+
+\bibitem{matan:Whittaker}
+\selectlanguageifdefined{russian}
+\BibEmph{Уиттекер,~Э.~Т.} Курс современного анализа: В 2 т.~/ Э.~Т.~Уиттекер,
+  Д.~Н.~Ватсон. "---
+\newblock М.: Физматгиз, 1963. "---
+\newblock \CYRT.~2: Трансцендентные функции.
+
+\end{thebibliography}
+
+\end{document}

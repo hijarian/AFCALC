@@ -22,14 +22,15 @@ type ZPlanePoints = (ABPointList, BCPointList, CDPointList, DAPointList)
 -- It is a calculation parameters, holding every component needed to calculate points
 -- It should be filled before calling any other method
 data CalcParams = CalcParams {
-  dzdu       :: (Complex Double -> Complex Double),
+--  dzdu       :: (Complex Double -> Complex Double),
   dwdu       :: (Complex Double -> Complex Double),
   chi_0      :: (Complex Double -> Complex Double),
   f_corr     :: (Complex Double -> Complex Double),
   points     :: (Complex Double, Complex Double, Complex Double, Complex Double), -- Points at A, B, C and D, respectively
   tau        :: Double,
   n_integral :: Integer,
-  origin     :: Complex Double
+  origin     :: Complex Double,
+  folder     :: String -- Folder to save images to
 }
 
 --------------------------------------------------------------------------------
@@ -55,7 +56,7 @@ d' params = p
 -- Calculate only one point of target area
 -- As base point of integration we use point A
 calcPoint :: CalcParams -> Complex Double -> Complex Double
-calcPoint params u = integrate (dzdu params) n' (origin params) u
+calcPoint params u = integrate (dzdu' params) n' (origin params) u
     where n' = n_integral params
 
 -- Calculate the line in target area corresponding to the line between
@@ -81,5 +82,8 @@ calcArea params = (
 asPoint :: (RealFloat a) => Complex a -> (a, a)
 asPoint u = (realPart u, imagPart u)
 
--- dzdu :: CalcParams -> Complex Double -> Complex Double
--- dzdu params u = ((dwdu params) u) * (((chi_0 params) u) + ((f_corr params) u))
+-- Main function for calcPoint
+-- User of library is expected to fill the dwdu, chi_0 and f_corr fields
+--   of CalcParams with functions from his model
+dzdu' :: CalcParams -> Complex Double -> Complex Double
+dzdu' params u = ((dwdu params) u) * (exp (((chi_0 params) u) - ((f_corr params) u)))
