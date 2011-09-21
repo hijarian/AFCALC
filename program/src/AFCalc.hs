@@ -22,15 +22,27 @@ type ZPlanePoints = (ABPointList, BCPointList, CDPointList, DAPointList)
 -- It is a calculation parameters, holding every component needed to calculate points
 -- It should be filled before calling any other method
 data CalcParams = CalcParams {
---  dzdu       :: (Complex Double -> Complex Double),
-  dwdu       :: (Complex Double -> Complex Double),
-  chi_0      :: (Complex Double -> Complex Double),
-  f_corr     :: (Complex Double -> Complex Double),
-  points     :: (Complex Double, Complex Double, Complex Double, Complex Double), -- Points at A, B, C and D, respectively
-  tau        :: Double,
-  n_integral :: Integer,
-  origin     :: Complex Double,
-  folder     :: String -- Folder to save images to
+    -- Slot for user-defined full function in some simplified form maybe
+    -- Will be used when is_simple flag equals True
+    _dzdu       :: (Complex Double -> Complex Double),
+    -- Slots for functions provided by user from his model
+    _dwdu       :: (Complex Double -> Complex Double),
+    _chi_0      :: (Complex Double -> Complex Double),
+    _f_corr     :: (Complex Double -> Complex Double),
+    -- Points at A, B, C and D, respectively
+    points     :: (Complex Double, Complex Double, Complex Double, Complex Double), 
+    -- Tau parameter, underscored to avoid name clash with model module
+    -- WARNING: should be equal to the tau parameter fed to the dwdu, chi_0 and 
+    -- f_corr functions!
+--     _tau        :: Double,
+    -- Frequency of discretization when integrating along lines
+    n_integral :: Integer,
+    -- Origin point to integration
+    origin     :: Complex Double,
+    -- Folder to save images to
+    folder     :: String,
+    -- Is the model simplified and contains only the dzdu function?
+    is_simple  :: Bool 
 }
 
 --------------------------------------------------------------------------------
@@ -86,4 +98,11 @@ asPoint u = (realPart u, imagPart u)
 -- User of library is expected to fill the dwdu, chi_0 and f_corr fields
 --   of CalcParams with functions from his model
 dzdu' :: CalcParams -> Complex Double -> Complex Double
-dzdu' params u = ((dwdu params) u) * (exp (((chi_0 params) u) - ((f_corr params) u)))
+dzdu' cpar u 
+    | (is_simple cpar) == True = (dzdu' u)
+    | otherwise                = (dwdu' u) * exp ( (f_corr' u) - (chi_0' u) )
+        where
+            dzdu'   = (_dzdu   cpar)
+            dwdu'   = (_dwdu   cpar)
+            f_corr' = (_f_corr cpar)
+            chi_0'  = (_chi_0  cpar)

@@ -18,9 +18,11 @@ module BlastModel.Model_1975_Kotlyar where
 import Data.Complex
 
 -- Custom module for handling theta-functions
+-- TODO: cabalize Theta and put it in generic module under Math
 import Theta
 
 -- We will use integrators provided by AFCalc itself
+-- TODO: cabalize Integrators and put it in generic module under Math
 import AFCalc.Integrators
 
 -- We will pretty-print some of values
@@ -31,26 +33,42 @@ import Text.Printf
 -----------------------------------------------------------------------
 -- Model parameters are defined as such:
 data ModelParams = ModelParams {
-    tau        :: Double,     -- параметр, доопределяет тета-функции
-    phi_0      :: Double,     -- начальное значение потенциала течения
-    v_0        :: Double,     -- критическое значение скорости, скорость течения равна v_0 на границе воронки взрыва
-    alpha      :: Double,     -- угол, с которым граница заряда наклонена к оси абсцисс
-    rad_a      :: Double,     -- заряд предполагается эллиптическим, поэтому это больший радиус заряда
-    rad_b      :: Double,     -- заряд предполагается эллиптическим, поэтому это меньший радиус заряда
-    n_theta    :: Integer,    -- количество слагаемых в ряду, представляющем тета-функцию (т. е., это, по сути, точность вычислений тета-функций)
-    n_cn       :: Integer,    -- количество коэффициентов cN в разбиении f(u) в ряд, т. е., заодно и точность вычисления f(u)
-    c_n        :: [Double]    -- список коэффициентов cN в разбиении f(u) в ряд. При задании параметров равны начальному приближению, потом уточняются.
--- Не существует c_n !! 0, параметр c0 задаётся в формуле, и здесь не хранится и не обновляется.
+    -- tau parameter used in Theta functions 
+    --   and defines the height of area of U variable
+    tau        :: Double,     
+    -- starting value of potential of the 'flow'
+    phi_0      :: Double,     
+    -- critical value of speed of flow. Speed v = v_0 at the edge of blast
+    v_0        :: Double,
+    -- pi*alpha/2 is an angle between CD (surface) and AD 
+    --   (explosive charge edge)
+    alpha      :: Double,
+    -- first radius of elliptical edge of explosive charge
+    rad_a      :: Double,
+    -- second radius of elliptical edge of explosive charge
+    rad_b      :: Double,
+    -- number of addends in the series representing the Theta function 
+    --   (essentially this is a precision of Theta function value computations)
+    -- DO NOT set it higher than 20-25, you'll get divergent series!
+    n_theta    :: Integer,
+    -- number of coefficients Cn (essentially precision of computations of f(u),
+    --   but do not set it to values higher than 20-25, you can get 
+    --   divergent series because of calculation errors)
+    n_cn       :: Integer,
+    -- coefficients Cn used in definition of f(u) function.
+    -- Equals to some default values at the beginning.
+    -- We need to calculate them first, and only after that run calculations 
+    --   of dzdu
+    -- Value of c_n !! 0 does not exist. Cn(0) is set in the formulas of model
+    --   and doesn't renew itself
+    c_n        :: CnList
     } deriving (Show)
 
 -- Type of list of coefficients for correcting functions
 type CnList = [Double]
 
--- TODO: Points A B C and D at corners of the area of calculations
-point_a = (0:+ 0)
-
 -- Default parameters, useful for quick runs in ghci
-null_parameters = ModelParams {
+model_defaults = ModelParams {
     tau        = 0.4,
     phi_0      = 1,
     v_0        = 1,
@@ -58,9 +76,8 @@ null_parameters = ModelParams {
     rad_a      = 2, -- radius A of elliptical form of the explosive charge
     rad_b      = 5, -- radius B of elliptical form of the explosive charge
     n_theta    = 25, -- you'll never need more, 'cause there's an q ** n_theta ** 2 in definition of both theta-functions with q < 1
-
-    n_cn       = 30,
-    c_n        = take 30 $ repeat 0
+    n_cn       = 25,
+    c_n        = take 25 $ repeat 0
     }
 -----------------------------------------------------------------------
 -- MODEL PARAMETERS END
@@ -75,6 +92,7 @@ toComplex :: (RealFloat a) => a -> Complex a
 toComplex = (:+ 0)
 
 -- Semantically converting to pure imaginary number
+-- Equals to multiplying the real number by i
 toImaginary :: (RealFloat a) => a -> Complex a
 toImaginary = ((:+) 0)
 
@@ -171,7 +189,7 @@ mfunc param = (* 2) . (** 2) . (/ divisor) $ divident
 dwdu :: ModelParams -> Complex Double -> Complex Double
 dwdu p u = npar * (mfunc p) * divident / divisor
   where
-    npar = (0 :+ 2) * toComplex ( phi_0' / pi )
+    npar = toComplex.negate $ phi_0' / pi
     divident = (t1m4t p u) * (t1p4t p u) * (t2m4t p u) * (t2p4t p u)
     divisor  = (t1m4  p u) * (t1p4  p u) * (t4m4  p u) * (t4p4  p u)
     phi_0' = phi_0 p
@@ -323,16 +341,19 @@ curvature param x = ((1 - epssin) ** (3/2)) / p
 -- dz/du
 -- Provided here for testing and comparing purposes
 -- It's a mathematically simplified equivalent of combination 
---   dzdu = dwdu * exp (chi_0 + f_corr)
+--   dzdu = dwdu * exp (f_corr - chi_0)
 -- AFCalc already provides function named dzdu so we use quoted version
-dzdu' :: ModelParams -> Complex Double -> Complex Double
-dzdu' params u = (dzdu_simple params u) * (exp $ f_corr params u)
+dzdu :: ModelParams -> Complex Double -> Complex Double
+-- dzdu params u = (dzdu_simple params u) * (exp $ f_corr params u)
+
+-- for now f_corr is under development, so dzdu equals dzdu_simple:
+dzdu = dzdu_simple
 
 -- Calculates simplified version of the area. It needs correcting function f_corr
 dzdu_simple :: ModelParams -> Complex Double -> Complex Double
 dzdu_simple p u = nval' * eval'  * divident' / divisor''
   where
-    nval'  = (toComplex (phi_0 p)) * (mfunc p) / toComplex pi / toComplex (v_0 p)
+    nval'  = (mfunc p) * ((toComplex.negate) $ (phi_0 p) / pi / (v_0 p))
     eval'  = exp ( 0 :+ ((1 - alpha p) * pi))
     divident' = t1m4t p u * t1p4t p u * t2m4t p u * t2p4t p u
     divisor'' = (t1m4 p u * t4m4 p u) ** ((1 - alpha p) :+ 0)  * (t1p4 p u * t4p4 p u) ** ((1 + alpha p) :+ 0)
