@@ -43,9 +43,10 @@ data ModelParams = ModelParams {
     -- pi*alpha/2 is an angle between CD (surface) and AD 
     --   (explosive charge edge)
     alpha      :: Double,
-    -- first radius of elliptical edge of explosive charge
+    -- small radius of elliptical edge of explosive charge
     rad_a      :: Double,
-    -- second radius of elliptical edge of explosive charge
+    -- large radius of elliptical edge of explosive charge
+    -- it really should be larger than rad_a, or else we get NaN in curvature
     rad_b      :: Double,
     -- number of addends in the series representing the Theta function 
     --   (essentially this is a precision of Theta function value computations)
@@ -73,8 +74,8 @@ model_defaults = ModelParams {
     phi_0      = 1,
     v_0        = 1,
     alpha      = 1.3,
-    rad_a      = 2, -- radius A of elliptical form of the explosive charge
-    rad_b      = 5, -- radius B of elliptical form of the explosive charge
+    rad_a      = 20, -- radius A of elliptical form of the explosive charge
+    rad_b      = 50, -- radius B of elliptical form of the explosive charge
     n_theta    = 25, -- you'll never need more, 'cause there's an q ** n_theta ** 2 in definition of both theta-functions with q < 1
     n_cn       = 25,
     c_n        = take 25 $ repeat 0
@@ -162,7 +163,7 @@ printCnList param = do
 
 printCn :: (Integer, Double) -> IO()
 printCn (n, cn) = do
-  printf "n%3d: %8.3f" n cn
+  printf "n%3d: %8.3f\n" n cn
   return ()
   
 -----------------------------------------------------------------------
@@ -173,10 +174,8 @@ printCn (n, cn) = do
 -- CORE FUNCTIONS BEGIN
 -----------------------------------------------------------------------
 -- In AFCalc following function is defined:
---dzdu param u = ((dwdu param u) / v_0') * exp ( negate $ chi param u )
---  where v_0' = (v_0 param :+ 0)
+--dzdu param u = ((dwdu param u)) * exp ( negate $ chi param u )
 -- So, we need to provide only functions dwdu, chi_0, f_corr
-
 
 -- Small helper for dwdu function
 mfunc :: ModelParams -> Complex Double
@@ -309,7 +308,6 @@ efun param e = (exp . sum) $ map (transform e) cnlist
 -- 7. Вычисление коэффициентов cN END
 ----------------------------------------
 
-
 ----------------------------------------
 -- 8. Функция кривизны BEGIN
 
@@ -317,9 +315,11 @@ efun param e = (exp . sum) $ map (transform e) cnlist
 -- Т. о., параметризована длиной кривой, и имеет один аргумент.
 --  получает параметр указывающий на точку на криволинейной дуге,
 --  выдаёт значение кривизны в этой точке
+-- TODO: Maybe should convert this function to Complex valued?
 curvature :: ModelParams -> Double -> Double
 curvature param x = ((1 - epssin) ** (3/2)) / p
   where epssin = (epsilon * (sin x)) ^ 2
+        -- Here we see with our own eyes that RAD_B MUST BE GREATER THAN RAD_A!
         epsilon = ( sqrt ( b'*b' - a'*a' ) ) / b'
         p = (a'*a') / (b'*b')
         a' = rad_a param
@@ -344,10 +344,7 @@ curvature param x = ((1 - epssin) ** (3/2)) / p
 --   dzdu = dwdu * exp (f_corr - chi_0)
 -- AFCalc already provides function named dzdu so we use quoted version
 dzdu :: ModelParams -> Complex Double -> Complex Double
--- dzdu params u = (dzdu_simple params u) * (exp $ f_corr params u)
-
--- for now f_corr is under development, so dzdu equals dzdu_simple:
-dzdu = dzdu_simple
+dzdu p u = (dzdu_simple p u) * (exp $ f_corr p u)
 
 -- Calculates simplified version of the area. It needs correcting function f_corr
 dzdu_simple :: ModelParams -> Complex Double -> Complex Double

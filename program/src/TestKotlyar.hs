@@ -67,8 +67,10 @@ calc_params = CalcParams{
 -- Program entry point with tests
 -- NOTE: I will play with this function until there is some clarity 
 main = do
-  mapM ((testTau Short).(* 0.1)) [1..10]
-  mapM ((testAlpha Short).(* 0.1)) [13..20]
+  mapM ((probeParam Tau   Simple) .(* 0.1)) [1..10]
+  mapM ((probeParam Alpha Simple) .(* 0.1)) [1..20]
+  mapM ((probeParam Tau   Full)  . (* 0.1)) [1..10]
+  mapM ((probeParam Alpha Full)  . (* 0.1)) [1..20]
   return ()
 
 
@@ -80,7 +82,8 @@ data ParamType = Tau | Alpha | RadA | RadB | Phi0 | V0
 -- Full model consists of three functions: dwdu, chi_0 and f_corr
 -- Simple model consists of two functions: dwdu and chi_0 (f_corr = 0)
 -- Short model consists of only one function dzdu, containing full model
-data ModelType = Short | Simple | Full
+data ModelType = Short | Simple | Full deriving (Eq)
+
 
 -- Type of rendering target
 data RenderType = ToWindow | ToPNG
@@ -112,30 +115,46 @@ loadModel Short mpar = calc_params{
   _dzdu   = (dzdu mpar) 
   }
 
--- Function for testing some model with given alpha value and default tau value
--- Outputs to PNG so useful for silent mass tests
-testAlpha :: ModelType -> Double -> IO()
-testAlpha mtype a = do
-  let mpar  = model_params{alpha = a}
-  let cpar = loadModel mtype mpar
-  processParams ToPNG mpar cpar
-  return ()
+-- Function for updating the model parameters.
+-- If we use Full model, then we should update the Cn coefficients 
+--   every time we change any of parameters
+updateParams :: ModelType -> ParamType -> ModelParams -> Double -> IO(ModelParams)
+updateParams t  
+    | t == Full = updateParamsWithRecalc 
+    | otherwise = setnewParams 
 
--- Function for testing some model with given tau value and default alpha value
--- Outputs to PNG so useful for silent mass tests
-testTau :: ModelType -> Double -> IO()
-testTau mtype t = do
-  let mpar  = model_params{tau = t}
-  let cpar = loadModel mtype mpar
-  processParams ToPNG mpar cpar
-  return ()
+updateParamsWithRecalc :: ParamType -> ModelParams -> Double -> IO(ModelParams)
+updateParamsWithRecalc p mpar v = do
+    raw_new_mpar <- setnewParams p mpar v
+    new_mpar     <- renewCn raw_new_mpar
+    return new_mpar
+    
+-- Setting new parameters based on given ParamType
+-- TODO: remove china code below and replace it with some cool type dispathing
+setnewParams :: ParamType -> ModelParams -> Double -> IO(ModelParams)
+setnewParams Tau   mpar v = return mpar{tau   = v}
+setnewParams Alpha mpar v = return mpar{alpha = v}
+setnewParams Phi0  mpar v = return mpar{phi_0 = v}
+setnewParams V0    mpar v = return mpar{v_0   = v}
+setnewParams RadA  mpar v = return mpar{rad_a = v}
+setnewParams RadB  mpar v = return mpar{rad_b = v}
 
+-- Simple probing function
+-- renders to PNG so useful for silent tests
+probeParam :: ParamType -> ModelType -> Double -> IO()
+probeParam ptype mtype value = do
+    mpar <- updateParams mtype ptype model_params value
+    let cpar = loadModel mtype mpar
+    processParams ToPNG mpar cpar
+    return ()
+    
 -- Main testing function
 -- Probing model with given tau and alpha parameters
 -- Accepts RenderType and ModelType parameters
 testAlphaTauWith :: RenderType -> ModelType -> Double -> Double -> IO()
 testAlphaTauWith r m a t = do
-  let mpar = model_params{tau = t, alpha = a}
+  let raw_mpar = model_params{alpha = a}
+  mpar <- updateParams m Tau raw_mpar t
   let cpar = loadModel m mpar
   processParams r mpar cpar
   return ()
@@ -143,25 +162,57 @@ testAlphaTauWith r m a t = do
 -- shorthand for use with ghci
 testAT = testAlphaTauWith ToWindow
 
+
+--------------------------------------------------------------------------------
+-- 4. Renew Cn parameters needed for full model
+-- As input accepting old model parameters
+-- Returns renewed parameters containing changed Cn list
+-- TODO: replace this with definition of two-argument function 
+--   of ModelParams and Cn list
+renewCn :: ModelParams -> IO (ModelParams)
+renewCn mpar = do
+  putStrLn "Second, we compute the parameters c_n needed for computations"
+  -- We use Fourier method for computations
+  new_param <- time $ renew_cn_fourier mpar
+  return new_param
+
+-- Renew Cn list, saved in mpar
+-- Returns mpar with new Cn list
+-- Based on Fourier method of simple iterations
+renew_cn_fourier :: ModelParams -> IO (ModelParams)
+renew_cn_fourier mpar = do
+  print "renew_cn_all started"
+  -- calc_new_cnlist defined in BlastModel.Model_1975_Kotlyar
+  new_mpar <- calc_new_cnlist mpar
+  err <- high_error 0.0001 mpar new_mpar
+  if err == True
+    then renew_cn_fourier new_mpar
+    else return $ new_mpar
+
+-- 4. Renew Cn parameters needed for full model. END
+--------------------------------------------------------------------------------
+
+
+
 --------------------------------------------------------------------------------
 -- Main function to get data from model
 -- Will consume CalcParams object containing dwdu, chi_0 and f_corr functions
--- If model uses ModelParams objects, then CalcParams.dwdu, for example, should contain
---   (dwdu mpar) curried function
+-- If model uses ModelParams objects, then CalcParams.dwdu, for example, 
+--   should contain (dwdu mpar) curried function
 calcPoints :: CalcParams -> IO (ZPlanePoints)
-calcPoints param = do
+calcPoints cpar = do
   print "We will now compute points on the edge of blast."
--- We will not calculate to (d' param), we stop at 99%
-  let dx = realPart (d' param)
-  let dy = imagPart (d' param)
+-- We will not calculate to (d' cpar), we stop at 99%
+  let dx = realPart (d' cpar)
+  let dy = imagPart (d' cpar)
   let d1' = ((dx + 0.01) :+ dy)
   let d2' = (dx :+ (dy + 0.01))
   -- Getting every side of area
   let (ab, bc, cd, da) = (
-	calcSide param (a' param) (b' param),
-	calcSide param (b' param) (c' param),
-	calcSide param{origin=( (pi/4 - 0) :+ (pi*tau'/4 + 0)) } (c' param) d1',
-	calcSide param{origin=( (pi/4 + 0) :+ (pi*tau'/4 + 0)) } d2' (a' param))
+	calcSide cpar (a' cpar) (b' cpar),
+	calcSide cpar (b' cpar) (c' cpar),
+	calcSide cpar{origin=( (pi/4 - 0) :+ (pi*tau'/4 + 0)) } (c' cpar) d1',
+	calcSide cpar{origin=( (pi/4 + 0) :+ (pi*tau'/4 + 0)) } d2' (a' cpar))
   -- Logging
   print "Points at AB: "
   time $ outputData ab

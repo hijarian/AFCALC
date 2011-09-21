@@ -391,3 +391,20 @@ integrateReal f n xa xb =
 --       zpoints = quantize' t za zb n
 --       h = getQuantizer za zb n
 
+-- Function for testing some model with given alpha value and default tau value
+-- Outputs to PNG so useful for silent mass tests
+-- testAlpha :: ModelType -> Double -> IO()
+-- testAlpha mtype a = do
+--   let mpar = model_params{alpha = a}
+--   let cpar = loadModel mtype mpar
+--   processParams ToPNG mpar cpar
+--   return ()
+
+-- Function for testing some model with given tau value and default alpha value
+-- Outputs to PNG so useful for silent mass tests
+-- testTau :: ModelType -> Double -> IO()
+-- testTau mtype t = do
+--   let mpar  = model_params{tau = t}
+--   let cpar = loadModel mtype mpar
+--   processParams ToPNG mpar cpar
+--   return ()
