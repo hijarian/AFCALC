@@ -71,6 +71,8 @@ main = do
   mapM ((probeParam Alpha Simple) .(* 0.1)) [1..20]
   mapM ((probeParam Tau   Full)  . (* 0.1)) [1..10]
   mapM ((probeParam Alpha Full)  . (* 0.1)) [1..20]
+  mapM ((probeParam RadA  Full)  . (* 1))   [1..50]
+  mapM ((probeParam RadB  Full)  . (* 1))   [20..50]
   return ()
 
 
@@ -233,7 +235,7 @@ outputData datalist = do
 extract_param_names :: ModelParams -> String
 extract_param_names mpar =
   let     
-    print' = printf "Phi0 = %4.2f, V0 = %4.2f, Alpha = %2.1f, |Tau| = %2.1f"
+    print' = printf "Phi0=%4.2f, V0=%4.2f, Alpha=%2.1f, Tau=%2.1f"
     phi0   = phi_0 mpar
     v0     = v_0 mpar
     alpha0 = alpha mpar

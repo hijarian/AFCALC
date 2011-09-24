@@ -1,0 +1,25 @@
+% Упрощённая схема течения, для которой действительна \chi_0
+  \begin{pspicture}(8,7)
+    % Оси
+    \psaxes[ticks=none,labels=none,linewidth=0.5pt]{->}(0,6)(0,6)(7,0)
+%    \psgrid[subgriddiv=1,griddots=10,gridlabels=7pt](0,0)(8,7)
+    % BADC 
+    \psline[linewidth=1.5pt](4,3)(2.5,2)(0,6)(5.5,6)
+    \uput[ur](0,6){\textbf{D}}
+    \uput[d](2.5,2){\textbf{A}}
+    \uput[dr](4,3){\textbf{B}}
+    \uput[u](5.5,6){\textbf{C}}
+    % BC 
+    \psbezier[linewidth=1.5pt](4,3)(5,4)(5.5,5)(5.5,6)
+    % Течение
+    \psbezier{->}(2,4)(3,4.5)(3.5,5)(3.5,5.5)
+    \uput[d](3,4.5){\small $\vec v$}
+    % Углы
+    \psarc[linewidth=0.5pt](0,6){0.4}{-50}{0}
+    \rput(0.7,5.7){\scriptsize $\pi \gamma / 2$}
+    % Остальные подписи
+    \uput[r](7,6){y}
+    \uput[d](0,0){x}
+    \uput[ul](0,6){0}
+    \cput[linewidth=0.5pt](5,2){\Large $z$}
+  \end{pspicture}

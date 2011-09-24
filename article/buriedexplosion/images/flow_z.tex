@@ -1,0 +1,34 @@
+% Исходная схема модели течения в плоскости Z
+% {``Начинаем рисовать''}(``Координаты точки отсчёта'')(``размеры'')
+%\begin{pspicture}(0,0)(4,2)
+% Размеры блока указывать обязательно
+  \begin{pspicture}(8,7)
+    % Оси
+    \psaxes[ticks=none,labels=none,linewidth=0.5pt]{->}(0,6)(0,6)(7,0)
+%    \psgrid[subgriddiv=1,griddots=10,gridlabels=7pt](0,0)(7,6)
+    % Течение
+    \psbezier[linewidth=1pt]{->}(0.5,3.5)(1.5,2)(4,3)(4,5)
+    \uput[d](3,3){\small $\vec v$}
+    % DC
+    \psline[linewidth=1.5pt](0,6)(5,6)
+    \uput[ur](0,6){\textbf{D}}
+    \uput[u](5,6){\textbf{C}}
+    % AD 
+    %\psarc[linewidth=1.5pt](0,4.75){0.75}{270}{90}
+    \psbezier[linewidth=1.5pt](0,4)(0.5,4.5)(0.5,5.5)(0,6)
+    \uput[l](0,4.5){\textbf{A}}
+    % Углы
+    \psline[linewidth=0.5pt](0,6)(0.5,5.3)
+    \psarc[linewidth=0.5pt](0,6){0.4}{-50}{0}
+    \rput(0.7,5.7){\scriptsize $\pi \gamma / 2$}
+    % BA
+    \psline[linewidth=1.5pt](0,3)(0,4)
+    \uput[l](0,3){\textbf{B}}
+    % CB
+    \psbezier[linewidth=1.5pt](0,3)(0,0)(5,0)(5,6)
+    % Подписи
+    \uput[r](7,6){y}
+    \uput[d](0,0){x}
+    \uput[ul](0,6){0}
+    \cput[linewidth=0.5pt](3,4.5){\Large $z$}
+  \end{pspicture}

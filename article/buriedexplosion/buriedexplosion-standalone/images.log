@@ -1,0 +1,586 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2011.5.4)  8 SEP 2011 22:24
+entering extended mode
+ %&-line parsing enabled.
+**./images.tex
+(./images.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, bulgarian, ukrainian, russian, loaded.
+
+(/usr/share/texmf-texlive/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texmf-texlive/tex/latex/base/size12.clo
+File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (/usr/share/texmf-texlive/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+) (/usr/share/texmf-texlive/tex/latex/base/inputenc.sty
+Package: inputenc 2008/03/30 v1.1d Input encoding file
+\inpenc@prehook=\toks14
+\inpenc@posthook=\toks15
+(/usr/share/texmf-texlive/tex/latex/cyrillic/cp1251.def
+File: cp1251.def 1999/11/16 v1.0d Input encoding file
+)) (/usr/share/texmf-texlive/tex/latex/base/fontenc.sty
+Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
+(/usr/share/texmf-texlive/tex/latex/cyrillic/t2aenc.def
+File: t2aenc.def 2005/09/27 v1.0i Cyrillic encoding definition file
+)
+LaTeX Font Info:    Try loading font information for T2A+cmr on input line 100.
+
+(/usr/share/texmf-texlive/tex/latex/cyrillic/t2acmr.fd
+File: t2acmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
+)) (/usr/share/texmf-texlive/tex/generic/babel/babel.sty
+Package: babel 2008/07/06 v3.8l The Babel package
+(/usr/share/texmf-texlive/tex/generic/babel/english.ldf
+Language: english 2005/03/30 v3.3o English support from the babel system
+(/usr/share/texmf-texlive/tex/generic/babel/babel.def
+File: babel.def 2008/07/06 v3.8l Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)
+\l@british = a dialect from \language\l@english 
+\l@UKenglish = a dialect from \language\l@english 
+\l@canadian = a dialect from \language\l@american 
+\l@australian = a dialect from \language\l@british 
+\l@newzealand = a dialect from \language\l@british 
+) (/usr/share/texmf-texlive/tex/generic/babel/russianb.ldf
+Language: russianb 2008/03/21 v1.1r Russian support from the babel system
+Package babel Info: Making " an active character on input line 199.
+)) (/usr/share/texmf-texlive/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2009/06/22 v3.00
+(/usr/share/texmf-texlive/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
+\@emptytoks=\toks16
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
+)) (/usr/share/texmf-texlive/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip43
+For additional information on amsmath, use the `?' option.
+(/usr/share/texmf-texlive/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks17
+\ex@=\dimen104
+)) (/usr/share/texmf-texlive/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen105
+) (/usr/share/texmf-texlive/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count88
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count89
+\leftroot@=\count90
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count91
+\DOTSCASE@=\count92
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen106
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count93
+\c@MaxMatrixCols=\count94
+\dotsspace@=\muskip10
+\c@parentequation=\count95
+\dspbrk@lvl=\count96
+\tag@help=\toks18
+\row@=\count97
+\column@=\count98
+\maxfields@=\count99
+\andhelp@=\toks19
+\eqnshift@=\dimen107
+\alignsep@=\dimen108
+\tagshift@=\dimen109
+\tagwidth@=\dimen110
+\totwidth@=\dimen111
+\lineht@=\dimen112
+\@envbody=\toks20
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks21
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+) (/usr/share/texmf-texlive/tex/latex/t2/mathtext.sty
+Package: mathtext 1999/01/28 v1.0 transparent text-and-math defs
+LaTeX Info: Redefining \halign on input line 111.
+) (/usr/share/texmf-texlive/tex/latex/cite/cite.sty
+LaTeX Info: Redefining \cite on input line 285.
+LaTeX Info: Redefining \nocite on input line 356.
+Package: cite 2009/08/29  v 5.2
+) (/usr/share/texmf-texlive/tex/latex/tools/enumerate.sty
+Package: enumerate 1999/03/05 v3.00 enumerate extensions (DPC)
+\@enLab=\toks22
+) (/usr/share/texmf-texlive/tex/latex/tools/indentfirst.sty
+Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
+) (/usr/share/texmf-texlive/tex/latex/pstricks/pstricks.sty
+Package: pstricks 2008/11/26 v0.40 LaTeX wrapper for `PSTricks' (RN,HV)
+(/usr/share/texmf-texlive/tex/generic/pstricks/pstricks.tex
+`PSTricks' v1.29  <2009/05/19> (tvz)
+\pst@dima=\dimen113
+\pst@dimb=\dimen114
+\pst@dimc=\dimen115
+\pst@dimd=\dimen116
+\pst@dimg=\dimen117
+\pst@dimh=\dimen118
+\pst@hbox=\box28
+\pst@boxg=\box29
+\pst@cnta=\count100
+\pst@cntb=\count101
+\pst@cntc=\count102
+\pst@cntd=\count103
+\pst@cntg=\count104
+\pst@cnth=\count105
+\pst@toks=\toks23
+(/usr/share/texmf-texlive/tex/generic/pstricks/pstricks.con)
+\psunit=\dimen119
+\psxunit=\dimen120
+\psyunit=\dimen121
+\pslinewidth=\dimen122
+\pst@customdefs=\toks24
+\pslinearc=\dimen123
+\everypsbox=\toks25
+\psframesep=\dimen124
+\pslabelsep=\dimen125
+\pst@shift=\dimen126
+\theoverlaybox=\box30
+)
+File: pstricks.tex 2009/05/19 v1.29 `PSTricks' (tvz,hv)
+(/usr/share/texmf/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+(/etc/texmf/tex/latex/config/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: dvips.def on input line 225.
+(/usr/share/texmf-texlive/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)) (/usr/share/texmf-texlive/tex/latex/pstricks/pst-plot.sty
+Package: pst-plot 2004/07/15 package wrapper for pst-plot.tex
+(/usr/share/texmf-texlive/tex/generic/pstricks/pst-plot.tex (/usr/share/texmf-t
+exlive/tex/generic/multido/multido.tex  v1.41, 2004/05/18 <tvz>
+\multido@count=\count106
+\multidocount=\count107
+\multido@stuff=\toks26
+)  v1.04, 2009/06/08)
+File: pst-plot.tex 2009/06/08 1.04 `pst-plot' (tvz)
+) (/usr/share/texmf-texlive/tex/latex/pb-diagram/pb-diagram.sty
+\dgARROWLENGTH=\skip46
+\dgTEXTARROWLENGTH=\skip47
+\dgHORIZPAD=\skip48
+\dgVERTPAD=\skip49
+\dgLABELOFFSET=\skip50
+\dgARROWPARTS=\count108
+\dgDOTSPACING=\skip51
+\dgDOTSIZE=\skip52
+\dgMAXSQUARE=\count109
+\dgMINDBLSQ=\count110
+\dgCOLUMNWIDTH=\skip53
+\dg@HORIZ=\count111
+\dg@VERT=\count112
+\dg@XLPAD=\count113
+\dg@YBPAD=\count114
+\dg@XRPAD=\count115
+\dg@YTPAD=\count116
+\dg@X=\count117
+\dg@Y=\count118
+\dg@XGRID=\count119
+\dg@YGRID=\count120
+\dg@SIZE=\count121
+\dg@USERSIZE=\count122
+\dg@DX=\count123
+\dg@DY=\count124
+\dg@XLBL=\count125
+\dg@YLBL=\count126
+\dg@XOFFSET=\count127
+\dg@YOFFSET=\count128
+\dg@LBLOFF=\count129
+\dg@XLBLOFF=\count130
+\dg@YLBLOFF=\count131
+\dg@LBLPOS=\count132
+\dg@XTEMP=\count133
+\dg@YTEMP=\count134
+\dg@ZTEMP=\count135
+\dg@XNODE=\count136
+\dg@YNODE=\count137
+\dg@XEND=\count138
+\dg@YEND=\count139
+\dg@WEND=\count140
+\dg@HEND=\count141
+\dg@COUNT=\count142
+\dg@NODEBOX=\box31
+\dg@LABONEBOX=\box32
+\dg@LABTWOBOX=\box33
+) (/usr/share/texmf-texlive/tex/latex/geometry/geometry.sty
+Package: geometry 2008/12/21 v4.2 Page Geometry
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks27
+) (/usr/share/texmf-texlive/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2009/04/10 v2.0 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in pdf mode not detected.
+) (/usr/share/texmf-texlive/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2008/11/04 v1.4 Switches for detecting VTeX and its modes (HO)
+Package ifvtex Info: VTeX not detected.
+)
+\Gm@cnth=\count143
+\Gm@cntv=\count144
+\c@Gm@tempcnt=\count145
+\Gm@bindingoffset=\dimen127
+\Gm@wd@mp=\dimen128
+\Gm@odd@mp=\dimen129
+\Gm@even@mp=\dimen130
+\Gm@dimlist=\toks28
+) (/usr/share/texmf-texlive/tex/latex/pstricks/pstcol.sty
+Package: pstcol 2007/04/11 v1.3 LaTeX wrapper for `PSTricks' (RN,HV)
+
+Package pstcol Warning: ************************************ 
+(pstcol)                The package `pstcol' is obsolet! 
+(pstcol)                You should use `pstricks' directly: 
+(pstcol)                    \usepackage{pstricks}
+(pstcol)                ************************************.
+
+)
+\sizebox=\box34
+\lthtmlwrite=\write3
+(./images.aux)
+\openout1 = `images.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 166.
+LaTeX Font Info:    ... okay on input line 166.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 166.
+LaTeX Font Info:    ... okay on input line 166.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 166.
+LaTeX Font Info:    ... okay on input line 166.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 166.
+LaTeX Font Info:    ... okay on input line 166.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 166.
+LaTeX Font Info:    ... okay on input line 166.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 166.
+LaTeX Font Info:    ... okay on input line 166.
+LaTeX Font Info:    Checking defaults for T2A/cmr/m/n on input line 166.
+LaTeX Font Info:    ... okay on input line 166.
+*geometry auto-detecting driver*
+*geometry detected driver: dvips*
+-------------------- Geometry parameters
+paper: a4paper
+landscape: --
+twocolumn: --
+twoside: --
+asymmetric: --
+h-parts: 71.13188pt, 483.69687pt, 42.67912pt
+v-parts: 56.9055pt, 731.23584pt, 56.9055pt
+hmarginratio: --
+vmarginratio: --
+lines: --
+heightrounded: --
+bindingoffset: 0.0pt
+truedimen: --
+includehead: --
+includefoot: --
+includemp: --
+driver: dvips
+-------------------- Page layout dimensions and switches
+\paperwidth  597.50787pt
+\paperheight 845.04684pt
+\textwidth  349.0pt
+\textheight 745.87135pt
+\oddsidemargin  -1.1381pt
+\evensidemargin -1.1381pt
+\topmargin  0.0pt
+\headheight 0.0pt
+\headsep    0.0pt
+\footskip   0.0pt
+\marginparwidth 35.0pt
+\marginparsep   10.0pt
+\columnsep  10.0pt
+\skip\footins  10.8pt plus 4.0pt minus 2.0pt
+\hoffset 0.0pt
+\voffset 0.0pt
+\mag 1000
+
+(1in=72.27pt, 1cm=28.45pt)
+-----------------------
+
+latex2htmlLength hsize=349.0pt
+
+latex2htmlLength vsize=745.87135pt
+
+latex2htmlLength hoffset=0.0pt
+
+latex2htmlLength voffset=0.0pt
+
+latex2htmlLength topmargin=0.0pt
+
+latex2htmlLength topskip=0.00003pt
+
+latex2htmlLength headheight=0.0pt
+
+latex2htmlLength headsep=0.0pt
+
+latex2htmlLength parskip=0.0pt plus 1.0pt
+
+latex2htmlLength oddsidemargin=-1.1381pt
+
+latex2htmlLength evensidemargin=-1.1381pt
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 195.
+(/usr/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2009/06/22 v3.00 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 195.
+(/usr/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2009/06/22 v3.00 AMS symbols B
+)
+l2hSize :pspicture45:199.1692pt::0.0pt::349.0pt.
+[1
+
+
+
+]
+l2hSize :pspicture67:142.26372pt::0.0pt::349.0pt.
+[2
+
+
+]
+l2hSize :pspicture94:199.1692pt::0.0pt::349.0pt.
+[3
+
+
+]
+l2hSize :tex2html_wrap_inline478:7.74811pt::0.0pt::7.27481pt.
+[4
+
+
+]
+l2hSize :tex2html_wrap_inline483:8.36708pt::8.36708pt::53.70288pt.
+[5
+
+
+]
+l2hSize :tex2html_wrap_inline485:8.2pt::0.0pt::19.47777pt.
+[6
+
+
+]
+l2hSize :tex2html_wrap_inline487:8.2pt::0.0pt::18.92749pt.
+[7
+
+
+]
+l2hSize :tex2html_wrap_inline489:8.2pt::0.0pt::19.93776pt.
+[8
+
+
+]
+l2hSize :tex2html_wrap_inline491:8.2pt::0.0pt::19.38748pt.
+[9
+
+
+]
+l2hSize :tex2html_wrap_inline493:8.24811pt::8.24811pt::11.01793pt.
+[10
+
+
+]
+l2hSize :tex2html_wrap_inline495:8.24811pt::8.24811pt::8.2845pt.
+[11
+
+
+]
+l2hSize :tex2html_wrap_inline501:8.83331pt::8.83331pt::53.50012pt.
+[12
+
+
+]
+l2hSize :tex2html_wrap_inline503:8.7pt::8.7pt::15.7645pt.
+[13
+
+
+]
+l2hSize :tex2html_wrap_inline505:9.5pt::9.5pt::19.43304pt.
+[14
+
+
+]
+l2hSize :tex2html_wrap_inline507:9.5pt::9.5pt::25.87605pt.
+[15
+
+
+]
+l2hSize :tex2html_wrap_inline509:9.5pt::9.5pt::39.95386pt.
+[16
+
+
+]
+l2hSize :tex2html_wrap_inline511:9.5pt::9.5pt::25.13573pt.
+[17
+
+
+]
+l2hSize :tex2html_wrap_indisplay513:26.78014pt::26.78014pt::377.23714pt.
+
+Overfull \hbox (31.6215pt too wide) in paragraph at lines 358--359
+[]|[] 
+ []
+
+[18
+
+
+]
+l2hSize :tex2html_wrap_inline515:8.2pt::0.0pt::11.24983pt.
+[19
+
+
+]
+l2hSize :tex2html_wrap_inline519:8.2pt::0.0pt::10.66953pt.
+[20
+
+
+]
+l2hSize :tex2html_wrap_inline521:9.5pt::9.5pt::95.35172pt.
+[21
+
+
+]
+l2hSize :tex2html_wrap_inline523:7.74811pt::0.0pt::7.68317pt.
+[22
+
+
+]
+l2hSize :tex2html_wrap_inline525:7.74811pt::0.0pt::14.12617pt.
+[23
+
+
+]
+l2hSize :tex2html_wrap_inline527:9.5pt::9.5pt::89.89091pt.
+[24
+
+
+]
+l2hSize :tex2html_wrap_inline529:7.74811pt::0.0pt::6.69843pt.
+[25
+
+
+]
+l2hSize :tex2html_wrap_inline531:8.2pt::0.0pt::9.72618pt.
+[26
+
+
+]
+l2hSize :tex2html_wrap_inline533:9.5pt::9.5pt::105.08304pt.
+[27
+
+
+]
+l2hSize :tex2html_wrap_inline535:9.5pt::9.5pt::28.52472pt.
+[28
+
+
+]
+l2hSize :tex2html_wrap_inline537:9.5pt::9.5pt::70.34023pt.
+[29
+
+
+]
+l2hSize :tex2html_wrap_inline541:11.0999pt::11.0999pt::15.7645pt.
+[30
+
+
+]
+l2hSize :tex2html_wrap_indisplay545:19.58006pt::19.58006pt::247.80066pt.
+[31
+
+
+]
+l2hSize :tex2html_wrap_inline549:9.5pt::9.5pt::23.77466pt.
+[32
+
+
+]
+l2hSize :tex2html_wrap_indisplay555:16.9514pt::16.9514pt::140.9962pt.
+[33
+
+
+]
+l2hSize :tex2html_wrap_inline557:9.21997pt::9.21997pt::34.15239pt.
+[34
+
+
+]
+l2hSize :tex2html_wrap_inline559:9.5pt::9.5pt::27.34833pt.
+[35
+
+
+]
+l2hSize :tex2html_wrap_inline561:8.2pt::0.0pt::13.20815pt.
+[36
+
+
+]
+l2hSize :tex2html_wrap_inline563:8.2pt::0.0pt::9.82552pt.
+[37
+
+
+]
+l2hSize :tex2html_wrap_inline565:9.5pt::9.5pt::23.48647pt.
+[38
+
+
+]
+l2hSize :tex2html_wrap_indisplay567:16.81808pt::16.81808pt::203.30844pt.
+[39
+
+
+]
+l2hSize :tex2html_wrap_indisplay573:21.53343pt::21.53343pt::203.66422pt.
+[40
+
+
+]
+l2hSize :tex2html_wrap_inline575:8.24811pt::8.24811pt::11.30173pt.
+[41
+
+
+]
+l2hSize :tex2html_wrap_indisplay577:16.9514pt::16.9514pt::91.0112pt.
+[42
+
+
+] (./images.aux) ) 
+Here is how much of TeX's memory you used:
+ 4547 strings out of 494819
+ 53206 string characters out of 1178690
+ 131965 words of memory out of 3000000
+ 7666 multiletter control sequences out of 15000+50000
+ 16468 words of font info for 54 fonts, out of 3000000 for 9000
+ 212 hyphenation exceptions out of 8191
+ 30i,5n,37p,1119b,230s stack positions out of 5000i,500n,10000p,200000b,50000s
+
+Output written on images.dvi (42 pages, 20260 bytes).

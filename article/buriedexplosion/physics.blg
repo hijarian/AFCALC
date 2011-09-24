@@ -1,0 +1,16 @@
+This is 8-bit Big BibTeX version 0.99c
+Implementation:  C for Unix
+Release version: 3.71 (31 May 2005)
+
+The 8-bit codepage and sorting file: cp1251.csf
+The top-level auxiliary file: physics.aux
+The style file: gost780s.bst
+Database file #1: bibliography.bib
+
+Here's how much of BibTeX's memory you used:
+ Cites:                 4 out of 2000
+ Fields:               32 out of 30000
+ Hash table:         9766 out of 10000
+ Strings:             702 out of 10000
+ String pool:        6050 out of 130000
+ Wizard functions:   2923 out of 6000

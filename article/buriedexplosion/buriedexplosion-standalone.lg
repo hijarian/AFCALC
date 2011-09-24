@@ -1,0 +1,29 @@
+htfcss: lati font-style: italic;
+htfcss: labx font-weight: bold;
+htfcss: cmmi font-style: italic;
+htfcss: cmmib font-style: italic; font-weight: bold;
+htfcss: labx font-weight: bold;
+htfcss: labx font-weight: bold;
+File: buriedexplosion-standalone.html
+--- characters ---
+Font("cmr","12","12","100")
+Font("larm","1200","12","100")
+Font("larm","2074","20","100")
+Font("larm","1440","14","100")
+Font("larm","1095","10","100")
+Font("labx","1095","10","100")
+Font("cmr","8","8","100")
+Font("cmr","6","6","100")
+Font("cmmi","10","10","109")
+Font("cmmi","8","8","100")
+Font("cmmi","6","6","100")
+Font("cmsy","8","8","100")
+Font("cmsy","6","6","100")
+Font("labx","1200","12","100")
+Font("cmmi","12","12","144")
+Font("cmmi","12","12","100")
+Font("cmsy","10","10","120")
+Font("cmex","10","10","120")
+Font("msbm","10","10","120")
+Font("labx","1728","17","100")
+Font("lati","1200","12","100")

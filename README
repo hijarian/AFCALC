@@ -7,10 +7,18 @@ Suppose we have a explosion charge buried in the soil. We need to determine the 
 
 The trick used in this model is that explosion is seen as a flow of ideal liquid. Details are in my theses in article/ subfolder, but it's in Russian, sorry about that. %) Article is in LaTeX format, should compile well in any environment.
 
-When run, app asks for custom parameters (or applies defaults if desired) and after calculations generates a chart with the schematic view of the right-side of explosion in 2D. Explosion modelled being symmetric and 2D. It will be nice to develop interactive front-end with dynamic regeneration of chart and/or generating multichart representing changing of parameters.
-
 For chart generation app uses Chart package.
 
 In far future this will be a generic library for modelling many different process as liquid flows. Current physic works used this model for examination of processes of explosion, filtration and Electrochemical engineering.
 
+Now next major milestones are:
+1. Cabalize the utility components of AFCALC: AFCALC.Integrator module and Theta module. Place them under the Math category.
+2. Write tests for every function present in the code.
+3. Write three front-ends for the library: the 'Interactive' front-end, the 'Tests' front-end and the 'Inner tests' front-end.
+4. Decouple Cn calculations from the model module to the AFCALC. So that model module will contain only dwdu, chi_0, f_corr and ModelParams definitions.
+
+
 2011-08-27: Program under heavy development and the results gotten are incorrect. I need to tweak the mathematics to be able to produce well-formed results first.
+
+2011-09-24: Massive rewrite of the code was done. Now the math is double-checked and the program generates valid charts, according to model. So, only the refactoring is left. Yessss... %)
+

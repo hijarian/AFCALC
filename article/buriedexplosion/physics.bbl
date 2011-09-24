@@ -1,0 +1,37 @@
+\begin{thebibliography}{1}
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\language\csname l@#1\endcsname\fi}
+\ifx\undefined\url\def\url#1{{\small #1}}\else\fi
+\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi
+\ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\else\fi
+\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi
+
+\bibitem{phys:Gurevich}
+\selectlanguageifdefined{russian}
+\BibEmph{Гуревич,~М.~И.} Теория струй идеальной жидкости~/ М.~И.~Гуревич. "---
+\newblock Наука, 1979.
+
+\bibitem{phys:Kotlyar2}
+\selectlanguageifdefined{russian}
+\BibEmph{Котляр,~Л.~М.} Об одном случае струйного течения идеальной жидкости~/
+  Л.~М.~Котляр~// \BibEmph{Математика}. "---
+\newblock 1976. "---
+\newblock {\cyr\textnumero}~2.
+
+\bibitem{diploma:Kuznetsov1}
+\selectlanguageifdefined{russian}
+\BibEmph{Кузнецов,~В.~М.} О форме воронки выброса при взрыве на поверхности
+  грунта~/ В.~М.~Кузнецов~// \BibEmph{ПМТФ}. "---
+\newblock 1962. "---
+\newblock {\cyr\textnumero}~3. "---
+\newblock {\cyr\CYRS.}~152--156.
+
+\bibitem{matan:Whittaker}
+\selectlanguageifdefined{russian}
+\BibEmph{Уиттекер,~Э.~Т.} Курс современного анализа: В 2 т.~/ Э.~Т.~Уиттекер,
+  Д.~Н.~Ватсон. "---
+\newblock М.: Физматгиз, 1963. "---
+\newblock \CYRT.~2: Трансцендентные функции.
+
+\end{thebibliography}

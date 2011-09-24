@@ -15,31 +15,36 @@ import Data.Accessor
 -- We will use PointList types defined in AFCalc
 import AFCalc
 
+-- Default width
+defw = 1024
+-- Default height
+defh = 768
+
 --------------------------------------------------------------------------------
 -- "Charting" of lines
 
 -- Output PointList to GTK window
 plotLine :: String -> PointList -> IO()
 plotLine linetitle datalist = do
-    renderableToWindow  (toRenderable (chart linetitle datalist)) 640 480
+    renderableToWindow  (toRenderable (chart linetitle datalist)) defw defh
     return ()
 
 -- Output PointList to file with name <filename>
 pngLine :: String -> String -> PointList -> IO()
 pngLine filename linetitle datalist = do
-    renderableToPNGFile (toRenderable (chart linetitle datalist)) 640 480 filename
+    renderableToPNGFile (toRenderable (chart linetitle datalist)) defw defh filename
     return ()
 
 -- Output ZPlanePoints to GTK window
 plotArea :: String -> ZPlanePoints -> IO()
 plotArea linetitle datalist = do
-    renderableToWindow  (toRenderable (manychart linetitle datalist)) 640 480
+    renderableToWindow  (toRenderable (manychart linetitle datalist)) defw defh
     return ()
 
 -- Output ZPlanePoints to file with name <filename>
 pngArea :: String -> String -> ZPlanePoints -> IO()
 pngArea filename linetitle datalist = do
-    renderableToPNGFile (toRenderable (manychart linetitle datalist)) 640 480 filename
+    renderableToPNGFile (toRenderable (manychart linetitle datalist)) defw defh filename
     return ()
 
 -- Configuration of chart with single line
