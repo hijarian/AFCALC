@@ -11,13 +11,21 @@ For chart generation app uses Chart package.
 
 In far future this will be a generic library for modelling many different process as liquid flows. Current physic works used this model for examination of processes of explosion, filtration and Electrochemical engineering.
 
-Now next major milestones are:
+--
+STATUS @ 2011.09.25 20:07
+Program is buildable through 'make tkotlyar' in program/ subdirectory and when called from program/bin/AFCALCKotlyarTests produces masses of charts in program/img/full/ and program/img/simple/ subdirectories.
+
+TODO:
 1. Cabalize the utility components of AFCALC: AFCALC.Integrator module and Theta module. Place them under the Math category.
 2. Write tests for every function present in the code.
 3. Write three front-ends for the library: the 'Interactive' front-end, the 'Tests' front-end and the 'Inner tests' front-end.
 4. Decouple Cn calculations from the model module to the AFCALC. So that model module will contain only dwdu, chi_0, f_corr and ModelParams definitions.
 
+Estimated work: 100 hours.
+Planned finish: October 2011.
 
+--
+HISTORY
 2011-08-27: Program under heavy development and the results gotten are incorrect. I need to tweak the mathematics to be able to produce well-formed results first.
 
 2011-09-24: Massive rewrite of the code was done. Now the math is double-checked and the program generates valid charts, according to model. So, only the refactoring is left. Yessss... %)
