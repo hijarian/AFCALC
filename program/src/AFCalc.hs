@@ -1,13 +1,12 @@
 module AFCalc where
 -- Module for getting actual points using functions defined in model
 
-
 -- We use complex numbers
 import Data.Complex
 
-
 -- We use custom integrators written specifically for needs of AFCALC
-import AFCalc.Integrators
+-- EDIT @ 2011-09-26: Cabalized as complex-integrate package
+import Data.Complex.Integrate
 
 --------------------------------------------------------------------------------
 -- type declarations

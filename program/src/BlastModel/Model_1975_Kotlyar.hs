@@ -17,13 +17,14 @@ module BlastModel.Model_1975_Kotlyar where
 -- We use complex functions
 import Data.Complex
 
--- Custom module for handling theta-functions
--- TODO: cabalize Theta and put it in generic module under Math
-import Theta
+-- Custom module for integrating complex functions
+-- EDIT @ 2011-09-26: Cabalized as complex-integrate package
+import Data.Complex.Integrate
 
--- We will use integrators provided by AFCalc itself
--- TODO: cabalize Integrators and put it in generic module under Math
-import AFCalc.Integrators
+-- Custom module for handling theta-functions
+-- EDIT @ 2011-09-26: Cabalized as theta-functions package
+import Numeric.Functions.Theta
+
 
 -- We will pretty-print some of values
 import Text.Printf

@@ -1,4 +1,3 @@
-module Main where
 -- Main module for the 'Tests' plotter
 -- Will mass-print charts for different values of parameters
 -- Uses Blast model of Kotlyar
@@ -9,6 +8,8 @@ module Main where
 --   of tau and alpha parameters, then for every combination of rad_a and rad_b
 --   parameters. So, there will be some sort of _grid_ of charts showing
 --   mutations of area based on input parameters
+
+module Main where
 
 -- Importing the model
 import BlastModel.Model_1975_Kotlyar
