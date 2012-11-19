@@ -1,0 +1,7 @@
+# Runtime directories for GHC
+program/bin/*
+program/obj/*
+
+# Temporary files from LaTeX
+*.log
+*.aux
