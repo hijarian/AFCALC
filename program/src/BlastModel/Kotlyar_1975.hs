@@ -8,7 +8,7 @@ Encoded by Saphronov Mark a. k. a. hijarian
 2011.09
 Public Domain
 -}
-module BlastModel.Model_1975_Kotlyar where
+module BlastModel.Kotlyar_1975 where
 
 -- We use complex functions
 import Data.Complex

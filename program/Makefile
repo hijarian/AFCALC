@@ -8,7 +8,7 @@ OUTDIR=bin/
 COMPILER=ghc --make -i${SRCDIR} -outputdir ${TEMPDIR} -o ${OUTDIR}
 
 all :
-	${COMPILER}afcalc src/Main.hs
+	${COMPILER}graph src/Main.hs
 
 # Clean built objects
 clean :
