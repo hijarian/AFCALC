@@ -11,18 +11,25 @@ import qualified ReverseComplexGraph.Model.Params as ModelParams
 import Data.Complex
 
 main = do
+
+  -- NOTE: this is preliminary testing calls
   calculate $ input
+  render 
+
+  -- TODO:  correct incantation is this: 
+  -- render $ calculate $ input
+
   return ()
 
-render lines = do
+render = do
+  let
+    lines = [
+      [ (6, 6), (6, 1), (6, 2), (6, 3)],
+      [ (1, 6), (2, 6), (3, 6), (4, 6)]
+      ]
   GtkRenderer.plotLines lines
   PngRenderer.plotLines lines 
   return ()
-    where
-      lines = [
-        [ (6, 6), (6, 1), (6, 2), (6, 3)],
-        [ (1, 6), (2, 6), (3, 6), (4, 6)]
-        ]
 
 calculate params = do
   paramsWithCn <- CoeffCalc.renewCn params
