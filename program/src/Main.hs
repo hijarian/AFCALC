@@ -28,7 +28,7 @@ calculate paramsWithoutCoeffs = do
   params <- Coefficients.renew paramsWithoutCoeffs
   let
     points = ReverseMapping.calcLines (ModelFunctions.dzdu params) (ModelData.pointlines params)
-  return (points)
+  return points
 
 input = ModelParams.defaults
 
