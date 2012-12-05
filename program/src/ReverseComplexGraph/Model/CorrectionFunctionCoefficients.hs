@@ -15,7 +15,7 @@ Encoded by Saphronov Mark a. k. a. hijarian
 Public Domain
 -}
 module ReverseComplexGraph.Model.CorrectionFunctionCoefficients ( 
-  renewCn
+  renew
   ) where
 
 import ReverseComplexGraph.Model.Params
@@ -43,8 +43,8 @@ type ParametrizedRealFunction = (ModelParams -> Double -> Double)
 --  Renew Cn parameters needed for full model
 -- As input accepting old model parameters
 -- Returns renewed parameters containing changed Cn list
-renewCn :: ModelParams -> IO (ModelParams)
-renewCn params = do
+renew :: ModelParams -> IO (ModelParams)
+renew params = do
   putStrLn "Second, we compute the parameters c_n needed for computations"
   -- We use Fourier method for computations
   new_params <- time $ renew_cn_fourier params 0.0001 ModelFunctions.coeffCalculationHelper

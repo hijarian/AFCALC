@@ -2,12 +2,15 @@
 -- 
 module Main where
 
-import qualified ReverseComplexGraph as PointCalculator
-import qualified ReverseComplexGraph.Canvas.Png as PngRenderer
-import qualified ReverseComplexGraph.Canvas.Gtk as GtkRenderer
+import qualified ReverseComplexGraph as ReverseMapping
+
+import qualified ReverseComplexGraph.Canvas.Png as PngImage
+import qualified ReverseComplexGraph.Canvas.Gtk as GtkWindow
+
 import qualified ReverseComplexGraph.Model.Functions as ModelFunctions
-import qualified ReverseComplexGraph.Model.CorrectionFunctionCoefficients as CoeffCalc
+import qualified ReverseComplexGraph.Model.CorrectionFunctionCoefficients as Coefficients
 import qualified ReverseComplexGraph.Model.Params as ModelParams
+import qualified ReverseComplexGraph.Model.Lines as ModelData
 
 import Data.Complex
 
@@ -17,23 +20,15 @@ main = do
 
 render inputLines = do
   lines <- inputLines
-  GtkRenderer.plotLines lines
-  PngRenderer.plotLines lines 
+  GtkWindow.plotLines lines
+  PngImage.plotLines lines 
   return ()
 
-calculate params = do
-  paramsWithCn <- CoeffCalc.renewCn params
+calculate paramsWithoutCoeffs = do
+  params <- Coefficients.renew paramsWithoutCoeffs
   let
-    u = (pi/4 :+ pi/8)
-    z = ModelFunctions.dzdu paramsWithCn u
-    z'= ModelFunctions.dzdu' paramsWithCn u
-  print $ "U = " ++ (show u)
-  print $ "dz/du = " ++ (show z)  ++ " (full model)"
-  print $ "dz/du = " ++ (show z') ++ " (simplified model)"
-  return ([
-             [ (6, 6), (6, 1), (6, 2), (6, 3)],
-             [ (1, 6), (2, 6), (3, 6), (4, 6)]
-          ])
+    points = ReverseMapping.calcLines (ModelFunctions.dzdu params) (ModelData.pointlines params)
+  return (points)
 
 input = ModelParams.defaults
 
