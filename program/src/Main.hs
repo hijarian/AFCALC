@@ -7,10 +7,10 @@ import qualified ReverseComplexGraph as ReverseMapping
 import qualified ReverseComplexGraph.Canvas.Png as PngImage
 import qualified ReverseComplexGraph.Canvas.Gtk as GtkWindow
 
-import qualified ReverseComplexGraph.Model.Functions as ModelFunctions
-import qualified ReverseComplexGraph.Model.CorrectionFunctionCoefficients as Coefficients
-import qualified ReverseComplexGraph.Model.Params as ModelParams
-import qualified ReverseComplexGraph.Model.Lines as ModelData
+import qualified Model.Functions as ModelFunctions
+import qualified Model.CorrectionFunctionCoefficients as Coefficients
+import qualified Model.Params as ModelParams
+import qualified Model.Lines as ModelData
 
 import Data.Complex
 

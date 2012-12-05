@@ -1,15 +1,12 @@
-module ReverseComplexGraph.Model.Lines (
+module Model.Lines (
   pointlines
   ) where
 
-import ReverseComplexGraph.Model.Params
+import Model.Params
 import Data.Complex
 
 type ComplexPoint = Complex Double
 type ComplexPointList = [ComplexPoint]
-
--- Default number of divisions to make when dividing the segments 
-defaultQuantization = 50
 
 a, b, c, d :: Double -> Complex Double
 a tau = (pi/4) :+ (pi*tau/4)
@@ -31,7 +28,7 @@ pointlines params = [
 
 defaultQuantizationOfSegment :: (Double -> Complex Double) -> (Double -> Complex Double) -> ModelParams -> ComplexPointList
 defaultQuantizationOfSegment startPointFunction endPointFunction params =
-  quantizeSegment (startPointFunction (tau params)) (endPointFunction (tau params)) defaultQuantization
+  quantizeSegment (startPointFunction (tau params)) (endPointFunction (tau params)) (n_integrate params)
 
 
 quantizeSegment :: ComplexPoint -> ComplexPoint -> Integer -> ComplexPointList

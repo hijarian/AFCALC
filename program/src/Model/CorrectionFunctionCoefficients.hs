@@ -14,12 +14,12 @@ Encoded by Saphronov Mark a. k. a. hijarian
 2011.09
 Public Domain
 -}
-module ReverseComplexGraph.Model.CorrectionFunctionCoefficients ( 
+module Model.CorrectionFunctionCoefficients ( 
   renew
   ) where
 
-import ReverseComplexGraph.Model.Params
-import qualified ReverseComplexGraph.Model.Functions as ModelFunctions
+import Model.Params
+import qualified Model.Functions as ModelFunctions
 
 -- We use complex functions
 import Data.Complex
@@ -37,8 +37,6 @@ import ReverseComplexGraph.Time
 
 type Precision = Double
 type ParametrizedRealFunction = (ModelParams -> Double -> Double)
-
-
 
 --  Renew Cn parameters needed for full model
 -- As input accepting old model parameters

@@ -8,7 +8,7 @@ Encoded by Saphronov Mark a. k. a. hijarian
 2011.09
 Public Domain
 -}
-module ReverseComplexGraph.Model.Functions (
+module Model.Functions (
   dzdu,
   dzdu',
   coeffCalculationHelper
@@ -22,7 +22,7 @@ import Data.Complex.Integrate
 import Numeric.Functions.Theta
 
 -- We import the data type named "ModelParams" from there
-import ReverseComplexGraph.Model.Params
+import Model.Params
 
 type AuxiliaryDomainComplexValue = Complex Double
 type OriginDomainComplexValue = Complex Double

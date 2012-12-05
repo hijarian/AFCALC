@@ -14,6 +14,8 @@ type ComplexPoint = Complex Double
 type ComplexPointLine = [Complex Double]
 type ComplexFunction = (Complex Double -> Complex Double)
 
+defaultIntegrationPrecision = 12
+
 calcLines function lines = map (calcLine function) lines
 
 -- Calculate the line in target area corresponding to the line between
@@ -25,8 +27,7 @@ calcLine function line = map (calcPoint function origin) line
 
 -- Calculate only one point of target area
 calcPoint :: ComplexFunction -> ComplexPoint -> ComplexPoint -> Point
-calcPoint f u0 u = complexAsPoint $ integrate f n u0 u
-    where n = 50 -- hardcoded precision
+calcPoint mapping origin point = complexAsPoint $ integrate mapping defaultIntegrationPrecision origin point
 
 complexAsPoint :: Complex Double -> Point
 complexAsPoint u = (realPart u, imagPart u)
