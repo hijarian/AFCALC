@@ -2,7 +2,7 @@
 -- 
 module Main where
 
-import qualified ReverseComplexGraph as ReverseMapping
+import qualified ReverseComplexGraph.LoggedCalculation as ReverseMapping
 
 import qualified ReverseComplexGraph.Canvas.Png as PngImage
 import qualified ReverseComplexGraph.Canvas.Gtk as GtkWindow
@@ -26,7 +26,7 @@ render inputLines = do
 
 calculate paramsWithoutCoeffs = do
   params <- Coefficients.renew paramsWithoutCoeffs
-  return $ ReverseMapping.calcLines (ModelFunctions.dzdu params) (ModelData.pointlines params)
+  ReverseMapping.calcLines (ModelFunctions.dzdu params) (ModelData.pointlines params)
 
 input = ModelParams.defaults
 
