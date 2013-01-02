@@ -26,7 +26,7 @@ render inputLines = do
 
 calculate paramsWithoutCoeffs = do
   params <- Coefficients.renew paramsWithoutCoeffs
-  return ReverseMapping.calcLines (ModelFunctions.dzdu params) (ModelData.pointlines params)
+  return $ ReverseMapping.calcLines (ModelFunctions.dzdu params) (ModelData.pointlines params)
 
 input = ModelParams.defaults
 
