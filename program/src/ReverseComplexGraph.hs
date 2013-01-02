@@ -1,7 +1,8 @@
 module ReverseComplexGraph ( 
   calcPoint,
   calcLine,
-  calcLines
+  calcLines,
+  originOf
   ) where
 
 import Data.Complex
@@ -22,8 +23,7 @@ calcLines function lines = map (calcLine function) lines
 --  given points at source area
 calcLine :: ComplexFunction -> ComplexPointLine -> PointLine
 calcLine function line = map (calcPoint function origin) line
-  where
-    origin = line !! 0
+  where origin = originOf line
 
 -- Calculate only one point of target area
 calcPoint :: ComplexFunction -> ComplexPoint -> ComplexPoint -> Point
@@ -32,3 +32,6 @@ calcPoint mapping origin point = complexAsPoint $ integrate mapping defaultInteg
 complexAsPoint :: Complex Double -> Point
 complexAsPoint u = (realPart u, imagPart u)
 
+-- Point from which to start the integration
+-- To be dead simple, it just uses first point on line as the base
+originOf line = line !! 0
