@@ -28,8 +28,6 @@ calcPoint mapping origin point = do
   endtime <- getCPUTime
   let diff = (fromIntegral (endtime - starttime)) / ticksInSecond
 
-  putStrLn $ (show point) ++ " -> " ++ (show outPoint)
-
   printf "%s -> %s (%0.4f sec)\n" (show point) (show outPoint) (diff :: Double)
 
   return outPoint
