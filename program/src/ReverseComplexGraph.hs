@@ -27,7 +27,7 @@ calcLine function line = map (calcPoint function origin) line
 
 -- Calculate only one point of target area
 calcPoint :: ComplexFunction -> ComplexPoint -> ComplexPoint -> Point
-calcPoint mapping origin point = complexAsPoint $ integrate mapping defaultIntegrationPrecision origin point
+calcPoint mapping origin point = complexAsPoint $ (+ origin) $ integrate mapping defaultIntegrationPrecision origin point
 
 complexAsPoint :: Complex Double -> Point
 complexAsPoint u = (realPart u, imagPart u)
