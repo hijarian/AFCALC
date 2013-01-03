@@ -10,6 +10,9 @@ COMPILER=ghc --make -i${SRCDIR} -outputdir ${TEMPDIR} -o ${OUTDIR}
 all :
 	${COMPILER}graph src/Main.hs
 
+test :
+	${COMPILER}test src/TestMain.hs
+
 # Clean built objects
 clean :
 	rm -rf obj/* bin/*
